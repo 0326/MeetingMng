@@ -14,6 +14,11 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="myeclipse.connection.profile">MeetingMngDBConn</property>
     
+        <mapping class="pojo.Activate" />
+		<mapping class="pojo.ProvinceAndCity" />
+		<mapping class="pojo.Industry" />
+		<mapping class="pojo.CompanyAndCompanyAdmin" />
+		
     </session-factory>
 
 </hibernate-configuration>

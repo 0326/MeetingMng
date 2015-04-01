@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table name="activate" catalog="meetingmngdatabase">
+		<primary-key>
+			<generator class="assigned"></generator>
+			<key-column name="activateAddr" property="activateAddr" />
+		</primary-key>
+	</table>
+	<table name="company_and_company_admin"
+		catalog="meetingmngdatabase">
+		<primary-key>
+			<generator class="assigned"></generator>
+		</primary-key>
+		<column name="location"></column>
+	</table>
+	<table name="industry" catalog="meetingmngdatabase">
+		<primary-key>
+			<generator class="assigned"></generator>
+		</primary-key>
+	</table>
+<table name="province_and_city" catalog="meetingmngdatabase">
+	<primary-key>
+		<generator class="assigned"></generator>
+	</primary-key>
+</table>
+</hibernate-reverse-engineering>
