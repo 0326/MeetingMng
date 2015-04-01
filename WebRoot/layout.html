@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>会管家</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta name="author" content="机智的大熊猫,开源小熊猫" />
+    <meta name="renderer" content="webkit">
+    <meta name="description" content=" " />
+    <meta name="Keywords" content="">
+
+    <link rel="stylesheet" type="text/css" href="app/stylesheets/reset.css">
+    <link rel="stylesheet" type="text/css" href="app/stylesheets/base.css">
+    <link rel="stylesheet" type="text/css" href="app/stylesheets/home.css">
+</head>
+<body class="bg-home" ng-app="appstatic">
+<div id="header"  class="clearfix black-header">
+    <div class="response-ctr clearfix">
+        <div class="logo">
+            <a href="/home"><img src="app/images/logo-b.png"></a>
+        </div>
+        <ul id="head-list">
+            <li id="nav-home"><a href="/home">首 页</a></li>
+            <li id="nav-app"><a href="/app">下 载</a></li>
+            <li id="nav-doc"><a href="/doc">帮 助</a></li>
+            <li id="nav-about"><a href="/about">关 于</a></li>
+        </ul>
+        <div class="pull-right">
+            <ul>
+                <li>个人账号</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- header end-->
+<div id="main">
+  <div class="response-ctr">
+    <div ng-view></div>
+  </div>
+</div>
+<!-- main container end-->
+<div id="footer">
+  <div class="response-ctr">
+    <ul>
+      <li><a>&copy;2015 华中科技大学软件学院 软酷实验室 | 会管家</a></li>
+    </ul>
+  </div>
+</div>
+<!-- footer end-->
+<script src="app/bower_components/jquery/jquery.min.js"></script>
+<!-- <script src="app/bower_components/kissy/build/node-min.js"></script> -->
+
+<script src="app/bower_components/angular/angular.js"></script>
+<script src="app/bower_components/angular/angular-route.js"></script>
+<script src="app/bower_components/angular/angular-animate.js"></script>
+<script src="app/javascripts/static/app.js"></script> 
+<script src="app/javascripts/static/controllers.js"></script>
+<script src="app/javascripts/static/routes.js"></script>  
+<script src="app/javascripts/static/directives.js"></script> 
+<script src="app/javascripts/static/filters.js"></script> 
+<script src="app/javascripts/static/services.js"></script>
+
+<script src="app/javascripts/base.js"></script>
+</body>
+</html>

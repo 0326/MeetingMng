@@ -1,0 +1,12 @@
+.regist-forms .company-regist-form, .regist-forms .user-regist-form{
+	display: none;
+	margin:0 auto;
+}
+
+.pure-form-aligned .pure-control-group label{
+	text-align: left;
+	width: auto;
+}
+#inputcode,.pure-form input[type="checkbox"]{
+	width: auto;
+}
