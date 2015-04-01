@@ -1,6 +1,7 @@
 # directories
 .git
-_site/
+WebRoot/app/bower_components/
+
 
 # file types
 *.psd
