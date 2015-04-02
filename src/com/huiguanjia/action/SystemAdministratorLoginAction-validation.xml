@@ -5,7 +5,7 @@
 
 <validators>
     <!-- name值为需要被校验的字段，这里对email字段进行校验 -->
-    <field name="adminNo">
+    <field name="username">
         <!-- type值为校验器名，requiredstring：非空字符串校验器 -->
         <field-validator type="requiredstring">
             <message>账号不能为空</message>

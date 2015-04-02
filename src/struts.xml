@@ -6,15 +6,56 @@
 	<constant name="struts.serve.static.browserCache" value="false" />
 	<!--开发环境api，生产环境需要去掉以下api-->
 	<package name="json-package" namespace="/api/dev" extends="json-default">
-    <action name="createindusty" class="com.huiguanjia.action.DevAction" method="createIndusty">
-    	<result type="json" name="success">
-    		<param name="root">jsonData</param>
-    	</result>
-    </action>
-    <action name="createcity" class="com.huiguanjia.action.DevAction" method="createCity">
-    	<result type="json" name="success">
-    		<param name="root">jsonData</param>
-    	</result>
-    </action>
-  </package>
+    	<action name="createindusty" class="com.huiguanjia.action.DevAction" method="createIndusty">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="createcity" class="com.huiguanjia.action.DevAction" method="createCity">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+ 	 </package>
+	
+	<!-- login and register -->
+	<package name="json-package2" namespace="/api/ve" extends="json-default">
+    	<action name="systemAdministratorLogin" class="com.huiguanjia.action.SystemAdministratorLoginAction" method="AJAXsystemAdministratorLogin">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="companyManagerLogin" class="com.huiguanjia.action.CompanyManagerLoginAction" method="AJAXcompanyManagerLogin">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="ordinaryUserLogin" class="com.huiguanjia.action.OrdinaryUserLoginAction" method="AJAXordinaryUserLogin">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="companyManagerRegister" class="com.huiguanjia.action.CompanyManagerRegisterAction" method="AJAXcompanyManagerRegister">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="ordinaryUserRegister" class="com.huiguanjia.action.OrdinaryUserRegisterAction" method="AJAXordinaryUserRegister">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="ordinaryUserLogout" class="com.huiguanjia.action.OrdinaryUserLoginAction" method="AJAXordinaryUserLogout">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="companyManagerLogout" class="com.huiguanjia.action.CompanyManagerLoginAction" method="AJAXcompanyManagerLogout">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	
+ 	 </package>
+
 </struts>    

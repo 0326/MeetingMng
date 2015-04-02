@@ -59,29 +59,30 @@ public class OrdinaryUserLoginAction {
 		jsonData = new HashMap<String,Object>();
 		OrdinaryUserService ordinaryUserService = new OrdinaryUserService();
 		// is email or cellphone?
-		if( username.matches("^1[34589]\d{9}$")) {
-			//cellphone = username is right?
-			cellphone = username;
-			OrdinaryUser ordinaryUser = ordinaryUserService.ordinaryUserLogin(cellphone,password);
+		if( ActionContext.getContext().getSession().get("username").matches("^1[34589]\d{9}$")) {
+			
+			// username is cellphone ,use method login one.
+			OrdinaryUser ordinaryUser = ordinaryUserService.ordinaryUserLoginOne(username,password);
 			if( ordinaryUser !=null) {
 				jsonData.put("code","0");
 				jsonData.put("type","10");
 				// jsonData.put("adminAccount",adminAccount)
-				ActionContext.getContext().getSession().put("cellphone",cellphone);
+				ActionContext.getContext().getSession().put("username",username);
 					
 			}
 			else{
 				jsonData.put("code","-10400");
 			}
 		}
-		else if( username.matches("^[0-9a-zA-Z_]+@[0-9a-zA-Z]+\.[a-zA-Z]+$")){
-			email = username;
-			OrdinaryUser ordinaryUser = ordinaryUserService.ordinaryUserLogin(email,password);
+		else if( ActionContext.getContext().getSession().get("username").matches("^[0-9a-zA-Z_]+@[0-9a-zA-Z]+\.[a-zA-Z]+$")){
+			
+			// usernmae is email,use method login two.
+			OrdinaryUser ordinaryUser = ordinaryUserService.ordinaryUserLoginTwo(username,password);
 			if( ordinaryUser !=null) {
 				jsonData.put("code","0");
 				jsonData.put("type","10");
 				// jsonData.put("adminAccount",adminAccount)
-				ActionContext.getContext().getSession().put("email",email);
+				ActionContext.getContext().getSession().put("username",email);
 					
 			}
 			else{
@@ -96,26 +97,16 @@ public class OrdinaryUserLoginAction {
 	
 	public String AJAXordinaryUserLogout() {
 		jsonData = new HashMap<String,Object>();
-		if(username.matches("^1[34589]\d{9}$")){
-			String cellphone = (String) ActionContext.getContext().getSession().get("cellphone");
-			System.out.printIn(cellphone);
-			System.out.printIn(username);
-			if(cellphone.equals(username)) {
-				jsonData.put("code","0");
-				ActionContext.getContext().getSession().remove("cellphone");
-			}
-		}
-		else if( username.matches("^[0-9a-zA-Z_]+@[0-9a-zA-Z]+\.[a-zA-Z]+$")){
-			String email = (String) ActionContext.getContext().getSession().get("email");
-			System.out.printIn(email);
-			System.out.printIn(username);
-			if(email.equals(username)) {
-				jsonData.put("code","0");
-				ActionContext.getContext().getSession().remove("email");
-			}
+		String name = (String) ActionContext.getContext().getSession().get("username");
+		System.out.printIn(name);
+		System.out.printIn(username);
+		if(name.equals(username)) {
+			jsonData.put("code","0");
+			ActionContext.getContext().getSession().remove("username");
 		}
 		else{
-			return SUCCESS;
+			jsonData.put("code","-10400");
 		}
+		return SUCCESS;
 	}
 }

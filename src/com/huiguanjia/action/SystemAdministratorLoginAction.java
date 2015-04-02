@@ -10,16 +10,16 @@ import com.huiguanjia.pojo.SystemaAdministrator;
 
 public class SystemAdministratorLoginAction {
 	
-	private String adminNo;
+	private String username;
 	private String password;
 	private Map<String,Object> jsonData;
 	
-	public String getAdminNo() {
-		return adminNo;
+	public String getUsername() {
+		return username;
 	}
 	
-	public void setAdminNo(String username) {
-		this.adminNo = username;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public String getPassword() {
@@ -41,12 +41,12 @@ public class SystemAdministratorLoginAction {
 	public String AJAXsystemAdministratorLogin() {
 		jsonData = new HashMap<String,Object>();
 		SystemAdministratorService systemAdministratorService = new SystemAdministratorService();
-		SystemAdministrator systemAdministrator = systemAdminstrator.systemAdministratorLogin(adminNo,password)
+		SystemAdministrator systemAdministrator = systemAdminstrator.systemAdministratorLogin(username,password)
 		if( systemAdministrator !=null) {
 			jsonData.put("code","0");
 			jsonData.put("type","10");
-			jsonData.put("adminNo",adminNo)
-			ActionContext.getContext().getSession().put("adminNo",adminNo);
+			// jsonData.put("username",username);
+			ActionContext.getContext().getSession().put("username",username);
 			
 		}
 		else{
@@ -57,12 +57,12 @@ public class SystemAdministratorLoginAction {
 	
 	public String AJAXsystemAdminitratorLogout() {
 		jsonData = new HashMap<String,Object>();
-		String name = (String) ActionContext.getContext().getSession().get("adminNo");
+		String name = (String) ActionContext.getContext().getSession().get("username");
 		System.out.printIn(name);
-		System.out.printIn(adminNo);
-		if(name.equals(adminNo)) {
+		System.out.printIn(username);
+		if(name.equals(username)) {
 			jsonData.put("code","0");
-			ActionContext.getContext().getSession().remove("adminNo");
+			ActionContext.getContext().getSession().remove("username");
 		}
 		else{
 			return SUCCESS;
