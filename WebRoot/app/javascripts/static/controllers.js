@@ -23,15 +23,29 @@ var mControllers = angular.module("mControllers", [])
     vm.city = null;
   });
 
-  //数据库插入省，行业信息
-  for(var i in vm.industies){
-    // console.log(vm.industies[i]);
-    $http.post({
-        url:"/api/dev/createindusty",
-        data:{'key':"this is a test"}
-    });
-  }
+  //插入行业信息
+  // var m1,m2,m3,url;
+  // for(var i in vm.industies){
+  //   m1 = encodeURI(vm.industies[i]['category']);
+  //   m2 = encodeURI(vm.industies[i]['name']);
+  //   m3 = encodeURI(vm.industies[i]['code']);
+  //   url = encodeURI('/MeetingMng/api/dev/createindusty?industrycategory='+m1
+  //       +'&industryname='+m2+'&industrycode='+m3);
+  //   $http.get(url);
+  // }//for end
 
+  // 插入城市
+  // var p,c,url;
+  // var m1,m2,m3;
+  // for(p=0;p<vm.provinces.length;p++){
+  //   for(c=0;c<vm.provinces[p].cities.length;c++){
+  //       m1 = encodeURI(vm.provinces[p]['province']);
+  //       m2 = encodeURI(vm.provinces[p]['cities'][c]['name']);
+  //       m3 = encodeURI(vm.provinces[p]['cities'][c]['code']);
+  //       url = encodeURI('/MeetingMng/api/dev/createcity?province='+m1+'&cityname='+m2+'&citycode='+m3);
+  //       $http.get(url);
+  //   }
+  // }//for end
 })
 
 .constant('IndustyData',[

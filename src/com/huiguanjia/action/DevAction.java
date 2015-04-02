@@ -1,5 +1,6 @@
 package com.huiguanjia.action;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import com.opensymphony.xwork2.ActionContext;
@@ -71,21 +72,14 @@ public class DevAction  extends ActionSupport{
 	
 	private Map<String,Object> jsonData;
 	
-	public String createIndusty(){
+	public String createIndusty() throws UnsupportedEncodingException{
 		jsonData = new HashMap<String,Object>();
-//		UserService userService = new UserService();
-//		User u = userService.getUserinfo(username);
-//		if(u == null){
-//			jsonData.put("code", "-1");
-//		}
-//		else{
-//			u.setPassword("");//
-//			jsonData.put("code", "0");
-//			jsonData.put("user", u);
-//			ActionContext.getContext().getSession().put("username", username);
-//		}
 		DevService aDevService = new DevService();
-		int res = aDevService.createIndustry(industrycategory, industryname, industrycode);
+		int res = aDevService.createIndustry(
+				java.net.URLDecoder.decode(industrycategory, "UTF-8"),
+				java.net.URLDecoder.decode(industryname, "UTF-8"),
+				java.net.URLDecoder.decode(industrycode, "UTF-8")
+			);
 		
 		if(0 == res)
 		{
@@ -103,11 +97,15 @@ public class DevAction  extends ActionSupport{
 
 	public Map<String,Object> getJsonData(){return jsonData; }
 
-	public String createCity()
+	public String createCity() throws UnsupportedEncodingException
 	{
 		jsonData = new HashMap<String,Object>();
 		DevService aDevService = new DevService();
-		int res = aDevService.createCity(province, cityname, citycode);
+		int res = aDevService.createCity(
+				java.net.URLDecoder.decode(province, "UTF-8"),
+				java.net.URLDecoder.decode(cityname, "UTF-8"),
+				java.net.URLDecoder.decode(citycode, "UTF-8")
+			);
 		
 		if(0 == res)
 		{
