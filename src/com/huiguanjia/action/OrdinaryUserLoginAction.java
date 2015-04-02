@@ -19,8 +19,8 @@ public class OrdinaryUserLoginAction {
 		return username;
 	}
 	
-	public void setUsername(String oUsername) {
-		this.username = oUsername;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public String getCellphone() {

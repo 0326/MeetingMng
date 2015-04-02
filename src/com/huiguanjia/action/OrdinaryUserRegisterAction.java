@@ -2,7 +2,6 @@ package com.huiguanjia.action;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.huiguanjia.service.OrdinaryUserService;
@@ -55,24 +54,46 @@ public class OrdinaryUserRegisterAction {
 		this.confirmPassword = confirmPassword;
 	}
 	
-	//ordinaryuserRegister test
-	public String AJAXOrdinaryUserRegister() {
-		if(password !== confirmPassword){
-			jsonData.put("code","-10400");
-		}
-		else{
-			jsonData = new HashMap<String,Object>();
-			OrdinaryUserService ordinaryUserService = new OrdinaryUserService();
-			if(ordinaryUserService.ordinaryUserRegister(adminAccount,password,type,companyName,location)){
+	//ordinaryuserRegister 
+	public String AJAXordinaryUserRegister() {
+		
+		jsonData = new HashMap<String,Object>();
+		OrdinaryUserService ordinaryUserService = new OrdinaryUserService();
+		if(ordinaryUserService.cellphoneInSystem(cellphone)){
+			//user in system,show companyName and name,then use register one.
+			ActionContext.getContext().getSession().get(companyName);
+			jsonData.put("companyName",companyName);
+			ActionContext.getContext().getSession().get(name);
+			jsonData.put("name",name);
+			
+			if(ordinaryUserService.ordinaryUserRegisterOne(cellphone,password)){
 				jsonData.put("code",0);
 				jsonData.put("type",10);
-				jsonData.put("adminAccount",adminAccount);
-				ActionContext.getContext().getSession().put("adminAccount",adminAccount);
+				jsonData.put("cellphone",cellphone);
+				ActionContext.getContext().getSession().put("cellphone",cellphone);
 			}
 			else{
 				jsonData.put("code","-10400");
 			}
-			return SUCCESS;
 		}
+		else{
+			//user not in system ,use register two.
+			// companyName automatic serach not complete!
+			if(ordinaryUserService.ordinaryUserRegisterTwo(cellphone,companyName,name,password)){
+				jsonData.put("code",0);
+				josnData.put("type",10);
+				jsonData.put("cellphone",cellphone);
+				//if the companyName and name is required?
+				// jsonData.put("companyName",companyName);
+				// jsonData.put("name",name)
+				ActionContext.getContext().getSession().put("cellphone",cellphone);
+				ActionContext.getContext().getSession().put("companyName",companyName);
+				ActionContext.getContext().getSession().put("name",name);
+			}
+			else{
+				jsonData.put("code","-10400");
+			}
+		}
+		return SUCCESS;
 	}	
 }

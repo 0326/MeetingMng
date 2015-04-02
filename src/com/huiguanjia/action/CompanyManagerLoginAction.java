@@ -45,7 +45,7 @@ public class CompanyManagerLoginAction {
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		CompanyManager companyManager = companyMangerService.companyManagerLogin(password,adminAccount)
 		// password is right and adminAccount email regular right.
-		if( companyManager !=null && adminAccount.matches("^[0-9a-zA-Z_]+@[0-9a-zA-Z]+\.[a-zA-Z]+$")) {
+		if( companyManager !=null) {
 			jsonData.put("code","0");
 			jsonData.put("type","10");
 			jsonData.put("adminAccount",adminAccount)
