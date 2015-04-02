@@ -12,7 +12,7 @@ public class DevService {
 		return res;
 	}
 	
-	public int newcity(String province,String cityname,String citycode)
+	public int createCity(String province,String cityname,String citycode)
 	{
 		DevDao aDevDao = new DevDao();
 		int res = aDevDao.addProvinceAndCity(province,cityname,citycode);

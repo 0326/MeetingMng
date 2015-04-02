@@ -14,10 +14,10 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="myeclipse.connection.profile">MeetingMngDBConn</property>
     
-        <mapping class="pojo.Activate" />
-		<mapping class="pojo.ProvinceAndCity" />
-		<mapping class="pojo.Industry" />
-		<mapping class="pojo.CompanyAndCompanyAdmin" />
+        <mapping class="com.huiguanjia.pojo.Activate" />
+		<mapping class="com.huiguanjia.pojo.ProvinceAndCity" />
+		<mapping class="com.huiguanjia.pojo.Industry" />
+		<mapping class="com.huiguanjia.pojo.CompanyAndCompanyAdmin" />
 		
     </session-factory>
 

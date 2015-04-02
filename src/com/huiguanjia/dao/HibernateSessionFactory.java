@@ -2,6 +2,7 @@ package com.huiguanjia.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
 /**
@@ -21,7 +22,7 @@ public class HibernateSessionFactory {
      */
     private static String CONFIG_FILE_LOCATION = "/hibernate.cfg.xml";
 	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
-    private  static Configuration configuration = new Configuration();    
+    private  static Configuration configuration = new AnnotationConfiguration();    
     private static org.hibernate.SessionFactory sessionFactory;
     private static String configFile = CONFIG_FILE_LOCATION;
 

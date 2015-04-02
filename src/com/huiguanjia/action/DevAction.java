@@ -103,11 +103,11 @@ public class DevAction  extends ActionSupport{
 
 	public Map<String,Object> getJsonData(){return jsonData; }
 
-	public String newcity()
+	public String createCity()
 	{
 		jsonData = new HashMap<String,Object>();
 		DevService aDevService = new DevService();
-		int res = aDevService.newcity(province, cityname, citycode);
+		int res = aDevService.createCity(province, cityname, citycode);
 		
 		if(0 == res)
 		{
