@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="app/stylesheets/static/regist.css">
+<div class="pure-g static-container" >
+	<div class="regist-tab">
+    <div class="pure-u-12-24">
+    	<button class="button action-button" id="user-regist-btn">普通用户注册</button>
+    </div>
+    <div class="pure-u-12-24">
+    	<button class="button action-button" id="company-regist-btn">公司管理员注册</button>
+    </div>
+  </div>
+  <div class="regist-forms pure-g">
+    <div class="pure-u-1 pure-u-md-2-3">
+        <form class="pure-form pure-form-aligned user-regist-form">
+        	<a href="#">普通用户表单</a>
+        </form>
+    </div>
+    <div class="pure-u-1 pure-u-md-2-3 ">
+    	<form class="pure-form pure-form-aligned  company-regist-form">
+    	    <fieldset>
+    	        <div class="pure-control-group">
+    	            <label for="name">邮箱(该邮箱将作为登录账号)</label>
+    	            <input id="name" type="text" placeholder="请不要使用QQ邮箱">
+    	        </div>
+
+    	        <div class="pure-control-group">
+    	            <label for="password">密码</label>
+    	            <input id="password" type="password" placeholder="请输入密码">
+    	        </div>
+
+    	        <div class="pure-control-group">
+    	            <label for="password">重复密码</label>
+    	            <input id="password" type="password" placeholder="请确认密码">
+    	        </div>
+
+    	        <div class="pure-control-group">
+    	            <label for="foo">公司名称</label>
+    	            <input id="foo" type="text" placeholder="请输入您的注册公司名称">
+    	        </div>
+
+    	        <div class="pure-control-group">
+                <label>公司所在地</label>
+                <select class="pure-input-1-5" ng-model="vm.province" ng-options="p.province for p in vm.provinces">
+                    <option value="">--请选择--</option>
+                </select>
+                <select class="pure-input-1-5" ng-if="vm.province.cities" ng-model="vm.city" ng-options="c.code as c.name for c in vm.province.cities">
+                    <option value="">--请选择--</option>
+                </select>
+            	</div>
+			        <div class="pure-control-group">
+		            <label>所属行业</label>
+		            <select class="pure-input-1-2" ng-model="vm.industy" ng-options="i.code as i.name group by i.category for i in vm.industies">
+                    <option value="">--请选择--</option>
+		            </select>
+		        	</div>
+		        	<div class="pure-control-group">
+    	            <label for="foo">请输入验证码</label>
+    	            <input class="pure-input-1-5" id="inputcode" type="text" placeholder="">
+    	            <div class="vcode-box"></div>
+    	            <button class="button vcode-btn">验证</button>
+    	        </div>
+    	        <div class="pure-controls">
+    	            <label for="cb" class="pure-checkbox">
+    	                <input id="cb" type="checkbox">我已阅读会管家用户使用协议
+    	            </label>
+
+    	            <button type="submit" class="pure-button pure-button-primary pure-button-disabled">注册</button>
+    	            <a href="#">已有账号，直接登录</a>
+    	        </div>
+    	    </fieldset>
+    	</form>
+    </div>
+  </div>
+</div>
+<script src="app/javascripts/vCode.js"></script>
+<script type="text/javascript">
+$("document").ready(function(){
+
+	var vcode = new vCode($(".vcode-box")[0]);
+
+	$(".vcode-btn").on("click", function(){
+		var inputcode = $("#inputcode").val();
+		alert(vcode.verify(inputcode));
+	});
+
+})
+</script>
+<script type="text/javascript">
+	$(".action-button").on('click', function(){
+		console.log(this.id)
+		if(this.id == 'user-regist-btn'){
+			$(".regist-forms .user-regist-form").css({'display':'block'})
+		}
+		else if(this.id == 'company-regist-btn'){
+			$(".regist-forms .company-regist-form").css({'display':'block'})
+		}
+		$(".regist-tab").css({'display':'none'})
+	})
+</script>

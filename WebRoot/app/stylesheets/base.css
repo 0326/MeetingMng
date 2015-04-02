@@ -1,0 +1,27 @@
+body {
+  font-family: "微软雅黑",Arial, Helvetica, sans-serif;
+  /*font-size: 16px;*/
+  color: #555;
+}
+.clearfix:after{
+  clear: both;
+  content: "";
+  display: block;
+  height: 0px;
+  visibility: hidden;
+  line-height: 0;
+}
+.pull-right{float: right;}
+
+.vcode-box{
+	width:100px; height: 30px; border: 1px solid #ccc; display: inline-block;
+}
+
+
+
+
+
+
+
+
+
