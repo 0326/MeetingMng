@@ -1,8 +1,10 @@
 # directories
 .git
 WebRoot/app/bower_components/
-
+WebRoot/app/node_modules/
+WebRoot/WEB-INF/lib/
 
 # file types
+*.class
 *.psd
-CNAME
+
