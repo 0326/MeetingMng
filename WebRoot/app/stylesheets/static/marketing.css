@@ -109,8 +109,8 @@ a.pure-button-primary {
     box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
 }
 .home-menu {
-    /*background: #2d3e50;*/
-    background-color: rgba(0,0,0,0.5);
+    background: #2d3e50;
+    /*background-color: rgba(0,0,0,0.5);*/
     border-bottom: 1px solid #eee;
     margin-left: auto;margin-right: auto;
     

@@ -1,44 +1,84 @@
-<link rel="stylesheet" href="app/stylesheets/static/regist.css">
+
 <div class="pure-g static-container" >
 	<div class="regist-tab">
-    <div class="pure-u-12-24">
-    	<button class="button action-button" id="user-regist-btn">普通用户注册</button>
+        <div class="pure-u-12-24">
+        	<button class="pure-button pure-button-primary action-button" id="user-regist-btn">普通用户注册</button>
+        </div>
+        <div class="pure-u-12-24">
+        	<button class="pure-button pure-button-primary action-button" id="company-regist-btn">公司管理员注册</button>
+        </div>
     </div>
-    <div class="pure-u-12-24">
-    	<button class="button action-button" id="company-regist-btn">公司管理员注册</button>
-    </div>
-  </div>
   <div class="regist-forms pure-g">
-    <div class="pure-u-1 pure-u-md-2-3">
-        <form class="pure-form pure-form-aligned user-regist-form">
-        	<a href="#">普通用户表单</a>
+    <div class="pure-u-1 pure-u-md-2-5">
+        <form class="pure-form pure-form-aligned user-regist-form" name="userForm1" ng-submit="submitUserForm1(userForm1.$valid)" novalidate>
+        	<fieldset>
+                <div class="pure-control-group">
+                    <label for="cellphone">手机号(该手机号将作为登录账号)</label>
+                    <input id="cellphone" ng-model="user.cellphone" type="text" placeholder="" required>
+                </div>
+                 <div class="pure-control-group">
+                    <label for="phonecode">验证码</label>
+                    <input class="pure-input-3-5" id="phonecode" type="text" placeholder="请输入手机收到的验证码">
+                    <button class="pure-button pure-button-primary" id="phonecodeBtn">发送手机验证码</button>
+                </div>
+                <div class="pure-control-group">
+                    <button class="pure-button pure-button-primary" id="submitForm1">下一步</button>
+                </div>
+            </fieldset>
+        </form>
+        <form class="pure-form pure-form-aligned user-regist-form" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
+            <fieldset>
+                <div class="pure-control-group">
+                    <label for="password">密码</label>
+                    <input id="password" ng-model="user.password" type="password" placeholder="请输入密码"  required>
+                </div>
+
+                <div class="pure-control-group">
+                    <label for="repassword">重复密码</label>
+                    <input id="repassword" ng-model="user.repassword" type="password" placeholder="请确认密码" required>
+                </div>
+
+                <div class="pure-control-group">
+                    <label for="foo">公司名称</label>
+                    <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的注册公司名称" required>
+                </div>
+                <div class="pure-control-group">
+                    <label for="cb" class="pure-checkbox">
+                        <input id="cb" type="checkbox">我已阅读会管家用户使用协议
+                    </label>
+
+                    <button type="submit" class="pure-button pure-button-primary" ng-disabled="userForm2.$invalid">注册</button>
+                    <a href="#">已有账号，直接登录</a>
+                </div>
+            </fieldset>
         </form>
     </div>
-    <div class="pure-u-1 pure-u-md-2-3 ">
-    	<form class="pure-form pure-form-aligned  company-regist-form">
+    <div class="pure-u-1 pure-u-md-2-5 ">
+    	<form class="pure-form pure-form-aligned  company-regist-form" name="companyForm" ng-submit="submitCompanyForm(companyForm.$valid)" novalidate>
     	    <fieldset>
     	        <div class="pure-control-group">
-    	            <label for="name">邮箱(该邮箱将作为登录账号)</label>
-    	            <input id="name" type="text" placeholder="请不要使用QQ邮箱">
+    	            <label for="username">邮箱(该邮箱将作为登录账号)</label>
+    	            <input id="username" ng-model="user.username" type="email" placeholder="请不要使用QQ邮箱,骗你的呵呵" required>
+                    <p ng-show="user.username.$invalid">请输入注册邮箱{{user.username}}</p>
     	        </div>
 
     	        <div class="pure-control-group">
     	            <label for="password">密码</label>
-    	            <input id="password" type="password" placeholder="请输入密码">
+    	            <input id="password" ng-model="user.password" type="password" placeholder="请输入密码"  required>
     	        </div>
 
     	        <div class="pure-control-group">
-    	            <label for="password">重复密码</label>
-    	            <input id="password" type="password" placeholder="请确认密码">
+    	            <label for="repassword">重复密码</label>
+    	            <input id="repassword" ng-model="user.repassword" type="password" placeholder="请确认密码" required>
     	        </div>
 
     	        <div class="pure-control-group">
     	            <label for="foo">公司名称</label>
-    	            <input id="foo" type="text" placeholder="请输入您的注册公司名称">
+    	            <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的注册公司名称" required>
     	        </div>
 
     	        <div class="pure-control-group">
-                <label>公司所在地</label>
+                <label class="inline">公司所在地</label>
                 <select class="pure-input-1-5" ng-model="vm.province" ng-options="p.province for p in vm.provinces">
                     <option value="">--请选择--</option>
                 </select>
@@ -46,24 +86,24 @@
                     <option value="">--请选择--</option>
                 </select>
             	</div>
-			        <div class="pure-control-group">
-		            <label>所属行业</label>
+			     <div class="pure-control-group">
+		            <label class="inline">所属行业</label>
 		            <select class="pure-input-1-2" ng-model="vm.industy" ng-options="i.code as i.name group by i.category for i in vm.industies">
                     <option value="">--请选择--</option>
 		            </select>
 		        	</div>
 		        	<div class="pure-control-group">
-    	            <label for="foo">请输入验证码</label>
+    	            <label class="inline" for="foo">请输入验证码</label>
     	            <input class="pure-input-1-5" id="inputcode" type="text" placeholder="">
     	            <div class="vcode-box"></div>
-    	            <button class="button vcode-btn">验证</button>
+    	            <button class="pure-button pure-button-primary vcode-btn">验证</button>
     	        </div>
-    	        <div class="pure-controls">
+    	        <div class="pure-control-group">
     	            <label for="cb" class="pure-checkbox">
     	                <input id="cb" type="checkbox">我已阅读会管家用户使用协议
     	            </label>
 
-    	            <button type="submit" class="pure-button pure-button-primary pure-button-disabled">注册</button>
+    	            <button type="submit" class="pure-button pure-button-primary" ng-disabled="companyForm.$invalid">注册</button>
     	            <a href="#">已有账号，直接登录</a>
     	        </div>
     	    </fieldset>
@@ -88,11 +128,16 @@ $("document").ready(function(){
 	$(".action-button").on('click', function(){
 		console.log(this.id)
 		if(this.id == 'user-regist-btn'){
-			$(".regist-forms .user-regist-form").css({'display':'block'})
+			$(".regist-forms form[name='userForm1']").css({'display':'block'})
 		}
 		else if(this.id == 'company-regist-btn'){
 			$(".regist-forms .company-regist-form").css({'display':'block'})
 		}
 		$(".regist-tab").css({'display':'none'})
 	})
+    $("#submitForm1").on('click', function(){
+        $("#submitForm1").slideUp();
+        $("#phonecodeBtn").slideUp();
+        $(".regist-forms form[name='userForm2']").css({'display':'block'})
+    })
 </script>

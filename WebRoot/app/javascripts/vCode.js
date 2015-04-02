@@ -97,7 +97,7 @@
 	        var f = function(){
 	            this.len = 4;
 	            this.fontSizeMin = 20;
-	            this.fontSizeMax = 48;
+	            this.fontSizeMax = 28;
 	            this.colors = [
 	                "green",
 	                "red",
@@ -174,8 +174,8 @@
 	            "font-size:" + randint(this.options.fontSizeMin, this.options.fontSizeMax) + "px",
 	            "color:" + this.options.colors[randint(0,  this.options.colors.length - 1)],
 	            "position: absolute",
-	            // "left:" + randint(this.uW * index, this.uW * index + this.uW - 10) + "px",
-	            // "top:" + randint(0, this.h - 30) + "px",
+	            "left:" + randint(20 * index, 25*(index +1) - 10) + "px",
+	            "top:" + randint(0, 5) + "px",
 	            "transform:rotate(" + randint(-30, 30) + "deg)",
 	            "-ms-transform:rotate(" + randint(-30, 30) + "deg)",
 	            "-moz-transform:rotate(" + randint(-30, 30) + "deg)",

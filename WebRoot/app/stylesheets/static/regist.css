@@ -1,12 +1,41 @@
+.regist-tab{
+	width: 600px;
+	margin:0 auto;
+}
+.regist-tab > div{
+	width: 300px;
+	height: 400px;
+	border:1px solid #eee;
+	text-align: center;
+}
 .regist-forms .company-regist-form, .regist-forms .user-regist-form{
 	display: none;
 	margin:0 auto;
 }
 
+.regist-forms > div{
+	display: block;
+	margin: 0 auto;
+}
 .pure-form-aligned .pure-control-group label{
 	text-align: left;
 	width: auto;
 }
-#inputcode,.pure-form input[type="checkbox"]{
+.pure-form-aligned .pure-control-group label.inline{
+	width: 7em;
+}
+.pure-form input[type="checkbox"]{
 	width: auto;
+}
+#inputcode{
+	width: 6em;
+}
+
+
+.vcode-btn{
+	display: inline-block;
+}
+
+form[name="userForm2"]{
+	display: none;
 }

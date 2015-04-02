@@ -16,12 +16,20 @@ var mControllers = angular.module("mControllers", [])
 .controller("registCtrl", function($scope,$http, CityData, IndustyData) {
 	
   var vm = $scope.vm = {};
+  var user = $scope.user = {};
   vm.industies = IndustyData;
   vm.provinces = CityData;
-  // 更换国家的时候清空省
+
   $scope.$watch('vm.province', function(province) {
     vm.city = null;
   });
+
+  $scope.submitCompanyForm = function(isValid){
+    if(isValid){
+        // alert("ok");
+        alert([user.username,user.password,user.companyName].join(";"))
+    }
+  };
 
   //插入行业信息
   // var m1,m2,m3,url;
