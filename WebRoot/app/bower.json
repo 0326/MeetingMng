@@ -1,0 +1,29 @@
+{
+  "name": "meetingmanagersystem",
+  "version": "0.0.1",
+  "authors": [
+    "0326 <winniringy@gmail.com>"
+  ],
+  "description": "manage site for company&system administrator",
+  "keywords": [
+    "bower",
+    "meeting",
+    "manage",
+    "admin",
+    "site"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "kissy": "1.4.8",
+    "jquery": "1.9.1",
+    "pure": "~0.6.0",
+    "font-awesome": "~4.3.0"
+  }
+}

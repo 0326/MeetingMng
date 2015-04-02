@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+        "-//OpenSymphonyGroup//XworkValidator//XWorkValidator1.0.2//EN"
+        "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+
+<validators>
+ 
+    <field name="password">
+        <field-validator type="requiredstring">
+            <message>密码不能为空</message>
+        </field-validator>
+        <!-- stringlength：字符串长度校验 -->
+        <field-validator type="stringlength">
+            <!-- 为校验器指定参数实现不同的校验规则，maxlength：最长长度 -->
+            <param name="maxLength">15</param>
+            <message>密码长度不能多于15位</message>
+        </field-validator>
+    </field>
+    
+    <!-- 校验两次密码是否一致，使用 fieldexpression 校验器。expression参数指定判断用的表达式-->
+    <field name="confirmPassword">
+    	<field-validator type="requiredstring">
+            <message>确认密码不能为空</message>
+        </field-validator>
+        <field-validator type="fieldexpression">
+            <!-- 表达式要写在   <![CDATA[]]>   内 -->
+            <param name="expression"><![CDATA[confirmPassword==password]]></param>
+            <message>两次密码不一至</message>
+        </field-validator>
+    </field>
+    
+    <!-- 校验电话格式，使用regex正则表达示校验，regexExpression参数指定正则表达式 -->
+    <field name="cellphone">
+    	<field-validator type="requiredstring">
+            <message>手机号码不能为空</message>
+        </field-validator>
+        <field-validator type="regex">
+            <!-- 注意！2.3.15前的版本使用 expression 参数 -->
+            <param name="regexExpression"><![CDATA[^1[3568]\d{9}$]]></param>
+            <message>手机号码格式不正确</message>
+        </field-validator>
+    </field>
+    
+    <field name="companyName">
+        <field-validator type="requiredstring">
+            <message>公司名称不能为空</message>
+        </field-validator>      
+        <field-validator type="stringlength">
+            <!-- 为校验器指定参数实现不同的校验规则，minlength：最少长度  maxlength最大长度-->
+            <param name="maxLength">50</param>
+            <message>密码长度不能多于50位</message>
+        </field-validator> 
+    </field>
+    
+    <field name="name">
+        <field-validator type="requiredstring">
+            <message>名字不能为空</message>
+        </field-validator>  
+        <field-validator type="stringlength">
+            <!-- 为校验器指定参数实现不同的校验规则，minlength：最少长度  maxlength最大长度-->
+            <param name="maxLength">20</param>
+            <message>名字长度不能多于20位</message>
+        </field-validator>      
+    </field>
+    
+</validators>
