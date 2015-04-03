@@ -17,54 +17,63 @@ var mControllers = angular.module("mControllers", [])
 	
   var vm = $scope.vm = {};
   var user = $scope.user = {};
+  var vcode = new vCode($(".vcode-box")[0]);
   vm.industies = IndustyData;
   vm.provinces = CityData;
+  var postCfg ={
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+    transformRequest: function(data) {
+        return $.param(data);
+    }
+  }
 
   $scope.$watch('vm.province', function(province) {
     vm.city = null;
   });
 
-  $scope.sendPhoneCode = function(){
-    alert($scope.user.cellphone);
-    $http.post('http://sms-api.luosimao.com/v1/send.json',
-        {'mobile':'13026310448',
-        'message':'验证码125230,请在一分钟之内完成验证【会管家】'
-
-        }
-    ).success(function(data){
-        console.log(data);
-    });
-  }
   $scope.submitCompanyForm = function(isValid){
+    if(!vcode.verify($scope.inputcode)){
+        alert("验证码错误");
+        return;
+    }
+    if( user.password != user.repassword){
+        alert("两次密码不一致");
+        return;
+    }
     if(isValid){
         // alert("ok");
-        alert([user.username,user.password,user.companyName].join(";"))
+        // alert([user.username,user.password,user.companyName,vm.province,
+        //     vm.city,vm.industy].join(";"));
+        // console.log(vm);
+        $http.post('/MeetingMng/api/v1/companyManagerRegister',{
+            'username': user.username,
+            'password': user.password,
+            'type': vm.industy,
+            'location': vm.city,
+            'companyName':user.companyName
+        }, postCfg).success(function(data){
+            switch(data.code){
+                case "10401":
+                    alert("该用户名已存在");
+                    break;
+                case "10402":
+                    alert("该公司名已存在");
+                    break;
+                case "10403":
+                    alert("请选择正确的行业类型");
+                    break;
+                case "10404":
+                    alert("请选择正确的公司地理位置");
+                    break;
+                case 0:
+                    alert("恭喜您注册成功");
+                    break;
+                default:
+                    alert("您注册的姿势不对，请按太阳穴，轮刮眼眶。")
+            }
+        });
     }
   };
-
-  //插入行业信息
-  // var m1,m2,m3,url;
-  // for(var i in vm.industies){
-  //   m1 = encodeURI(vm.industies[i]['category']);
-  //   m2 = encodeURI(vm.industies[i]['name']);
-  //   m3 = encodeURI(vm.industies[i]['code']);
-  //   url = encodeURI('/MeetingMng/api/dev/createindusty?industrycategory='+m1
-  //       +'&industryname='+m2+'&industrycode='+m3);
-  //   $http.get(url);
-  // }//for end
-
-  // 插入城市
-  // var p,c,url;
-  // var m1,m2,m3;
-  // for(p=0;p<vm.provinces.length;p++){
-  //   for(c=0;c<vm.provinces[p].cities.length;c++){
-  //       m1 = encodeURI(vm.provinces[p]['province']);
-  //       m2 = encodeURI(vm.provinces[p]['cities'][c]['name']);
-  //       m3 = encodeURI(vm.provinces[p]['cities'][c]['code']);
-  //       url = encodeURI('/MeetingMng/api/dev/createcity?province='+m1+'&cityname='+m2+'&citycode='+m3);
-  //       $http.get(url);
-  //   }
-  // }//for end
 })
 
 .constant('IndustyData',[

@@ -19,7 +19,7 @@
  	 </package>
 	
 	<!-- login and register -->
-	<package name="json-package2" namespace="/api/ve" extends="json-default">
+	<package name="json-package2" namespace="/api/v1" extends="json-default">
     	<action name="systemAdministratorLogin" class="com.huiguanjia.action.SystemAdministratorLoginAction" method="AJAXsystemAdministratorLogin">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>

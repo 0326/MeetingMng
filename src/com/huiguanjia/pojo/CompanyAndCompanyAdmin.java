@@ -136,7 +136,7 @@ public class CompanyAndCompanyAdmin implements java.io.Serializable {
 		this.registerTime = registerTime;
 	}
 
-	@Column(name = "isLogin", nullable = false)
+	@Column(name = "isLogin", nullable = true)
 	public boolean getIsLogin() {
 		return this.isLogin;
 	}
@@ -154,7 +154,7 @@ public class CompanyAndCompanyAdmin implements java.io.Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "name", nullable = false, length = 20)
+	@Column(name = "name", nullable = true, length = 20)
 	public String getName() {
 		return this.name;
 	}
@@ -181,7 +181,7 @@ public class CompanyAndCompanyAdmin implements java.io.Serializable {
 		this.officePhone = officePhone;
 	}
 
-	@Column(name = "avatarUrl", nullable = false, length = 80)
+	@Column(name = "avatarUrl", nullable = true, length = 80)
 	public String getAvatarUrl() {
 		return this.avatarUrl;
 	}

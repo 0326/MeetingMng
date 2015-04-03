@@ -14,7 +14,6 @@ public class IndustryDao {
 		
 		Session sess = HibernateSessionFactory.getSession();
 		Transaction tx = sess.beginTransaction();
-		
 		String hqlQuery = "select i.industryCode from Industry as i " +
 				"where i.industryCode = :ic";
 		List l = sess.createQuery(hqlQuery).setString("ic", industryCode).list();

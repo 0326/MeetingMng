@@ -93,10 +93,10 @@
 		            </select>
 		        	</div>
 		        	<div class="pure-control-group">
-    	            <label class="inline" for="foo">请输入验证码</label>
-    	            <input class="pure-input-1-5" id="inputcode" type="text" placeholder="">
+    	            <label class="inline" for="foo">请输入验证码{{inputcode}}</label>
+    	            <input class="pure-input-1-5" id="inputcode" ng-model="inputcode" type="text" placeholder="">
     	            <div class="vcode-box"></div>
-    	            <button class="pure-button pure-button-primary vcode-btn">验证</button>
+    	            <!-- <button class="pure-button pure-button-primary vcode-btn">验证</button> -->
     	        </div>
     	        <div class="pure-control-group">
     	            <label for="cb" class="pure-checkbox">
@@ -113,20 +113,19 @@
 </div>
 <script src="app/javascripts/vCode.js"></script>
 <script type="text/javascript">
-$("document").ready(function(){
+// $("document").ready(function(){
 
-	var vcode = new vCode($(".vcode-box")[0]);
+// 	var vcode = new vCode($(".vcode-box")[0]);
 
-	$(".vcode-btn").on("click", function(){
-		var inputcode = $("#inputcode").val();
-		alert(vcode.verify(inputcode));
-	});
+// 	$(".vcode-btn").on("click", function(){
+// 		var inputcode = $("#inputcode").val();
+// 		alert(vcode.verify(inputcode));
+// 	});
 
-})
+// })
 </script>
 <script type="text/javascript">
 	$(".action-button").on('click', function(){
-		console.log(this.id)
 		if(this.id == 'user-regist-btn'){
 			$(".regist-forms form[name='userForm1']").css({'display':'block'})
 		}

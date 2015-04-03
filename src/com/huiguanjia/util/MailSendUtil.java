@@ -37,7 +37,7 @@ public class MailSendUtil {
 	 * @param hostName String 
 	 */
 	private void setSmtpHost(String hostName) { 
-		System.out.println("设置系统属性：MailSendUtil.smtp.host = "+hostName); 
+//		System.out.println("设置系统属性：MailSendUtil.smtp.host = "+hostName); 
 		if(props == null)
 			props = System.getProperties(); //获得系统属性对象 	
 		props.put("MailSendUtil.smtp.host",hostName); //设置SMTP主机 
@@ -51,11 +51,11 @@ public class MailSendUtil {
 	private boolean createMimeMessage() 
 	{ 
 		try { 
-			System.out.println("准备获取邮件会话对象！"); 
+//			System.out.println("准备获取邮件会话对象！"); 
 			session = Session.getDefaultInstance(props,null); //获得邮件会话对象 
 		} 
 		catch(Exception e){ 
-			System.err.println("获取邮件会话对象时发生错误！"+e); 
+//			System.err.println("获取邮件会话对象时发生错误！"+e); 
 			return false; 
 		} 
 	
@@ -76,7 +76,7 @@ public class MailSendUtil {
 	 * @param need
 	 */
 	private void setNeedAuth(boolean need) { 
-		System.out.println("设置smtp身份认证：MailSendUtil.smtp.auth = "+need); 
+//		System.out.println("设置smtp身份认证：MailSendUtil.smtp.auth = "+need); 
 		if(props == null) props = System.getProperties(); 
 		if(need){ 
 			props.put("MailSendUtil.smtp.auth","true"); 
@@ -101,7 +101,7 @@ public class MailSendUtil {
 	 * @return
 	 */
 	private boolean setSubject(String MailSendUtilSubject) { 
-		System.out.println("设置邮件主题！"); 
+//		System.out.println("设置邮件主题！"); 
 		try{ 
 			mimeMsg.setSubject(MailSendUtilSubject); 
 			return true; 
@@ -133,7 +133,7 @@ public class MailSendUtil {
 	 * @param from String 
 	 */ 
 	private boolean setFrom(String from) { 
-		System.out.println("设置发信人！"); 
+//		System.out.println("设置发信人！"); 
 		try{ 
 			mimeMsg.setFrom(new InternetAddress(from)); //设置发信人 
 			return true; 
@@ -163,7 +163,7 @@ public class MailSendUtil {
 		try{ 
 			mimeMsg.setContent(mp); 
 			mimeMsg.saveChanges(); 
-			System.out.println("正在发送邮件...."); 
+//			System.out.println("正在发送邮件...."); 
 			
 			Session MailSendUtilSession = Session.getInstance(props,null); 
 			Transport transport = MailSendUtilSession.getTransport("smtp"); 
@@ -172,7 +172,7 @@ public class MailSendUtil {
 			//transport.sendMessage(mimeMsg,mimeMsg.getRecipients(Message.RecipientType.CC)); 
 			//transport.send(mimeMsg); 
 			
-			System.out.println("发送邮件成功！"); 
+//			System.out.println("发送邮件成功！"); 
 			transport.close(); 
 			
 			return true; 
@@ -191,7 +191,7 @@ public class MailSendUtil {
 		theMailSendUtil.setTo(email);
 
 		StringBuffer  content = new StringBuffer();
-		content.append("<p>欢迎注册会管家，请在30分钟内点击以下链接激活，逾期无效：");
+		content.append("<p>欢迎注册会管家，请在24小时内点击以下链接激活，逾期无效：");
 		content.append("<a href='"+activelink+"'>"+activelink+"</a></p>");
 		
 		theMailSendUtil.setBody(content);
