@@ -24,6 +24,17 @@ var mControllers = angular.module("mControllers", [])
     vm.city = null;
   });
 
+  $scope.sendPhoneCode = function(){
+    alert($scope.user.cellphone);
+    $http.post('http://sms-api.luosimao.com/v1/send.json',
+        {'mobile':'13026310448',
+        'message':'验证码125230,请在一分钟之内完成验证【会管家】'
+
+        }
+    ).success(function(data){
+        console.log(data);
+    });
+  }
   $scope.submitCompanyForm = function(isValid){
     if(isValid){
         // alert("ok");
