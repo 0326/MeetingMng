@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-02 13:53:52
+Date: 2015-04-03 14:39:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,12 +41,12 @@ CREATE TABLE `company_and_company_admin` (
   `registerTime` datetime NOT NULL,
   `location` char(9) NOT NULL,
   `type` char(6) NOT NULL,
-  `isLogin` tinyint(1) NOT NULL,
+  `isLogin` tinyint(1) DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
-  `name` varchar(20) NOT NULL,
-  `sex` tinyint(1) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `sex` tinyint(1) DEFAULT NULL,
   `officePhone` varchar(20) DEFAULT NULL,
-  `avatarUrl` varchar(80) NOT NULL,
+  `avatarUrl` varchar(80) DEFAULT NULL,
   `officeLocation` varchar(80) DEFAULT NULL,
   `cellphone` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`companyName`),
