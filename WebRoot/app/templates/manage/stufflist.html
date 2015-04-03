@@ -1,0 +1,35 @@
+<div class="header">
+    <h1>员工列表</h1>
+    <h2>会管家，让您的商务生活更简单！</h2>
+</div>
+
+<div class="content">
+    <div class="content-subhead">
+    	<button class="pure-button pure-button-primary"><i class="fa fa-plus"></i>
+新建部门</button>
+    </div>
+    <div>
+      <table class="pure-table pure-table-horizontal">
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>姓名</th>
+            <th>部门</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="i in stuffs">
+            <td>{{i.name}}</td>
+            <td>{{i.name}}</td>
+            <td>{{i.depart}}</td>
+            <td>
+            	<button class="pure-button button-secondary button-small">修改</button>
+            	<button class="pure-button button-secondary button-small">详细</button>
+            </td>
+          </tr>
+        </tbody>
+			</table>
+    </div>
+
+</div>
