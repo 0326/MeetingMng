@@ -2,17 +2,20 @@ package com.huiguanjia.action;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.huiguanjia.service.OrdinaryUserService;
 
-public class OrdinaryUserRegisterAction {
+@SuppressWarnings("serial")
+public class OrdinaryUserRegisterAction extends ActionSupport{
 	
 	private String cellphone;
 	private String companyName;
 	private String name;
 	private String password;
 	private String confirmPassword;
+	private Map<String,Object> jsonData;
 	
 	public String getCellphone(){
 		return cellphone;

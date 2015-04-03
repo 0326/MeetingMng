@@ -8,7 +8,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.unil.*;
 
-public class CompanyManagerRegisterAction {
+@SuppressWarnings("serial")
+public class CompanyManagerRegisterAction extends ActionSupport{
 	
 	private String username;
 	private String password;
@@ -16,6 +17,8 @@ public class CompanyManagerRegisterAction {
 	private String type;
 	private String companyName;
 	private String location;
+	private Map<String,Object> jsonData;
+	
 	
 	public String getUsername(){
 		return username;
@@ -99,6 +102,7 @@ public class CompanyManagerRegisterAction {
 		case 5:jsonData.put("code","10400"); break; //arg error										
 		case 6:
 			//click register,send a mail
+		{
 			MailSendUtil mailSendUtil = new MailSendUtil();
 
 			if(mailSendUtil.send(String username,String activelink)){
@@ -113,7 +117,7 @@ public class CompanyManagerRegisterAction {
 			else{
 				jsonData.put("code","-10408");
 			}
-			}
+		}
 				     
 		}
 		return SUCCESS;

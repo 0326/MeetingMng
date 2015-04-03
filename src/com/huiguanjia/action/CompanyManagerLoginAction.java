@@ -10,11 +10,12 @@ import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.dao.CompanyManagerDao;
 import com.huiguanjia.pojo.CompanyManager;
 
-public class CompanyManagerLoginAction {
+@SuppressWarnings("serial")
+public class CompanyManagerLoginAction extends ActionSupport{
 	
 	private String password;
 	private String username;
-	private Map<String,Object>;
+	private Map<String,Object> jsonData;
 	
 	public String getPassword() {
 		return password;
@@ -61,8 +62,8 @@ public class CompanyManagerLoginAction {
 	public String AJAXcompanyManagerLogout() {
 		jsonData = new HashMap<String,Object>();
 		String name = (String) ActionContext.getContext().getSession().get("username");
-		System.out.printIn(name);
-		System.out.printIn(username);
+		System.out.println(name);
+		System.out.println(username);
 		if(name.equals(username)) {
 			jsonData.put("code","0");
 			ActionContext.getContext().getSession().remove("username");
