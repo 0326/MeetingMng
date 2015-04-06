@@ -5,16 +5,16 @@
             <fieldset>
 
                 <label for="name">账号</label>
-                <input id="name" type="text" placeholder="手机号/绑定邮箱">
+                <input id="name" ng-model="user.username" type="text" placeholder="手机号/绑定邮箱">
 
                 <label for="password">密码</label>
-                <input id="password" type="password" placeholder="请输入密码">
+                <input id="password" ng-model="user.password" type="password" placeholder="请输入密码">
 
                 <label for="normaluser" class="pure-radio">
-                    <input id="normaluser" type="radio" name="type" value="0" checked>普通用户
+                    <input ng-model="user.usertype" type="radio" name="usertype" value="0" checked>普通用户
                 </label>
                 <label for="adminuser" class="pure-radio">
-                    <input id="adminuser" type="radio" name="type" value="1" checked>公司管理员
+                    <input ng-model="user.usertype" type="radio" name="usertype" value="1">公司管理员
                 </label>
                 <button type="submit" class="pure-button">登录</button>
                 <a href="#/findpass">找回密码</a>

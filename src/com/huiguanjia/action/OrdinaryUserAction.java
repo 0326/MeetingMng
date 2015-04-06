@@ -10,7 +10,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.huiguanjia.service.OrdinaryUserService;
 
 @SuppressWarnings("serial")
-public class OrdinaryUserLoginAction extends ActionSupport{
+public class OrdinaryUserAction extends ActionSupport{
 	
 	private String username;
 	private String cellphone;
@@ -58,7 +58,7 @@ public class OrdinaryUserLoginAction extends ActionSupport{
 		return "json";
 	}
 	
-	public String AJAXordinaryUserLogin() {
+	public String login() {
 		jsonData = new HashMap<String,Object>();
 		OrdinaryUserService ordinaryUserService = new OrdinaryUserService();
 		// is email or cellphone?
@@ -98,7 +98,7 @@ public class OrdinaryUserLoginAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	public String AJAXordinaryUserLogout() {
+	public String logout() {
 		jsonData = new HashMap<String,Object>();
 		String name = (String) ActionContext.getContext().getSession().get("username");
 		System.out.println(name);
@@ -112,4 +112,46 @@ public class OrdinaryUserLoginAction extends ActionSupport{
 		}
 		return SUCCESS;
 	}
+	
+	public String register() {
+			
+			jsonData = new HashMap<String,Object>();
+			OrdinaryUserService ordinaryUserService = new OrdinaryUserService();
+			if(ordinaryUserService.cellphoneInSystem(cellphone)){
+				//user in system,show companyName and name,then use register one.
+				ActionContext.getContext().getSession().get(companyName);
+				jsonData.put("companyName",companyName);
+				ActionContext.getContext().getSession().get(name);
+				jsonData.put("name",name);
+				
+				if(ordinaryUserService.ordinaryUserRegisterOne(cellphone,password)){
+					jsonData.put("code",0);
+					jsonData.put("type",10);
+					jsonData.put("cellphone",cellphone);
+					ActionContext.getContext().getSession().put("cellphone",cellphone);
+				}
+				else{
+					jsonData.put("code","-10400");
+				}
+			}
+			else{
+				//user not in system ,use register two.
+				// companyName automatic serach not complete!
+				if(ordinaryUserService.ordinaryUserRegisterTwo(cellphone,companyName,name,password)){
+					jsonData.put("code",0);
+					josnData.put("type",10);
+					jsonData.put("cellphone",cellphone);
+					//if the companyName and name is required?
+					// jsonData.put("companyName",companyName);
+					// jsonData.put("name",name)
+					ActionContext.getContext().getSession().put("cellphone",cellphone);
+					ActionContext.getContext().getSession().put("companyName",companyName);
+					ActionContext.getContext().getSession().put("name",name);
+				}
+				else{
+					jsonData.put("code","-10400");
+				}
+			}
+			return SUCCESS;
+		}	
 }

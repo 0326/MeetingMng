@@ -5,11 +5,72 @@
 
 <div class="content">
     <div class="content-subhead">
-    	<button class="pure-button pure-button-primary"><i class="fa fa-plus"></i>
-新建部门</button>
+    	<button class="pure-button pure-button-primary"><i class="fa fa-plus"></i> 批量导入员工</button>
+    	<button class="pure-button" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> 手动添加员工</button>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">添加员工</h4>
+			      </div>
+			      <div class="modal-body">
+			        <form class="pure-form pure-form-aligned">
+			            <fieldset>
+			                <div class="pure-control-group">
+			                    <label for="name">姓名</label>
+			                    <input id="name" type="text" placeholder="Username">
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="name">工号</label>
+			                    <input id="name" type="text" placeholder="Username">
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="name">手机号</label>
+			                    <input id="name" type="text" placeholder="Username">
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="name">性别</label>
+			                    <input type="radio" name="sex" placeholder="Username" selected>男
+			                    <input type="radio" name="sex" placeholder="Username">女
+			                </div>
+
+			                <div class="pure-control-group">
+			                    <label for="supdepart">所属部门</label>
+			                    <select id="supdepart">
+                              <option>--无--</option>
+                              <option>技术部门</option>
+                              <option>财务部门</option>
+                          </select>
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="name">职位</label>
+			                    <input id="name" type="text" placeholder="Username">
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="name">邮箱</label>
+			                    <input id="name" type="text" placeholder="Username">
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="name">办公地点</label>
+			                    <input id="name" type="text" placeholder="Username">
+			                </div>
+			                <div class="pure-controls">
+			                    <button type="submit" class="pure-button pure-button-primary">新建</button>
+			                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			                </div>
+			            </fieldset>
+			        </form>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<!-- Modal end -->
     </div>
     <div>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        请下载excel模板，然后按模板要求填写后批量导入员工（推荐）<a href="app/resources/stuff_template.xls">excel员工模板</a>
+        <p>您也可以点击手动添加按钮来手动添加员工。</p>
     </div>
 
 </div>

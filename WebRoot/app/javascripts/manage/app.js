@@ -26,6 +26,9 @@ mApp.config(function($routeProvider) {
 	}).when('/stufflist', {
 		templateUrl: 'app/templates/manage/stufflist.html',
 		controller: 'stufflistCtrl'
+	}).when('/profile', {
+		templateUrl: 'app/templates/manage/profile.html',
+		controller: 'profileCtrl'
 	}).otherwise({
 		redirectTo: '/'
 	});

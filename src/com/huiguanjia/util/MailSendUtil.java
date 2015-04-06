@@ -13,6 +13,10 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 
+/**
+ * @author Ling
+ * @info   smtp邮件发送接口
+ */
 public class MailSendUtil { 
 
 	private MimeMessage mimeMsg; //MIME邮件对象 
@@ -27,7 +31,7 @@ public class MailSendUtil {
 	 * Constructor
 	 * @param smtp 邮件发送服务器
 	 */
-	public MailSendUtil(String smtp){ 
+	private MailSendUtil(String smtp){ 
 		setSmtpHost(smtp); 
 		createMimeMessage(); 
 	} 
@@ -59,7 +63,7 @@ public class MailSendUtil {
 			return false; 
 		} 
 	
-		System.out.println("准备创建MIME邮件对象！"); 
+//		System.out.println("准备创建MIME邮件对象！"); 
 		try { 
 			mimeMsg = new MimeMessage(session); //创建MIME邮件对象 
 			mp = new MimeMultipart(); 
@@ -172,7 +176,7 @@ public class MailSendUtil {
 			//transport.sendMessage(mimeMsg,mimeMsg.getRecipients(Message.RecipientType.CC)); 
 			//transport.send(mimeMsg); 
 			
-//			System.out.println("发送邮件成功！"); 
+			System.out.println("发送邮件成功！"); 
 			transport.close(); 
 			
 			return true; 
@@ -182,6 +186,14 @@ public class MailSendUtil {
 		} 
 	} 
 
+
+	/**
+	 * @param email String 邮箱地址
+	 * @param activelink String 激活链接
+	 * @return boolean.
+	 * false:发送失败
+	 * true:发送成功
+	 */
 	public static boolean send(String email,String activelink) {
 		MailSendUtil theMailSendUtil = new MailSendUtil("smtp.sina.com");
 		theMailSendUtil.setNeedAuth(true); 

@@ -13,6 +13,9 @@ body {
     height: auto;
 }
 
+.nav-paginaton{
+    text-align: center;
+}
 /*
 Add transition to containers so they can push in and out.
 */
@@ -149,6 +152,7 @@ appears on the left side of the page.
         border-bottom: medium none;
         font-size: 110%;
         color: #4B7197;
+        padding: .8em 1.6em;
     }
     #menu .pure-menu-item{
         margin-left: .5em;

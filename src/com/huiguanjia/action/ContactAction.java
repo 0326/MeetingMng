@@ -9,20 +9,20 @@ import com.huiguanjia.service.OrdinaryUserService;
 import com.huiguanjia.service.CompanyManagerService;  //if import service is right? 
 
 public class ContactAction {
-	public String displayContacts() {
-		
-	}
-	public String findUserByName() {
-		
-	}
-	public String addContact() {
-		
-	}
-	public String importPhoneContactsToMyContacts() {
-		
-	}
-	public String deleteContact() {
-		
-	}
+//	public String displayContacts() {
+//		
+//	}
+//	public String findUserByName() {
+//		
+//	}
+//	public String addContact() {
+//		
+//	}
+//	public String importPhoneContactsToMyContacts() {
+//		
+//	}
+//	public String deleteContact() {
+//		
+//	}
 	
 }

@@ -65,8 +65,13 @@ var mControllers = angular.module("mControllers", [])
                 case "10404":
                     alert("请选择正确的公司地理位置");
                     break;
-                case 0:
+                case "10408":
+                    alert("邮件发送失败。。。");
+                    break;
+                case "0":
                     alert("恭喜您注册成功");
+                    $(".company-regist-form").fadeOut();
+                    $(".email-box").fadeIn();
                     break;
                 default:
                     alert("您注册的姿势不对，请按太阳穴，轮刮眼眶。")

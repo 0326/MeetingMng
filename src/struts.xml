@@ -17,7 +17,11 @@
     		</result>
     	</action>
  	 </package>
-	
+	<package name="manage-package" namespace="/" extends="struts-default">
+    	<action name="manage">  
+		    <result>/manage.html</result>  
+	    </action>
+    </package>
 	<!-- login and register -->
 	<package name="json-package2" namespace="/api/v1" extends="json-default">
     	<action name="systemAdministratorLogin" class="com.huiguanjia.action.SystemAdministratorLoginAction" method="AJAXsystemAdministratorLogin">
@@ -25,7 +29,7 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="companyManagerLogin" class="com.huiguanjia.action.CompanyManagerLoginAction" method="AJAXcompanyManagerLogin">
+    	<action name="companyManagerLogin" class="com.huiguanjia.action.CompanyManagerAction" method="login">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
@@ -35,7 +39,7 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="companyManagerRegister" class="com.huiguanjia.action.CompanyManagerRegisterAction" method="AJAXcompanyManagerRegister">
+    	<action name="companyManagerRegister" class="com.huiguanjia.action.CompanyManagerAction" method="register">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
@@ -50,7 +54,7 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="companyManagerLogout" class="com.huiguanjia.action.CompanyManagerLoginAction" method="AJAXcompanyManagerLogout">
+    	<action name="companyManagerLogout" class="com.huiguanjia.action.CompanyManagerAction" method="logout">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>

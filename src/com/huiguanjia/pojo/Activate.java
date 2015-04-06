@@ -1,5 +1,7 @@
 package com.huiguanjia.pojo;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,9 +17,9 @@ public class Activate implements java.io.Serializable {
 	// Fields
 
 	private String activateAddr;
-	private boolean activateMode;
+	private int activateMode;
 	private String activateInfo;
-
+	private Date sendTime;
 	// Constructors
 
 	/** default constructor */
@@ -25,11 +27,12 @@ public class Activate implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Activate(String activateAddr, boolean activateMode,
-			String activateInfo) {
+	public Activate(String activateAddr, int activateMode,
+			String activateInfo, Date sendTime) {
 		this.activateAddr = activateAddr;
 		this.activateMode = activateMode;
 		this.activateInfo = activateInfo;
+		this.sendTime = sendTime;
 	}
 
 	// Property accessors
@@ -44,11 +47,11 @@ public class Activate implements java.io.Serializable {
 	}
 
 	@Column(name = "activateMode", nullable = false)
-	public boolean getActivateMode() {
+	public int getActivateMode() {
 		return this.activateMode;
 	}
 
-	public void setActivateMode(boolean activateMode) {
+	public void setActivateMode(int activateMode) {
 		this.activateMode = activateMode;
 	}
 
@@ -59,6 +62,15 @@ public class Activate implements java.io.Serializable {
 
 	public void setActivateInfo(String activateInfo) {
 		this.activateInfo = activateInfo;
+	}
+	
+	@Column(name = "sendTime", nullable = false)
+	public Date getSendTime() {
+		return sendTime;
+	}
+
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
 	}
 
 }

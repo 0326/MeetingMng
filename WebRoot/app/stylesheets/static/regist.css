@@ -39,3 +39,7 @@
 form[name="userForm2"]{
 	display: none;
 }
+
+.email-box{
+	display: none;
+}

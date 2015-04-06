@@ -93,7 +93,7 @@
 		            </select>
 		        	</div>
 		        	<div class="pure-control-group">
-    	            <label class="inline" for="foo">请输入验证码{{inputcode}}</label>
+    	            <label class="inline" for="foo">请输入验证码</label>
     	            <input class="pure-input-1-5" id="inputcode" ng-model="inputcode" type="text" placeholder="">
     	            <div class="vcode-box"></div>
     	            <!-- <button class="pure-button pure-button-primary vcode-btn">验证</button> -->
@@ -108,24 +108,18 @@
     	        </div>
     	    </fieldset>
     	</form>
+        <div class="email-box">
+            <p>系统已向您的邮箱发送了激活邮件，请在24小时内点击激活链接激活</p>
+            <button  class="pure-button pure-button-primary">重新发送</button>
+            <button  class="pure-button pure-button-primary">我已激活</button>
+        </div>
     </div>
   </div>
 </div>
 <script src="app/javascripts/vCode.js"></script>
 <script type="text/javascript">
-// $("document").ready(function(){
-
-// 	var vcode = new vCode($(".vcode-box")[0]);
-
-// 	$(".vcode-btn").on("click", function(){
-// 		var inputcode = $("#inputcode").val();
-// 		alert(vcode.verify(inputcode));
-// 	});
-
-// })
-</script>
-<script type="text/javascript">
-	$(".action-button").on('click', function(){
+	// 选择注册方式
+    $(".action-button").on('click', function(){
 		if(this.id == 'user-regist-btn'){
 			$(".regist-forms form[name='userForm1']").css({'display':'block'})
 		}
@@ -134,6 +128,8 @@
 		}
 		$(".regist-tab").css({'display':'none'})
 	})
+    //普通用户注册：1.填写手机验证码；2.填写公司个人信息，注册完成；
+    //管理员注册：1.填写公司信息；2.验证邮箱，注册完成
     $("#submitForm1").on('click', function(){
         $("#submitForm1").slideUp();
         $("#phonecodeBtn").slideUp();

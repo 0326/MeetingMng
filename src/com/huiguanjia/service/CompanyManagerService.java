@@ -3,9 +3,15 @@ package com.huiguanjia.service;
 import com.huiguanjia.dao.CompanyAndCompanyAdminDao;
 import com.huiguanjia.dao.IndustryDao;
 import com.huiguanjia.dao.ProvinceAndCityDao;
+import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 
 public class CompanyManagerService {
 
+	/**
+	 * @info 注册时验证用户名是否已存在
+	 * @param username
+	 * @return
+	 */
 	public boolean usernameRepeat(String username)
 	{
 		boolean res;
@@ -16,6 +22,11 @@ public class CompanyManagerService {
 		return res;
 	}
 	
+	/**
+	 * @info 注册时验证公司名是否已存在
+	 * @param companyName
+	 * @return
+	 */
 	public boolean companyNameRepeat(String companyName)
 	{
 		boolean res;
@@ -26,7 +37,16 @@ public class CompanyManagerService {
 		return res;
 	}
 	
-	public int companyManagerRegister(String username,String password,String type,
+	/**
+	 * @info 公司管理员注册
+	 * @param username
+	 * @param password
+	 * @param type
+	 * @param companyName
+	 * @param location
+	 * @return
+	 */
+	public int register(String username,String password,String type,
 			String companyName,String location)
 	{
 		CompanyAndCompanyAdminDao aCompanyAndCompanyAdminDao = new CompanyAndCompanyAdminDao();
@@ -45,5 +65,37 @@ public class CompanyManagerService {
 		else 
 			return 5;
 		
+	}
+	
+	/**
+	 * @info 登录
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public boolean login(String username,String password){
+		
+		return true;
+	}
+	
+	/**
+	 * @info 修改账号信息，action层直接传pojo对象来获取数据
+	 * @param admin
+	 * @return
+	 */
+	public boolean updateInfo(CompanyAndCompanyAdmin admin){
+		
+		return true;
+	}
+
+	/**
+	 * @info 修改密码
+	 * @param admin 
+	 * @param newpass String 新密码
+	 * @return
+	 */
+	public boolean updatePass(CompanyAndCompanyAdmin admin,String newpass){
+		
+		return true;
 	}
 }
