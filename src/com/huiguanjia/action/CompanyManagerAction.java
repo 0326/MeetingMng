@@ -108,32 +108,48 @@ public class CompanyManagerAction extends ActionSupport{
 		//return 1,2,3,4,5,6... refer to jsonData.put("code","num")
 		switch(companyManagerService.register(username,password,type,companyName,location))
 		{
-			case 1:jsonData.put("code",10401); break; //username
-			case 2:jsonData.put("code",10402); break; //companyName
-			case 3:jsonData.put("code",10403); break; //industy(type)
-			case 4:jsonData.put("code",10404); break; //location
-			case 5:jsonData.put("code",10400); break; //arg error										
+			case 1:jsonData.put("code",-10400); break; //username
+			case 2:jsonData.put("code",-10400); break; //companyName
+			case 3:jsonData.put("code",-10400); break; //industy(type)
+			case 4:jsonData.put("code",-10400); break; //location
+			case 5:jsonData.put("code",-10400); break; //sql failed								
 			case 6:
 			{
 				//瀵硅处鍙疯繘琛宮d5鍔犲瘑浣滀负activeAddr(UserId)
 				String userId = MD5Util.MD5Code(username);
 				Date sendTime = new Date();
-				String activeCode;
-				int  mode = 0;//閭婵�椿
-				activeCode = MD5Util.MD5Code(sendTime.toString());
-				String activelink= "http://localhost:8080/MeetingMng"+ 
-						"/api/v1/activemail?uid="+userId+"&aid="+activeCode;
-				if(MailSendUtil.send(username, activelink)){
+				String activateCode;
+				boolean mode = false;//閭婵�椿
+				activateCode = MD5Util.MD5Code(sendTime.toString());
+				String activatelink= "http://localhost:8080/MeetingMng"+ 
+						"/api/v1/activemail?uid="+userId+"&aid="+activateCode;
+				if(MailSendUtil.send(username, activatelink)){
+					ActivateService activateService = new ActivateService();	
+					activateService.save(userId, activateCode, sendTime, mode,companyName);
 					jsonData.put("code", 0);
 				}
 				else{
-					jsonData.put("code",10408);
+					jsonData.put("code",-10408);
 				}
-
-				ActivateService activeService = new ActivateService();
-				activeService.save(userId, activeCode, sendTime, mode);
-			}
-					     
+			}			     
+		}
+		return SUCCESS;
+		
+	}
+	
+	public String activate(){
+		Date activateTime = new Date();
+		String activateCode;
+		activateCode = MD5Util.MD5Code(activateTime.toString());
+		String userId = MD5Util.MD5Code(username);
+		ActivateService activateService = new ActivateService();
+		if(activateService.activate(userId, activateCode, activateTime) == null){
+			jsonData.put("code",-10409);  //can not activate.code -> 10
+		}		
+		else{
+			String aCompanyName = activateService.activate(userId, activateCode, activateTime);
+			activateService.registerAfterActivate(aCompanyName);
+			jsonData.put("code",0);
 		}
 		return SUCCESS;
 	}
