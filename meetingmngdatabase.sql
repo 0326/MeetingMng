@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-03 14:39:31
+Date: 2015-04-07 09:37:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,6 +23,7 @@ CREATE TABLE `activate` (
   `activateAddr` varchar(80) NOT NULL,
   `activateMode` tinyint(1) NOT NULL,
   `activateInfo` varchar(100) NOT NULL,
+  `sendTime` datetime NOT NULL,
   PRIMARY KEY (`activateAddr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -59,6 +60,7 @@ CREATE TABLE `company_and_company_admin` (
 -- ----------------------------
 -- Records of company_and_company_admin
 -- ----------------------------
+INSERT INTO `company_and_company_admin` VALUES ('11111', '1833559609@qq.com', '111111', '2015-04-07 09:10:46', '101200301', '12289', '0', null, null, '0', null, null, null, null);
 
 -- ----------------------------
 -- Table structure for industry

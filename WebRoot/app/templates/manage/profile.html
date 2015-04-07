@@ -1,1 +1,124 @@
-profile.html
+<div class="header">
+    <h1>账号信息管理</h1>
+    <h2>{{company.companyName}}</h2>
+</div>
+
+<div class="content">
+    <div class="content-subhead">
+    	<button class="pure-button" data-toggle="modal" data-target="#myModal"><i class="fa fa-unlock-alt"></i> 修改密码</button>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+			      </div>
+			      <div class="modal-body">
+			        <form class="pure-form pure-form-aligned">
+			            <fieldset>
+			                <div class="pure-control-group">
+			                    <label for="password">原密码</label>
+			                    <input id="password" type="password" placeholder="原密码">
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="newpassword">新密码</label>
+			                    <input id="newpassword" type="password" placeholder="新密码">
+			                </div>
+			                <div class="pure-control-group">
+			                    <label for="repassword">确认新密码</label>
+			                    <input id="repassword" type="password" placeholder="请再输入一遍新密码">
+			                </div>
+			                
+			                <div class="pure-controls">
+			                    <button type="submit" class="pure-button pure-button-primary">确认</button>
+			                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			                </div>
+			            </fieldset>
+			        </form>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+			<!-- Modal end -->
+    </div>
+    <div>
+        <form class="pure-form pure-form-aligned">
+         	<fieldset>
+         		<legend>管理员信息</legend>
+         		<div class="pure-control-group">
+              <img alt="100x100" src="" id="headimg100" class="headimg">
+              <img alt="50x50" src="" id="headimg50" class="headimg">
+             	<span id="qiniu_upload_container">
+             		<button id="qiniu_upload_pickfiles">上传新头像</button>
+             	</span>
+	          </div>
+            <div class="pure-control-group">
+                 <label for="name">姓名</label>
+                 <input id="name" type="text" placeholder="">
+             </div>
+             <div class="pure-control-group">
+                 <label for="name">个人邮箱</label>
+                 <input id="name" type="text" placeholder="">
+             </div>
+             <div class="pure-control-group">
+                 <label for="name">手机号</label>
+                 <input id="name" type="text" placeholder="">
+             </div>
+             <div class="pure-control-group">
+                 <label for="name">办公电话</label>
+                 <input id="name" type="text" placeholder="">
+             </div>
+             <div class="pure-control-group">
+                 <label for="name">办公室</label>
+                 <input id="name" type="text" placeholder="">
+             </div>
+             <div class="pure-controls">
+                 <button type="submit" class="pure-button pure-button-primary">修改资料</button>
+             </div>
+         	</fieldset>
+          <fieldset>
+          		<legend>公司信息</legend>
+              <div class="pure-control-group">
+                  <label>登录账号</label>
+                  <input type="text" value="{{company.username}}" readonly>
+              </div>
+              <div class="pure-control-group">
+                  <label>公司名</label>
+                  <input type="text" value="{{company.companyName}}" readonly>
+              </div>
+              <div class="pure-control-group">
+                  <label>公司位置</label>
+                  <input type="text" value="{{company.location}}" readonly>
+              </div>
+              <div class="pure-control-group">
+                  <label>所属行业</label>
+                  <input type="text" value="{{company.type}}" readonly>
+              </div>
+          </fieldset>
+        </form>
+    </div>
+</div>
+<!-- 引入七牛SDK -->
+<script src="app/bower_components/qiniu/moxie.js"></script>
+<script src="app/bower_components/qiniu/plupload.dev.js"></script>
+<script src="app/bower_components/qiniu/qiniu.js"></script>
+<script src="app/bower_components/qiniu/upload.js"></script>
+<script type="text/javascript">
+    //init qiniu uploader
+    var uploader = QiniuUploaderFactoray({
+      'UploadProgress': function(up, file) {
+      	$("#qiniu_upload_pickfiles").text("正在上传中...");
+      	//console.log("UploadProgress");
+      },
+      'FileUploaded': function(up, file, info) {
+        var domain = up.getOption('domain');
+        var res = $.parseJSON(info);
+        var url = domain + res.key; 
+        $("#headimg100")[0].src= url+"-head100";
+        $("#headimg50")[0].src= url+"-head50"; 
+        $("#qiniu_upload_pickfiles").text("上传成功")
+      }
+	});
+
+</script>

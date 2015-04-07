@@ -1,7 +1,7 @@
 
 <div class="splash-container">
     <div class="splash">
-        <form class="pure-form pure-form-stacked">
+        <form class="pure-form pure-form-stacked" name="loginForm" ng-submit="submitLoginForm(loginForm.$valid)" novalidate>
             <fieldset>
 
                 <label for="name">账号</label>
@@ -11,12 +11,12 @@
                 <input id="password" ng-model="user.password" type="password" placeholder="请输入密码">
 
                 <label for="normaluser" class="pure-radio">
-                    <input ng-model="user.usertype" type="radio" name="usertype" value="0" checked>普通用户
+                    <input ng-model="user.usertype" type="radio" name="usertype" value="0" >普通用户
                 </label>
                 <label for="adminuser" class="pure-radio">
-                    <input ng-model="user.usertype" type="radio" name="usertype" value="1">公司管理员
+                    <input ng-model="user.usertype" type="radio" name="usertype" value="1" checked>公司管理员
                 </label>
-                <button type="submit" class="pure-button">登录</button>
+                <button type="submit" class="pure-button" ng-disabled="loginForm.$invalid">登录</button>
                 <a href="#/findpass">找回密码</a>
                 <a href="#/regist">注册新账号</a>
             </fieldset>

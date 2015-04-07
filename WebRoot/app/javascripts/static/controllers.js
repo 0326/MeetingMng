@@ -2,30 +2,31 @@
 var mControllers = angular.module("mControllers", [])
 
 
-.controller("homeCtrl", function($scope) {
+.controller("homeCtrl", function($scope, $http, PostCfg) {
   $scope.user = {
-    username: "example@gmail.com",
-    password: "password",
+    username: "1833559609@qq.com",
+    password: "123456",
+    usertype: "1",
     autoLogin: false
   }
-  $scope.getFormData = function(){
+  $scope.submitLoginForm = function(isValid){
     console.log($scope.user);
+    if($scope.user.usertype === "1"){
+        $http.post('/MeetingMng/api/v1/companyManagerRegister',$scope.user)
+        .success(function(data){
+            window.location.href="/MeetingMng/manage";
+        });
+    }
   }
 })
 
-.controller("registCtrl", function($scope,$http, CityData, IndustyData) {
+.controller("registCtrl", function($scope,$http, PostCfg, CityData, IndustyData) {
 	
   var vm = $scope.vm = {};
   var user = $scope.user = {};
   var vcode = new vCode($(".vcode-box")[0]);
   vm.industies = IndustyData;
   vm.provinces = CityData;
-  var postCfg ={
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-    transformRequest: function(data) {
-        return $.param(data);
-    }
-  }
 
   $scope.$watch('vm.province', function(province) {
     vm.city = null;
@@ -51,7 +52,7 @@ var mControllers = angular.module("mControllers", [])
             'type': vm.industy,
             'location': vm.city,
             'companyName':user.companyName
-        }, postCfg).success(function(data){
+        }, PostCfg).success(function(data){
             switch(data.code){
                 case "10401":
                     alert("该用户名已存在");
@@ -80,6 +81,13 @@ var mControllers = angular.module("mControllers", [])
     }
   };
 })
+
+.constant('PostCfg',{
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+    transformRequest: function(data) {
+        return $.param(data);
+    }
+  })
 
 .constant('IndustyData',[
   {"category":"IT行业","name":"计算机软件","code":010001},

@@ -1,7 +1,18 @@
-var mApp = angular.module("appmanage", ["ngRoute", "ngAnimate", 
+
+angular.module("appmanage", ["ngRoute", "ngAnimate", 
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
-mApp.config(function($routeProvider) {
+.factory('CompanyData', function(){
+	var company = {};
+
+  company.companyName = "软酷管家科技有限公司";
+  company.username = "1833559609@qq.com";
+  company.avatarUrl = "app/images/userimg.jpg";
+  // console.log(company);
+  return company;
+})
+
+.config(function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: 'app/templates/manage/home.html',
 		controller: 'homeCtrl'

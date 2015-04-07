@@ -71,6 +71,7 @@ h6{
     font-size: 100%;
     width: 100%;
     margin-bottom: 1em;
+    color: #444;
 }
 
 .pure-form input[type=radio] {
