@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-07 17:03:14
+Date: 2015-04-07 09:37:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,6 @@ CREATE TABLE `activate` (
   `activateMode` tinyint(1) NOT NULL,
   `activateInfo` varchar(100) NOT NULL,
   `sendTime` datetime NOT NULL,
-  `username` varchar(50) NOT NULL,
   PRIMARY KEY (`activateAddr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -632,24 +631,3 @@ INSERT INTO `province_and_city` VALUES ('101310222', '五指山', '海南');
 INSERT INTO `province_and_city` VALUES ('101340101', '台北县', '台湾');
 INSERT INTO `province_and_city` VALUES ('101340201', '高雄', '台湾');
 INSERT INTO `province_and_city` VALUES ('101340401', '台中', '台湾');
-
--- ----------------------------
--- Table structure for temp_company_and_company_admin
--- ----------------------------
-DROP TABLE IF EXISTS `temp_company_and_company_admin`;
-CREATE TABLE `temp_company_and_company_admin` (
-  `companyName` varchar(50) NOT NULL,
-  `username` varchar(80) NOT NULL,
-  `password` varchar(15) NOT NULL,
-  `location` char(9) NOT NULL,
-  `type` char(6) NOT NULL,
-  PRIMARY KEY (`companyName`),
-  KEY `FK_temp_company_industry_industryCode` (`type`),
-  KEY `FK_temp_company_province_cityCode` (`location`),
-  CONSTRAINT `FK_temp_company_industry_industryCode` FOREIGN KEY (`type`) REFERENCES `industry` (`industryCode`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `FK_temp_company_province_cityCode` FOREIGN KEY (`location`) REFERENCES `province_and_city` (`cityCode`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of temp_company_and_company_admin
--- ----------------------------

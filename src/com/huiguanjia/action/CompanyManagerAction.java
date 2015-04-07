@@ -10,7 +10,6 @@ import com.huiguanjia.service.ActivateService;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.util.MD5Util;
 import com.huiguanjia.util.MailSendUtil;
-import com.huiguanjia.util.RandomUtil;
 
 @SuppressWarnings("serial")
 public class CompanyManagerAction extends ActionSupport{
@@ -93,11 +92,11 @@ public class CompanyManagerAction extends ActionSupport{
 		System.out.println(name);
 		System.out.println(username);
 		if(name.equals(username)) {
-			jsonData.put("code","0");
+			jsonData.put("code",0);
 			ActionContext.getContext().getSession().remove("username");
 		}
 		else{
-			jsonData.put("code","-10400");
+			jsonData.put("code",-10400);
 		}
 		return SUCCESS;
 	}
@@ -106,44 +105,51 @@ public class CompanyManagerAction extends ActionSupport{
 	public String register() {
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-
-		if(companyManagerService.usernameRepeat(username)){
-			jsonData.put("code","-10400");
-		}
-		
-		if(companyManagerService.companyNameRepeat(companyName)){
-			jsonData.put("code","-10400");
-		}
-
 		//return 1,2,3,4,5,6... refer to jsonData.put("code","num")
 		switch(companyManagerService.register(username,password,type,companyName,location))
 		{
-			case 1:jsonData.put("code","10401"); break; //username
-			case 2:jsonData.put("code","10402"); break; //companyName
-			case 3:jsonData.put("code","10403"); break; //industy(type)
-			case 4:jsonData.put("code","10404"); break; //location
-			case 5:jsonData.put("code","10400"); break; //arg error										
+			case 1:jsonData.put("code",-10400); break; //username
+			case 2:jsonData.put("code",-10400); break; //companyName
+			case 3:jsonData.put("code",-10400); break; //industy(type)
+			case 4:jsonData.put("code",-10400); break; //location
+			case 5:jsonData.put("code",-10400); break; //sql failed								
 			case 6:
 			{
-				//对账号进行md5加密作为activeAddr(UserId)
+				//瀵硅处鍙疯繘琛宮d5鍔犲瘑浣滀负activeAddr(UserId)
 				String userId = MD5Util.MD5Code(username);
 				Date sendTime = new Date();
-				String activeCode;
-				int  mode = 0;//邮箱激活
-				activeCode = MD5Util.MD5Code(sendTime.toString());
-				String activelink= "http://localhost:8080/MeetingMng"+ 
-						"/api/v1/activemail?uid="+userId+"&aid="+activeCode;
-				if(MailSendUtil.send(username, activelink)){
-					jsonData.put("code", "0");
+				String activateCode;
+				boolean mode = false;//閭婵�椿
+				activateCode = MD5Util.MD5Code(sendTime.toString());
+				String activatelink= "http://localhost:8080/MeetingMng"+ 
+						"/api/v1/activemail?uid="+userId+"&aid="+activateCode;
+				if(MailSendUtil.send(username, activatelink)){
+					ActivateService activateService = new ActivateService();	
+					activateService.save(userId, activateCode, sendTime, mode,companyName);
+					jsonData.put("code", 0);
 				}
 				else{
-					jsonData.put("code","10408");
+					jsonData.put("code",-10408);
 				}
-
-				ActivateService activeService = new ActivateService();
-				activeService.save(userId, activeCode, sendTime, mode);
-			}
-					     
+			}			     
+		}
+		return SUCCESS;
+		
+	}
+	
+	public String activate(){
+		Date activateTime = new Date();
+		String activateCode;
+		activateCode = MD5Util.MD5Code(activateTime.toString());
+		String userId = MD5Util.MD5Code(username);
+		ActivateService activateService = new ActivateService();
+		if(activateService.activate(userId, activateCode, activateTime) == null){
+			jsonData.put("code",-10409);  //can not activate.code -> 10
+		}		
+		else{
+			String aCompanyName = activateService.activate(userId, activateCode, activateTime);
+			activateService.registerAfterActivate(aCompanyName);
+			jsonData.put("code",0);
 		}
 		return SUCCESS;
 	}
@@ -152,21 +158,21 @@ public class CompanyManagerAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if(companyManagerService.companyNameRepeat(companyName)){
-			jsonData.put("code","-10400");
+			jsonData.put("code",-10400);
 		}
 		return SUCCESS;
 	}
 	
-	public String userNameRepeat(){
+	public String usernameRepeat(){
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if(companyManagerService.usernameRepeat(username)){
-			jsonData.put("code","-10400");
+			jsonData.put("code",-10400);
 		}
 		return SUCCESS;
 	}
 	
 	/**
-	 * @info 修改管理员账号信息
+	 * @info 淇敼绠＄悊鍛樿处鍙蜂俊鎭�
 	 * @return
 	 */
 	public String updateInfo(){
@@ -175,7 +181,7 @@ public class CompanyManagerAction extends ActionSupport{
 	}
 	
 	/**
-	 * @info 修改密码
+	 * @info 淇敼瀵嗙爜
 	 * @return
 	 */
 	public String updatePass(){

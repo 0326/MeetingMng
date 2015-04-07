@@ -33,4 +33,48 @@
         </field-validator>
     </field>
     
+    <!-- 校验两次密码是否一致，使用 fieldexpression 校验器。expression参数指定判断用的表达式-->
+    <field name="confirmPassword">
+    	<field-validator type="requiredstring">
+            <message>确认密码不能为空</message>
+        </field-validator>
+        <field-validator type="fieldexpression">
+            <!-- 表达式要写在   <![CDATA[]]>   内 -->
+            <param name="expression"><![CDATA[confirmPassword==password]]></param>
+            <message>两次密码不一至</message>
+        </field-validator>
+    </field>
+    
+    <!-- 校验电话格式，使用regex正则表达示校验，regexExpression参数指定正则表达式 -->
+    <field name="phone">
+        <field-validator type="regex">
+            <!-- 注意！2.3.15前的版本使用 expression 参数 -->
+            <param name="regexExpression"><![CDATA[\d{11}]]></param>
+            <message>电话号码格式不正确</message>
+        </field-validator>
+    </field>
+    
+    <field name="type">
+        <field-validator type="required">
+            <message>公司类别不能为空</message>
+        </field-validator>       
+    </field>
+    
+    <field name="companyName">
+        <field-validator type="requiredstring">
+            <message>公司名称不能为空</message>
+        </field-validator>      
+        <field-validator type="stringlength">
+            <!-- 为校验器指定参数实现不同的校验规则，minlength：最少长度  maxlength最大长度-->
+            <param name="maxLength">50</param>
+            <message>密码长度不能多于50位</message>
+        </field-validator> 
+    </field>
+    
+    <field name="location">
+        <field-validator type="requiredstring">
+            <message>地址不能为空</message>
+        </field-validator>       
+    </field>
+    
 </validators>

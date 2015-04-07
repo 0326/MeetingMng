@@ -50,5 +50,9 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="F:/my projects/GIT/MeetingMng/WebRoot/WEB-INF/lib/qiniuyun-sdk6.jar"/>
+	<classpathentry kind="lib" path="F:/my projects/GIT/MeetingMng/WebRoot/WEB-INF/lib/json-lib-2.1-jdk15.jar"/>
+	<classpathentry kind="lib" path="F:/my projects/GIT/MeetingMng/WebRoot/WEB-INF/lib/org.json-chargebee-1.0.jar"/>
+	<classpathentry kind="lib" path="F:/my projects/GIT/MeetingMng/WebRoot/WEB-INF/lib/commons-codec-1.6.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

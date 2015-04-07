@@ -1,19 +1,23 @@
 // controllers.js
 var mControllers = angular.module("mControllers", [])
 
+.controller("companyCtrl", function($scope, CompanyData) {
+  $scope.company = CompanyData;
 
-.controller("homeCtrl", function($scope) {
-  $scope.user = {
-    username: "example@gmail.com",
-    password: "password",
-    autoLogin: false
-  }
-  $scope.getFormData = function(){
-    console.log($scope.user);
-  }
 })
 
-.controller("departmanageCtrl", function($scope, departsData) {
+.controller("homeCtrl", function($scope, CompanyData) {
+   $scope.company = CompanyData;
+
+})
+
+.controller("profileCtrl", function($scope, CompanyData) {
+   $scope.company = CompanyData;
+
+})
+
+.controller("departmanageCtrl", function($scope, departsData, CompanyData) {
+  $scope.company = CompanyData;
   $scope.departs = departsData;
   $scope.currdepart ={};
   $scope.currdepart.text ="sss";
@@ -34,15 +38,17 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("meetingcreateCtrl", function($scope) {
+.controller("meetingcreateCtrl", function($scope, CompanyData) {
 
 })
 
-.controller("meetinglistCtrl", function($scope) {
+.controller("meetinglistCtrl", function($scope, CompanyData) {
 
 })
 
-.controller("stufflistCtrl", function($scope) {
+.controller("stufflistCtrl", function($scope, CompanyData) {
+  $scope.company = CompanyData;
+
   $scope.stuffs = [
     {name: "Bob",depart:"技术部"},
     {name: "Lili",depart:"市场部"},
@@ -54,15 +60,16 @@ var mControllers = angular.module("mControllers", [])
   }
 })
 
-.controller("stuffioCtrl", function($scope) {
+.controller("stuffioCtrl", function($scope, CompanyData) {
+  $scope.company = CompanyData;
 
 })
 
-.controller("statmeetingCtrl", function($scope) {
+.controller("statmeetingCtrl", function($scope, CompanyData) {
 
 })
 
-.controller("statstuffCtrl", function($scope) {
+.controller("statstuffCtrl", function($scope, CompanyData) {
 
 })
 
