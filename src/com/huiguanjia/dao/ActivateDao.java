@@ -10,88 +10,130 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.huiguanjia.pojo.Activate;
+import com.huiguanjia.pojo.Industry;
+import com.huiguanjia.pojo.ProvinceAndCity;
+import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
 
 public class ActivateDao {
 	
 	/**
-	 * @info 验证指定user是否已发送过激活请求
-	 * @param userId
+	 * @info  保存激活记录；若存在，则更新；若不存在，则添加。
+	 * @param activateAddr
+	 * @param activateInfo
+	 * @param sendTime
+	 * @param activateMode
+	 * @param username
 	 * @return
 	 */
-	public Activate getActivate(String userId){
-		Activate res;
+	public boolean save(String activateAddr, String activateInfo, Date sendTime,
+			boolean activateMode,String username){
+		boolean res;
 		
+		//判断该激活地址是否存在激活记录
+		boolean isExist;
 		Session sess = HibernateSessionFactory.getSession();
 		Transaction tx = sess.beginTransaction();
-		
-		String hqlQuery = "select c.activateAddr from Activate as c " +
-				"where c.activateAddr = :u";
-		List l = sess.createQuery(hqlQuery).setString("u", userId).list();
-		
+		String hqlQuery = "select a.activateAddr from Activate as a " +
+				"where a.activateAddr = :u";
+		List l = sess.createQuery(hqlQuery).setString("u", activateAddr).list();
 		if(1 == l.size())
-			res = (Activate)l.get(0);
+			isExist = true;
 		else 
-			res =  null;
-		
+			isExist = false;
 		tx.commit();
 		HibernateSessionFactory.closeSession();
 		
-		return res;
-	}
-
-	public boolean save(String userId, String activeCode, Date sendTime,
-			int mode){
-		boolean res;
-		
-		Session sess = HibernateSessionFactory.getSession();
-		Transaction tx = sess.beginTransaction();
-
-		try{
-			if( null == this.getActivate(userId)){
-				Activate aActivate = new Activate();
-				aActivate.setActivateAddr(userId);
-				aActivate.setActivateInfo(activeCode);
-				aActivate.setSendTime(sendTime);
-				aActivate.setActivateMode(mode);
-				sess.save(aActivate);
+		//若存在激活记录，则更新该记录;若不存在，则添加新纪录
+		if(true == isExist)
+		{
+			Session sess1 = HibernateSessionFactory.getSession();
+			Transaction tx1 = sess1.beginTransaction();
+			
+			String hqlQuery1 = "update Activate set activateInfo = :a,sendTime = :b,activateMode = :c," +
+					"username = :d where activateAddr = :e";
+			int updateEntities;
+			try{
+				updateEntities = sess1.createQuery(hqlQuery1).setString("a",activateInfo).setDate("b", sendTime)
+						.setBoolean("c", activateMode).setString("d", username).setString("e", activateAddr)
+						.executeUpdate();
+				tx.commit();
+				res = true;
 			}
-			else{
-				String hqlQuery = "update Activate a set a.activeCode=:activeCode, " +
-						"a.sendTime=:sendTime where a.activateAddr = :activateAddr";
-				Query q = sess.createQuery(hqlQuery);
-				q.setParameter("activeCode", activeCode);
-				q.setParameter("sendTime", sendTime);
-				q.setParameter("activateAddr",userId);
-				q.executeUpdate();
+			catch(HibernateException he)
+			{
+				tx.rollback();
+				res = false;
+				System.out.println(he);
 			}
 			
+			HibernateSessionFactory.closeSession();
+		}
+		else
+		{
+			Session sess2 = HibernateSessionFactory.getSession();
+			Transaction tx2 = sess.beginTransaction();
+			
+			Activate a = new Activate();
+			a.setActivateAddr(activateAddr);
+			a.setActivateInfo(activateInfo);
+			a.setActivateMode(activateMode);
+			a.setSendTime(sendTime);
+			a.setUsername(username);
+			
+			try{
+			sess2.save(a);
 			tx.commit();
 			res = true;
-		}
-		catch(HibernateException he)
-		{
-			tx.rollback();
-			res = false;
-			System.out.println(he);
+			}
+			catch(HibernateException he)
+			{
+				tx.rollback();
+				res = false;
+				System.out.println(he);
+			}
+			
+			HibernateSessionFactory.closeSession();
 		}
 		
-		HibernateSessionFactory.closeSession();
 		
 		return res;
 	}
 	
-	public int active(String userId, String activeCode, Date activeTime){
-		int res = 0;
-		Activate ac =this.getActivate(userId);
-		if(null == ac){
-			res = 1;
+	/**
+	 * @info 激活验证
+	 * @param userId
+	 * @param activeCode
+	 * @param activeTime
+	 * @return
+	 */
+	public String activate(String activateAddr, String activateInfo, Date activateTime){
+		String username = null;
+		
+		Session sess = HibernateSessionFactory.getSession();
+		Transaction tx = sess.beginTransaction();
+		
+		String hqlQuery = "select a from Activate as a where a.activateAddr = :b and " +
+				"a.activateInfo = :c";
+		List l = sess.createQuery(hqlQuery).setString("b", activateAddr).setString("c", activateInfo).list();
+		tx.commit();
+		
+		if(1 == l.size())
+		{
+			Activate tmp = (Activate)l.get(0);
+			long t1 = activateTime.getTime();
+			long t2 = tmp.getSendTime().getTime();
+			
+			if(t2 + 24*60*60*1000 < t1)
+				username = null;
+			else
+				username = tmp.getUsername();
 		}
-		else{
-			long  time = new Date().getTime();
-			if(ac.getSendTime().getTime()+ 24*60*60*1000 < time){
-				res =2;
-			}
+		else if(0 == l.size())
+		{
+			username = null;
 		}
-		return res;
+			
+		
+		return username;
 	}
 }

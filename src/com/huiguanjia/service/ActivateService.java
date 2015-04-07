@@ -18,25 +18,27 @@ public class ActivateService {
 	 * 1: 为手机验证
 	 * @return
 	 */
-	public boolean save(String userId, String activeCode, Date sendTime,
-			int mode){
+	public boolean save(String userId, String activateCode, Date sendTime,
+			boolean mode,String companyName){
 		
 		ActivateDao acd = new ActivateDao();
-		return acd.save(userId, activeCode, sendTime, mode);
+		return acd.save(userId, activateCode, sendTime, mode,companyName);
 	}
+	
 	
 	/**
 	 * @info 激活验证
 	 * @param userId
 	 * @param activeCode
 	 * @param sendTime
-	 * @return int
-	 * 0: 激活成功
+	 * @return String
+	 * 有三种情况：0: 激活成功
 	 * 1：该激活链接不存在
 	 * 2: 该激活请求已过期，请重新发送激活请求
+	 * 第一种情况返回公司名称字符串，第二种情况返回空字符串
 	 */
-	public int active(String userId, String activeCode, Date sendTime){
+	public String activate(String userId, String activeCode, Date sendTime){
 		ActivateDao acd = new ActivateDao();
-		return acd.active(userId, activeCode, sendTime);
+		return acd.activate(userId, activeCode, sendTime);
 	}
 }

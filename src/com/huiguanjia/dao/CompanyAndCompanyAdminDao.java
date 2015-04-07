@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Industry;
 import com.huiguanjia.pojo.ProvinceAndCity;
+import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
 
 
 
@@ -104,5 +105,36 @@ public class CompanyAndCompanyAdminDao {
 	}
 	
 	
+	public boolean addByTemp(TempCompanyAndCompanyAdmin tca)
+	{
+		boolean res;
+		
+		CompanyAndCompanyAdmin ca = new CompanyAndCompanyAdmin();
+		ca.setCompanyName(tca.getCompanyName());
+		ca.setUsername(tca.getUsername());
+		ca.setIndustry(tca.getIndustry());
+		ca.setPassword(tca.getPassword());
+		ca.setProvinceAndCity(tca.getProvinceAndCity());
+		ca.setRegisterTime(new Date());
+		
+		Session sess = HibernateSessionFactory.getSession();
+		Transaction tx = sess.beginTransaction();
+		
+		try{
+			sess.save(ca);
+			tx.commit();
+			res = true;
+		}
+		catch(HibernateException he)
+		{
+			tx.rollback();
+			res = false;
+			System.out.println(he);
+		}
+		
+		HibernateSessionFactory.closeSession();
+		
+		return res;
+	}
 	
 }

@@ -1,7 +1,7 @@
 #MyEclipse Hibernate Properties
-#Mon Mar 30 15:56:08 CST 2015
+#Tue Apr 07 11:08:31 CST 2015
 sessionFactoryName=
-genBasicCompId=false
+genBasicCompId=true
 profile=
 daoSFId=
 version=3.3
@@ -10,16 +10,15 @@ detectM2M=false
 reStrategyClass=
 detectO2O=false
 springDaoFile=
-useJavaTypes=true
-keyGenerator=
+useJavaTypes=false
+keyGenerator=assigned
 libInstallFolder=/WebRoot/WEB-INF/lib
 addLibs2Project=true
 genVersionTag=false
 sessionFactoryId=
 basePersistenceClass=
-genAnnotations=false
+genAnnotations=true
 reSettingsFile=
 configFile=/MeetingMng/src/hibernate.cfg.xml
 createConfigFile=true
 addLibs2Classpath=true
-baseDaoClass=
