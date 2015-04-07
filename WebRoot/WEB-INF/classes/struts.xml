@@ -58,6 +58,11 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
+    	<action name="companyManagerActivate" class="com.huiguanjia.action.CompanyManagerAction" method="activate">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
     	<!--  
     	<action name="ordinaryUserLogin" class="com.huiguanjia.action.OrdinaryUserAction" method="login">
     		<result type="json" name="success">

@@ -10,7 +10,7 @@
 
 后端：java hibernate3.3 + struts2.1
 
-前端：grunt + bower + angularJS + purecss
+前端：grunt + bower + angularJS + purecss + bootstrap
 
 ##使用指南
 

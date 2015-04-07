@@ -5,7 +5,7 @@ var mControllers = angular.module("mControllers", [])
   $scope.company = CompanyData;
 
 })
-
+ 
 .controller("homeCtrl", function($scope, CompanyData) {
    $scope.company = CompanyData;
 
@@ -19,20 +19,21 @@ var mControllers = angular.module("mControllers", [])
 .controller("departmanageCtrl", function($scope, departsData, CompanyData) {
   $scope.company = CompanyData;
   $scope.departs = departsData;
-  $scope.currdepart ={};
-  $scope.currdepart.text ="sss";
-  $scope.changeDepart = function(data){
-    $scope.currdepart = data;
-      console.log($scope.currdepart.text);
-  }
+  $scope.currdepart ={
+    text: $scope.company.companyName,
+    nodes: $scope.departs,
+    totalStuff: 102
+  };
 
   $('#departstree').treeview({
     data: departsData,
     onNodeSelected: function(event, data) {
-      $scope.changeDepart(data);
-      // $scope.currdepart = data;
-      // $scope.currdepart.nodes = data.nodes;
-      $scope.currdepart.charge = "李全蛋";
+      $scope.$apply(function(){
+        $scope.currdepart.text = data.text;
+        $scope.currdepart.nodes = data.nodes;
+        $scope.currdepart.totalStuff = 4;
+        $scope.currdepart.charge = "李全蛋";
+      })
     }
   });
 

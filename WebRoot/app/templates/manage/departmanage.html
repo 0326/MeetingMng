@@ -48,9 +48,13 @@
       <div class="col-sm-5">
         <div id="departstree"></div>
       </div>
-      <div class="col-sm-5">
+      <div class="col-sm-7">
+
         <h2>{{currdepart.text}}</h2>
-        <p>部门主管：{{currdepart.charge}}</p>
+        <p>主管：{{currdepart.charge}}</p>
+        <p>共{{currdepart.nodes.length || 0}}个子部门，总共有{{currdepart.totalStuff}}名员工</p>
+        <button class="btn btn-primary">编辑部门</button>
+        <button class="btn btn-danger">删除部门</button>
       </div>
     </div>
 </div>

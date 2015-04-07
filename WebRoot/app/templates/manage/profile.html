@@ -47,8 +47,9 @@
          	<fieldset>
          		<legend>管理员信息</legend>
          		<div class="pure-control-group">
-              <img alt="100x100" src="" id="headimg100" class="headimg">
-              <img alt="50x50" src="" id="headimg50" class="headimg">
+         			<label>个人头像</label>
+              <img alt="100x100" src="{{company.avatarUrl}}" id="headimg100" class="headimg headimg-100">
+              <img alt="50x50" src="{{company.avatarUrl}}" id="headimg50" class="headimg headimg-50">
              	<span id="qiniu_upload_container">
              		<button id="qiniu_upload_pickfiles">上传新头像</button>
              	</span>
