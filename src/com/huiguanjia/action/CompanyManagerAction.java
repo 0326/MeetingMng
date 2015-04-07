@@ -129,25 +129,17 @@ public class CompanyManagerAction extends ActionSupport{
 				String userId = MD5Util.MD5Code(username);
 				Date sendTime = new Date();
 				String activeCode;
-				int  mode;
-				if(username.contains("@")){
-					mode = 0;//邮箱激活
-					activeCode = MD5Util.MD5Code(sendTime.toString());
-					String activelink= "http://localhost:8080/MeetingMng"+ 
-							"/api/v1/activemail?uid="+userId+"&aid="+activeCode;
-					if(MailSendUtil.send(username, activelink)){
-						jsonData.put("code", "0");
-					}
-					else{
-						jsonData.put("code","10408");
-					}
+				int  mode = 0;//邮箱激活
+				activeCode = MD5Util.MD5Code(sendTime.toString());
+				String activelink= "http://localhost:8080/MeetingMng"+ 
+						"/api/v1/activemail?uid="+userId+"&aid="+activeCode;
+				if(MailSendUtil.send(username, activelink)){
+					jsonData.put("code", "0");
 				}
 				else{
-					mode = 1;//手机激活
-					activeCode = "1234";//用于测试
-//					activeCode = RandomUtil.randomStr(4);
-//					PhoneSendUtil.send(username);
+					jsonData.put("code","10408");
 				}
+
 				ActivateService activeService = new ActivateService();
 				activeService.save(userId, activeCode, sendTime, mode);
 			}

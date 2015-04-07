@@ -24,7 +24,7 @@
     </package>
 	<!-- login and register -->
 	<package name="json-package2" namespace="/api/v1" extends="json-default">
-    	<action name="systemAdministratorLogin" class="com.huiguanjia.action.SystemAdministratorLoginAction" method="AJAXsystemAdministratorLogin">
+    	<action name="systemAdministratorLogin" class="com.huiguanjia.action.SystemAdministratorAction" method="login">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
@@ -34,7 +34,7 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="ordinaryUserLogin" class="com.huiguanjia.action.OrdinaryUserLoginAction" method="AJAXordinaryUserLogin">
+    	<action name="ordinaryUserLogin" class="com.huiguanjia.action.OrdinaryUserAction" method="login">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
@@ -44,12 +44,12 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="ordinaryUserRegister" class="com.huiguanjia.action.OrdinaryUserRegisterAction" method="AJAXordinaryUserRegister">
+    	<action name="ordinaryUserRegister" class="com.huiguanjia.action.OrdinaryUserAction" method="register">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="ordinaryUserLogout" class="com.huiguanjia.action.OrdinaryUserLoginAction" method="AJAXordinaryUserLogout">
+    	<action name="ordinaryUserLogout" class="com.huiguanjia.action.OrdinaryUserAction" method="logout">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>

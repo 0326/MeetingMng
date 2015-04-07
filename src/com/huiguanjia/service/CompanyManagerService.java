@@ -67,10 +67,11 @@ public class CompanyManagerService {
 		
 	}
 	
+
 	/**
-	 * @info 登录
-	 * @param username
-	 * @param password
+	 * 
+	 * @param username String
+	 * @param password String 
 	 * @return
 	 */
 	public boolean login(String username,String password){
