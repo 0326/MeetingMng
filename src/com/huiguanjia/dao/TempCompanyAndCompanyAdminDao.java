@@ -36,9 +36,15 @@ public class TempCompanyAndCompanyAdminDao {
 				+ "where t.username = :u";
 		List l = sess1.createQuery(hqlQuery).setString("u", username).list();
 		if (1 == l.size())
+        {
 			isExist = true;
+			System.out.println("临时表中存在相同用户名");
+		}
 		else
+		{
 			isExist = false;
+			System.out.println("临时表中存在相同用户名");
+		}
 		tx1.commit();
 		HibernateSessionFactory.closeSession();
 
@@ -95,6 +101,7 @@ public class TempCompanyAndCompanyAdminDao {
 				sess.save(aTempCompanyAndCompanyAdmin);
 				tx.commit();
 				res = true;
+				System.out.println("插入临时表成功");
 			} catch (HibernateException he) {
 				tx.rollback();
 				res = false;
