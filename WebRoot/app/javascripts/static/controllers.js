@@ -17,6 +17,12 @@ var mControllers = angular.module("mControllers", [])
             window.location.href="/MeetingMng/manage";
         });
     }
+    else{
+        $http.post('/MeetingMng/api/v1/oridinaryManagerRegister',$scope.user)
+        .success(function(data){
+            window.location.href="/MeetingMng/manage";
+        });
+    }
   }
 })
 
