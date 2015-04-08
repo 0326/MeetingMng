@@ -10,11 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-<<<<<<< HEAD
-Date: 2015-04-07 17:03:14
-=======
-Date: 2015-04-07 09:37:16
->>>>>>> f31a657536814f651e3923b761e414c43b4768f6
+Date: 2015-04-08 08:55:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,10 +24,7 @@ CREATE TABLE `activate` (
   `activateMode` tinyint(1) NOT NULL,
   `activateInfo` varchar(100) NOT NULL,
   `sendTime` datetime NOT NULL,
-<<<<<<< HEAD
   `username` varchar(50) NOT NULL,
-=======
->>>>>>> f31a657536814f651e3923b761e414c43b4768f6
   PRIMARY KEY (`activateAddr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -58,7 +51,7 @@ CREATE TABLE `company_and_company_admin` (
   `avatarUrl` varchar(80) DEFAULT NULL,
   `officeLocation` varchar(80) DEFAULT NULL,
   `cellphone` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`companyName`),
+  PRIMARY KEY (`username`),
   KEY `FK_company_province_cityCode` (`location`),
   KEY `FK_company_industry_industryCode` (`type`),
   CONSTRAINT `FK_company_industry_industryCode` FOREIGN KEY (`type`) REFERENCES `industry` (`industryCode`) ON DELETE NO ACTION ON UPDATE CASCADE,
@@ -650,7 +643,7 @@ CREATE TABLE `temp_company_and_company_admin` (
   `password` varchar(15) NOT NULL,
   `location` char(9) NOT NULL,
   `type` char(6) NOT NULL,
-  PRIMARY KEY (`companyName`),
+  PRIMARY KEY (`username`),
   KEY `FK_temp_company_industry_industryCode` (`type`),
   KEY `FK_temp_company_province_cityCode` (`location`),
   CONSTRAINT `FK_temp_company_industry_industryCode` FOREIGN KEY (`type`) REFERENCES `industry` (`industryCode`) ON DELETE NO ACTION ON UPDATE CASCADE,
