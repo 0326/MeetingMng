@@ -21,13 +21,14 @@
 		<property name="myeclipse.connection.profile">
 			MeetingMngDBConn
 		</property>
+		<property name="show_sql">true</property>
 
 		<mapping class="com.huiguanjia.pojo.Activate" />
 		<mapping class="com.huiguanjia.pojo.ProvinceAndCity" />
 		<mapping class="com.huiguanjia.pojo.Industry" />
 		<mapping class="com.huiguanjia.pojo.CompanyAndCompanyAdmin" />
 		<mapping class="com.huiguanjia.pojo.TempCompanyAndCompanyAdmin" />
-
+		<mapping class="com.huiguanjia.pojo.Department" />
 	</session-factory>
 
 </hibernate-configuration>

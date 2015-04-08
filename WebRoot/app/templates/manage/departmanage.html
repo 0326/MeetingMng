@@ -16,16 +16,16 @@
 			        <h4 class="modal-title" id="myModalLabel">添加部门</h4>
 			      </div>
 			      <div class="modal-body">
-			        <form class="pure-form pure-form-aligned" name="addDepartForm" ng-submit="submitAddDepartForm(addDepartForm.$valid)" novalidate>
+			        <form class="pure-form pure-form-aligned" name="addForm" ng-submit="submitAddForm(addForm.$valid)" novalidate>
 			            <fieldset>
 			                <div class="pure-control-group">
-			                    <label for="name">部门名称</label>
-			                    <input id="name" type="text" placeholder="Username">
+			                    <label for="name">部门名称{{depart.text}}</label>
+			                    <input id="name" type="text" placeholder="" ng-model="depart.text">
 			                </div>
 
 			                <div class="pure-control-group">
 			                    <label for="supdepart">上级部门</label>
-			                    <select id="supdepart">
+			                    <select id="supdepart" ng-model="depart.parentDepart">
                               <option>--无--</option>
                               <option>开发部</option>
                               <option>财务部</option>
@@ -33,7 +33,7 @@
 			                </div>
 
 			                <div class="pure-controls">
-			                    <button type="submit" class="pure-button pure-button-primary">添加</button>
+			                    <button type="submit" class="pure-button pure-button-primary"  ng-disabled="addForm.$invalid">添加</button>
 			                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 			                </div>
 			            </fieldset>

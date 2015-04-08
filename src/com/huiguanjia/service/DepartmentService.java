@@ -2,6 +2,7 @@ package com.huiguanjia.service;
 
 import java.util.List;
 
+import com.huiguanjia.dao.DepartmentDao;
 import com.huiguanjia.pojo.Department;
 
 public class DepartmentService {
@@ -12,8 +13,8 @@ public class DepartmentService {
 	 * @return
 	 */
 	public boolean add(Department department){
-		
-		return true;
+		DepartmentDao d = new DepartmentDao();
+		return d.add(department);
 	}
 	
 	/**
@@ -21,9 +22,9 @@ public class DepartmentService {
 	 * @param department
 	 * @return
 	 */
-	public boolean delete(Department department){
-		
-		return true;
+	public boolean delete(int departmentId){
+		DepartmentDao d = new DepartmentDao();
+		return d.delete(departmentId);
 	}
 	
 	/**
@@ -33,7 +34,8 @@ public class DepartmentService {
 	 */
 	public boolean update(Department department){
 		
-		return true;
+		DepartmentDao d = new DepartmentDao();
+		return d.update(department);
 	}
 	
 
@@ -52,7 +54,7 @@ public class DepartmentService {
 	 * @param cid
 	 * @return 返回该公司所有部门
 	 */
-	public List<Department> findByCompanyId(String cid){
+	public List<Department> findByCompanyId(int cid){
 		
 		return null;
 	}

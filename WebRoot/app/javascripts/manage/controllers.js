@@ -16,14 +16,30 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("departmanageCtrl", function($scope, departsData, CompanyData) {
+.controller("departmanageCtrl", function($scope, $http, departsData, CompanyData, PostCfg) {
   $scope.company = CompanyData;
   $scope.departs = departsData;
+  $scope.depart = {};
   $scope.currdepart ={
     text: $scope.company.companyName,
     nodes: $scope.departs,
     totalStuff: 102
   };
+  
+  $scope.submitAddForm = function(isValid){
+    var department = {
+      companyId: "testcompany",
+      departmentName: $scope.depart.text,
+      parentId: 1,
+      depth:1
+    }
+
+    $http.post('/MeetingMng/api/v1/manage/department/add', department, PostCfg)
+    .success(function(data){
+        console.log(data);
+    });
+    
+  }
 
   $('#departstree').treeview({
     data: departsData,
@@ -72,6 +88,13 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("statstuffCtrl", function($scope, CompanyData) {
 
+})
+
+.constant('PostCfg',{
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+  transformRequest: function(data) {
+      return $.param(data);
+  }
 })
 
 .constant('departsData',[

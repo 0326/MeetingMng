@@ -17,12 +17,40 @@
     		</result>
     	</action>
  	</package>
- 	<!-- 管理后台首页 -->
+ 	<!-- 公司管理后台首页 -->
 	<package name="manage-package" namespace="/" extends="struts-default">
     	<action name="manage">  
 		    <result>/manage.html</result>  
 	    </action>
     </package>
+    <!-- 公司管理后台-部门操作api -->
+     <package name="manageapi-package" namespace="/api/v1/manage/department" extends="json-default">
+    	<action name="add" class="com.huiguanjia.action.DepartmentAction" method="add">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="delete" class="com.huiguanjia.action.DepartmentAction" method="delete">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="update" class="com.huiguanjia.action.DepartmentAction" method="update">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findByName" class="com.huiguanjia.action.DepartmentAction" method="findByName">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findByCompanyId" class="com.huiguanjia.action.DepartmentAction" method="findByCompanyId">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+ 	</package>
     <!-- util 公共库接口 -->
     <package name="util-package" namespace="/api/util" extends="json-default">
     	<action name="qiniu_get_uptoken" class="com.huiguanjia.util.QiniuyunUtil" method="upToken">
