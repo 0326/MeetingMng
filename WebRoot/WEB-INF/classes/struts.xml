@@ -52,13 +52,14 @@
     	</action>
  	</package>
     <!-- util 公共库接口 -->
+    <!-- 
     <package name="util-package" namespace="/api/util" extends="json-default">
     	<action name="qiniu_get_uptoken" class="com.huiguanjia.util.QiniuyunUtil" method="upToken">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
     	</action>
- 	</package>
+ 	</package>-->
 	<!-- login and register -->
 	<package name="json-package2" namespace="/api/v1" extends="json-default">
     	<action name="companyManagerLogin" class="com.huiguanjia.action.CompanyManagerAction" method="login">
