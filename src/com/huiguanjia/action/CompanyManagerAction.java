@@ -125,13 +125,13 @@ public class CompanyManagerAction extends ActionSupport{
 						"/api/v1/activemail?uid="+userId+"&aid="+activateCode;
 				if(MailSendUtil.send(username, activatelink)){
 					ActivateService activateService = new ActivateService();	
-					activateService.save(userId, activateCode, sendTime, mode,companyName);
+					activateService.save(userId, activateCode, sendTime, mode,username);
 					jsonData.put("code", 0);
 				}
 				else{
 					jsonData.put("code",-10408);
 				}
-			}			     
+			}	break;		     
 		}
 		return SUCCESS;
 		
@@ -144,11 +144,12 @@ public class CompanyManagerAction extends ActionSupport{
 		String userId = MD5Util.MD5Code(username);
 		ActivateService activateService = new ActivateService();
 		if(activateService.activate(userId, activateCode, activateTime) == null){
-			jsonData.put("code",-10409);  //can not activate.code -> 10
+			jsonData.put("code",-10409);  //can not activate,code = 10
 		}		
 		else{
-			String aCompanyName = activateService.activate(userId, activateCode, activateTime);
-			activateService.registerAfterActivate(aCompanyName);
+			String aUsername = activateService.activate(userId, activateCode, activateTime);
+			CompanyManagerService companyManagerService  = new CompanyManagerService();
+			companyManagerService.registerAfterActivate(aUsername);
 			jsonData.put("code",0);
 		}
 		return SUCCESS;
