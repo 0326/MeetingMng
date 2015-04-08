@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-08 08:55:17
+Date: 2015-04-08 10:16:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -62,6 +62,27 @@ CREATE TABLE `company_and_company_admin` (
 -- Records of company_and_company_admin
 -- ----------------------------
 INSERT INTO `company_and_company_admin` VALUES ('11111', '1833559609@qq.com', '111111', '2015-04-07 09:10:46', '101200301', '12289', '0', null, null, '0', null, null, null, null);
+
+-- ----------------------------
+-- Table structure for department
+-- ----------------------------
+DROP TABLE IF EXISTS `department`;
+CREATE TABLE `department` (
+  `departmentId` int(11) NOT NULL AUTO_INCREMENT,
+  `companyId` varchar(80) NOT NULL,
+  `departmentName` varchar(50) NOT NULL,
+  `parentId` int(11) NOT NULL,
+  `depth` int(11) NOT NULL,
+  PRIMARY KEY (`departmentId`),
+  KEY `FK_department_company_companyId` (`companyId`),
+  KEY `FK_department_parentId` (`parentId`),
+  CONSTRAINT `FK_department_parentId` FOREIGN KEY (`parentId`) REFERENCES `department` (`departmentId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_department_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of department
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for industry
