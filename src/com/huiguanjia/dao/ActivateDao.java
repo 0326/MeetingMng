@@ -32,7 +32,6 @@ public class ActivateDao {
 		//判断该激活地址是否存在激活记录
 		boolean isExist;
 		Session sess = HibernateSessionFactory.getSession();
-		Transaction tx = sess.beginTransaction();
 		String hqlQuery = "select a.activateAddr from Activate as a " +
 				"where a.activateAddr = :u";
 		List l = sess.createQuery(hqlQuery).setString("u", activateAddr).list();
@@ -40,20 +39,18 @@ public class ActivateDao {
 			isExist = true;
 		else 
 			isExist = false;
-		tx.commit();
-		HibernateSessionFactory.closeSession();
+		
 		
 		//若存在激活记录，则更新该记录;若不存在，则添加新纪录
 		if(true == isExist)
 		{
-			Session sess1 = HibernateSessionFactory.getSession();
-			Transaction tx1 = sess1.beginTransaction();
+			Transaction tx = sess.beginTransaction();
 			
 			String hqlQuery1 = "update Activate set activateInfo = :a,sendTime = :b,activateMode = :c," +
 					"username = :d where activateAddr = :e";
 			int updateEntities;
 			try{
-				updateEntities = sess1.createQuery(hqlQuery1).setString("a",activateInfo).setDate("b", sendTime)
+				updateEntities = sess.createQuery(hqlQuery1).setString("a",activateInfo).setDate("b", sendTime)
 						.setBoolean("c", activateMode).setString("d", username).setString("e", activateAddr)
 						.executeUpdate();
 				tx.commit();
@@ -70,8 +67,7 @@ public class ActivateDao {
 		}
 		else
 		{
-			Session sess2 = HibernateSessionFactory.getSession();
-			Transaction tx2 = sess.beginTransaction();
+			Transaction tx = sess.beginTransaction();
 			
 			Activate a = new Activate();
 			a.setActivateAddr(activateAddr);
@@ -81,7 +77,7 @@ public class ActivateDao {
 			a.setUsername(username);
 			
 			try{
-			sess2.save(a);
+			sess.save(a);
 			tx.commit();
 			res = true;
 			}
@@ -110,12 +106,10 @@ public class ActivateDao {
 		String username = null;
 		
 		Session sess = HibernateSessionFactory.getSession();
-		Transaction tx = sess.beginTransaction();
 		
 		String hqlQuery = "select a from Activate as a where a.activateAddr = :b and " +
 				"a.activateInfo = :c";
 		List l = sess.createQuery(hqlQuery).setString("b", activateAddr).setString("c", activateInfo).list();
-		tx.commit();
 		
 		if(1 == l.size())
 		{

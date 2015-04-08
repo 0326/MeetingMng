@@ -30,11 +30,10 @@ public class TempCompanyAndCompanyAdminDao {
 
 		// 判断临时表中是否已经存在相同的用户名
 		boolean isExist;
-		Session sess1 = HibernateSessionFactory.getSession();
-		Transaction tx1 = sess1.beginTransaction();
+		Session sess = HibernateSessionFactory.getSession();
 		String hqlQuery = "select t.username from TempCompanyAndCompanyAdmin as t "
 				+ "where t.username = :u";
-		List l = sess1.createQuery(hqlQuery).setString("u", username).list();
+		List l = sess.createQuery(hqlQuery).setString("u", username).list();
 		if (1 == l.size())
         {
 			isExist = true;
@@ -43,10 +42,8 @@ public class TempCompanyAndCompanyAdminDao {
 		else
 		{
 			isExist = false;
-			System.out.println("临时表中存在相同用户名");
+			System.out.println("临时表中不存在相同用户名");
 		}
-		tx1.commit();
-		HibernateSessionFactory.closeSession();
 
 		if(true == isExist)
 		{
@@ -54,9 +51,8 @@ public class TempCompanyAndCompanyAdminDao {
 			Industry i = new Industry();
 			p.setCityCode(location);
 			i.setIndustryCode(type);
-			
-			Session sess2 = HibernateSessionFactory.getSession();
-			Transaction tx2 = sess2.beginTransaction();
+
+			Transaction tx = sess.beginTransaction();
 			
 			String hqlQuery2 = "update TempCompanyAndCompanyAdmin set " +
 					"password = :a,companyName = :b," +
@@ -64,15 +60,15 @@ public class TempCompanyAndCompanyAdminDao {
 					"where username = :e";
 			int updateEntities;
 			try{
-				updateEntities = sess2.createQuery(hqlQuery2).setString("a", password)
+				updateEntities = sess.createQuery(hqlQuery2).setString("a", password)
 						.setString("b", companyName).setParameter("c", p).setParameter("d", i)
 						.setString("e", username).executeUpdate();
-				tx2.commit();
+				tx.commit();
 				res = true;
 			}
 			catch(HibernateException he)
 			{
-				tx2.rollback();
+				tx.rollback();
 				res = false;
 				System.out.println(he);
 			}
@@ -81,7 +77,6 @@ public class TempCompanyAndCompanyAdminDao {
 		}
 		else
 		{
-			Session sess = HibernateSessionFactory.getSession();
 			Transaction tx = sess.beginTransaction();
 
 			TempCompanyAndCompanyAdmin aTempCompanyAndCompanyAdmin = new TempCompanyAndCompanyAdmin();
@@ -118,14 +113,12 @@ public class TempCompanyAndCompanyAdminDao {
 
 	public TempCompanyAndCompanyAdmin find(String username) {
 		Session sess = HibernateSessionFactory.getSession();
-		Transaction tx = sess.beginTransaction();
 
 		String hqlQuery = "select t from TempCompanyAndCompanyAdmin as t where t.username = :u";
 		List l = sess.createQuery(hqlQuery).setString("u", username).list();
 
 		TempCompanyAndCompanyAdmin tca = (TempCompanyAndCompanyAdmin) l.get(0);
 
-		tx.commit();
 		HibernateSessionFactory.closeSession();
 
 		return tca;

@@ -105,6 +105,7 @@ public class CompanyManagerAction extends ActionSupport{
 	public String register() {
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
+		System.out.println(companyName);
 		//return 1,2,3,4,5,6... refer to jsonData.put("code","num")
 		switch(companyManagerService.register(username,password,type,companyName,location))
 		{
@@ -117,6 +118,7 @@ public class CompanyManagerAction extends ActionSupport{
 			{
 				//瀵硅处鍙疯繘琛宮d5鍔犲瘑浣滀负activeAddr(UserId)
 				String userId = MD5Util.MD5Code(username);
+				System.out.println(userId);
 				Date sendTime = new Date();
 				String activateCode;
 				boolean mode = false;//閭婵�椿

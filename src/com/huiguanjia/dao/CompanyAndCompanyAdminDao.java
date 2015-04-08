@@ -22,7 +22,6 @@ public class CompanyAndCompanyAdminDao {
 		boolean res;
 		
 		Session sess = HibernateSessionFactory.getSession();
-//		Transaction tx = sess.beginTransaction();
 		
 		String hqlQuery = "select c.username from CompanyAndCompanyAdmin as c " +
 				"where c.username = :u";
@@ -34,7 +33,6 @@ public class CompanyAndCompanyAdminDao {
 		else 
 			res =  false;
 		
-//		tx.commit();
 		HibernateSessionFactory.closeSession();
 		
 		return res;
@@ -45,7 +43,6 @@ public class CompanyAndCompanyAdminDao {
 		boolean res;
 		
 		Session sess = HibernateSessionFactory.getSession();
-		Transaction tx = sess.beginTransaction();
 		
 		String hqlQuery = "select c.companyName from CompanyAndCompanyAdmin as c " +
 				"where c.companyName = :cn";
@@ -57,7 +54,6 @@ public class CompanyAndCompanyAdminDao {
 		else 
 			res =  false;
 		
-		tx.commit();
 		HibernateSessionFactory.closeSession();
 		
 		return res;
