@@ -41,6 +41,15 @@ public class TempCompanyAndCompanyAdmin implements java.io.Serializable {
 
 	// Property accessors
 	@Id
+	@Column(name = "username", nullable = false, length = 80)
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 	@Column(name = "companyName", unique = true, nullable = false, length = 50)
 	public String getCompanyName() {
 		return this.companyName;
@@ -50,14 +59,7 @@ public class TempCompanyAndCompanyAdmin implements java.io.Serializable {
 		this.companyName = companyName;
 	}
 
-	@Column(name = "username", nullable = false, length = 80)
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
+	
 
 	@Column(name = "password", nullable = false, length = 15)
 	public String getPassword() {

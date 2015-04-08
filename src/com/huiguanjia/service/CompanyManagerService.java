@@ -85,17 +85,17 @@ public class CompanyManagerService {
      * 2,插入正规表失败；
      * 3，从临时表中删除记录失败。
      */
-	public int registerAfterActivate(String companyName)
+	public int registerAfterActivate(String username)
 	{	
 		TempCompanyAndCompanyAdminDao tcad = new TempCompanyAndCompanyAdminDao();
-		TempCompanyAndCompanyAdmin tca = tcad.find(companyName);
+		TempCompanyAndCompanyAdmin tca = tcad.find(username);
 		
 		CompanyAndCompanyAdminDao cad = new CompanyAndCompanyAdminDao();
 		boolean a = cad.addByTemp(tca);
 		if(false == a)
 			return 2;
 		
-		boolean b = tcad.delete(companyName);
+		boolean b = tcad.delete(username);
 		if(false == b)
 			return 3;
 		

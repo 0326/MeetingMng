@@ -19,10 +19,10 @@ public class ActivateService {
 	 * @return
 	 */
 	public boolean save(String userId, String activateCode, Date sendTime,
-			boolean mode,String companyName){
+			boolean mode,String username){
 		
 		ActivateDao acd = new ActivateDao();
-		return acd.save(userId, activateCode, sendTime, mode,companyName);
+		return acd.save(userId, activateCode, sendTime, mode,username);
 	}
 	
 	

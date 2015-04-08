@@ -80,14 +80,15 @@ public class CompanyAndCompanyAdmin implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@Column(name = "companyName", unique = true, nullable = false, length = 50)
-	public String getCompanyName() {
-		return this.companyName;
+	@Column(name = "username", nullable = false, length = 80)
+	public String getUsername() {
+		return this.username;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "type", nullable = false)
@@ -109,15 +110,16 @@ public class CompanyAndCompanyAdmin implements java.io.Serializable {
 		this.provinceAndCity = provinceAndCity;
 	}
 
-	@Column(name = "username", nullable = false, length = 80)
-	public String getUsername() {
-		return this.username;
+	
+	@Column(name = "companyName", unique = true, nullable = false, length = 50)
+	public String getCompanyName() {
+		return this.companyName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
-
+	
 	@Column(name = "password", nullable = false, length = 15)
 	public String getPassword() {
 		return this.password;

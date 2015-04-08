@@ -109,12 +109,12 @@ public class TempCompanyAndCompanyAdminDao {
 
 	}
 
-	public TempCompanyAndCompanyAdmin find(String companyName) {
+	public TempCompanyAndCompanyAdmin find(String username) {
 		Session sess = HibernateSessionFactory.getSession();
 		Transaction tx = sess.beginTransaction();
 
-		String hqlQuery = "select t from TempCompanyAndCompanyAdmin as t where t.companyName = :c";
-		List l = sess.createQuery(hqlQuery).setString("c", companyName).list();
+		String hqlQuery = "select t from TempCompanyAndCompanyAdmin as t where t.username = :u";
+		List l = sess.createQuery(hqlQuery).setString("u", username).list();
 
 		TempCompanyAndCompanyAdmin tca = (TempCompanyAndCompanyAdmin) l.get(0);
 
@@ -124,17 +124,17 @@ public class TempCompanyAndCompanyAdminDao {
 		return tca;
 	}
 	
-	public boolean delete(String companyName)
+	public boolean delete(String username)
 	{
 		boolean res;
 		
 		Session sess = HibernateSessionFactory.getSession();
 		Transaction tx = sess.beginTransaction();
 		
-		String hqlQuery = "delete from TempCompanyAndCompanyAdmin where companyName = :c";
+		String hqlQuery = "delete from TempCompanyAndCompanyAdmin where username = :u";
 		int updateEntities;
 		try{
-			updateEntities = sess.createQuery(hqlQuery).setString("c", companyName).executeUpdate();
+			updateEntities = sess.createQuery(hqlQuery).setString("u", username).executeUpdate();
 			tx.commit();
 			res = true;
 		}
