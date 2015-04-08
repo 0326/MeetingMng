@@ -20,9 +20,12 @@
 			<generator class="assigned"></generator>
 		</primary-key>
 	</table>
-<table name="province_and_city" catalog="meetingmngdatabase">
-	<primary-key>
-		<generator class="assigned"></generator>
-	</primary-key>
-</table>
+	<table name="province_and_city" catalog="meetingmngdatabase">
+		<primary-key>
+			<generator class="assigned"></generator>
+		</primary-key>
+	</table>
+	<table name="department" catalog="meetingmngdatabase">
+		<column name="departmentName"></column>
+	</table>
 </hibernate-reverse-engineering>

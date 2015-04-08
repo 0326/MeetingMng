@@ -123,6 +123,7 @@ public class CompanyManagerAction extends ActionSupport{
 				activateCode = MD5Util.MD5Code(sendTime.toString());
 				String activatelink= "http://localhost:8080/MeetingMng"+ 
 						"/api/v1/activemail?uid="+userId+"&aid="+activateCode;
+				System.out.print(MailSendUtil.send(username, activatelink));
 				if(MailSendUtil.send(username, activatelink)){
 					ActivateService activateService = new ActivateService();	
 					activateService.save(userId, activateCode, sendTime, mode,username);

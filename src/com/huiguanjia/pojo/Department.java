@@ -1,75 +1,100 @@
 package com.huiguanjia.pojo;
 
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
+/**
+ * Department entity. @author MyEclipse Persistence Tools
+ */
 @Entity
 @Table(name = "department", catalog = "meetingmngdatabase")
-public class Department {
-	
-	private int departmentId;
-	private String companyId;
-	private String departmentName;
-	private int parentId;
-	private int depth;
+public class Department implements java.io.Serializable {
 
-	public Department(){
-		
+	// Fields
+
+	private Integer departmentId;
+	private CompanyAndCompanyAdmin companyAndCompanyAdmin;
+	private Department department;
+	private String departmentName;
+	private Integer depth;
+
+	// Constructors
+
+	/** default constructor */
+	public Department() {
 	}
-	
-	public Department(String companyId, String departmentName, int parentId, int depth){
-		this.companyId = companyId;
+
+	/** minimal constructor */
+	public Department(CompanyAndCompanyAdmin companyAndCompanyAdmin,
+			Department department, String departmentName, Integer depth) {
+		this.companyAndCompanyAdmin = companyAndCompanyAdmin;
+		this.department = department;
 		this.departmentName = departmentName;
-		this.parentId = parentId;
 		this.depth = depth;
 	}
-	
+
+
+	// Property accessors
 	@Id
-	@Column(name = "departmentId", unique = true, nullable = false, length = 11)
-	public int getDepartmentId() {
-		return departmentId;
+	@GeneratedValue
+	@Column(name = "departmentId", unique = true, nullable = false)
+	public Integer getDepartmentId() {
+		return this.departmentId;
 	}
 
-	public void setDepartmentId(int departmentId) {
+	public void setDepartmentId(Integer departmentId) {
 		this.departmentId = departmentId;
 	}
 
-	@Column(name = "companyId", nullable = false, length = 80)
-	public String getCompanyId() {
-		return companyId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "companyId", nullable = false)
+	public CompanyAndCompanyAdmin getCompanyAndCompanyAdmin() {
+		return this.companyAndCompanyAdmin;
 	}
 
-	public void setCompanyId(String companyId) {
-		this.companyId = companyId;
+	public void setCompanyAndCompanyAdmin(
+			CompanyAndCompanyAdmin companyAndCompanyAdmin) {
+		this.companyAndCompanyAdmin = companyAndCompanyAdmin;
 	}
 
-	@Column(name = "departmentName", unique = true, nullable = false, length = 50)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "parentId", nullable = false)
+	public Department getDepartment() {
+		return this.department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	@Column(name = "departmentName", nullable = false, length = 50)
 	public String getDepartmentName() {
-		return departmentName;
+		return this.departmentName;
 	}
 
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
 
-	@Column(name = "parentId", length = 11)
-	public int getParentId() {
-		return parentId;
+	@Column(name = "depth", nullable = false)
+	public Integer getDepth() {
+		return this.depth;
 	}
 
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
-	}
-
-	@Column(name = "depth", nullable = false, length = 11)
-	public int getDepth() {
-		return depth;
-	}
-
-	public void setDepth(int depth) {
+	public void setDepth(Integer depth) {
 		this.depth = depth;
 	}
+
+	
+
 }
