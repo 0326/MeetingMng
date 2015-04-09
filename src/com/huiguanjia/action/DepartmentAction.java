@@ -3,6 +3,7 @@ package com.huiguanjia.action;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.service.DepartmentService;
 import com.opensymphony.xwork2.ActionSupport;
@@ -31,14 +32,21 @@ public class DepartmentAction extends ActionSupport{
 	
 	public String add(){
 		jsonData = new HashMap<String,Object>();
-		this.printProperty();
-		Department depart = new Department(companyId,departmentName,parentId,depth);
+		//this.printProperty();
+		
+		CompanyAndCompanyAdmin ca = new CompanyAndCompanyAdmin();
+		ca.setUsername(companyId);
+		Department parentDepart = new Department();
+		parentDepart.setDepartmentId(Integer.valueOf(parentId));
+		
+		Department depart = new Department(ca,parentDepart,departmentName,Integer.valueOf(depth));
+		
 		DepartmentService departService = new DepartmentService();
 		if(false == departService.add(depart)){
-			jsonData.put("code", "-1");
+			jsonData.put("code", -10405);
 		}
 		else{
-			jsonData.put("code", "0");
+			jsonData.put("code", 0);
 		}
 		
 		return SUCCESS;
