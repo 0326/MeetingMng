@@ -12,9 +12,15 @@ var mControllers = angular.module("mControllers", [])
   $scope.submitLoginForm = function(isValid){
     console.log($scope.user);
     if($scope.user.usertype === "1"){
-        $http.post('/MeetingMng/api/v1/companyManagerRegister',$scope.user)
+        $http.post('/MeetingMng/api/v1/companyManagerLogin',$scope.user)
         .success(function(data){
-            window.location.href="/MeetingMng/manage";
+            if(data.code == 0){
+                window.location.href="/MeetingMng/manage";
+                document.cookie = data.username;
+            }
+            else{
+                alert("用户名或密码错误");
+            }
         });
     }
     else{
