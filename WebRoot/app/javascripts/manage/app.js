@@ -3,13 +3,13 @@ angular.module("appmanage", ["ngRoute", "ngAnimate", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
 .factory('CompanyData', function($cookieStore){
-	console.log($cookieStore.get("username"));
+	// console.log($cookieStore.get("username"));
 	if($cookieStore.get("username") == undefined){
-		window.location.href="/MeetingMng";
+		// window.location.href="/MeetingMng";
 	}
 	var company = {};
   company.companyName = "软酷管家科技有限公司";
-  company.username = $cookieStore.get("username");
+  company.username = $cookieStore.get("username") || "test@mm.com";
   company.avatarUrl = "app/images/userimg.jpg";
   // console.log(company);
   return company;

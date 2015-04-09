@@ -29,27 +29,24 @@ var mControllers = angular.module("mControllers", [])
   $scope.depart = {};
   $scope.currdepart ={
     text: $scope.company.companyName,
+    id: "departmentID",
     nodes: $scope.departs,
     totalStuff: 102
   };
   
-  $scope.submitAddForm = function(isValid){
-    var department = {
-      companyId: "testcompany",
-      departmentName: $scope.depart.text,
-      parentId: 1,
-      depth:1
-    }
-
-    $http.post('/MeetingMng/api/v1/manage/department/add', department, PostCfg)
+  function refreshTree(){
+    $http.post('/MeetingMng/api/v1/manage/department/getAll', {
+      companyId: $scope.company.username,
+    }, PostCfg)
     .success(function(data){
-        console.log(data);
+        departsData = data.departsData;
     });
-    
-  }
 
+    $("#departstree").treeview({data: departsData});
+  }
+  
   $('#departstree').treeview({
-    data: departsData,
+    // data: departsData,
     onNodeSelected: function(event, data) {
       $scope.$apply(function(){
         $scope.currdepart.text = data.text;
@@ -59,6 +56,31 @@ var mControllers = angular.module("mControllers", [])
       })
     }
   });
+
+  refreshTree();
+
+  $scope.submitAddForm = function(isValid){
+    var department = {
+      companyId: $scope.company.username,
+      departmentName: $scope.depart.text,
+      parentId: 1,
+      depth:1
+    }
+
+    $http.post('/MeetingMng/api/v1/manage/department/add', department, PostCfg)
+    .success(function(data){
+        console.log(data);
+        refreshTree();
+    });
+    
+  }
+  $scope.deleteForm = function(){
+    $http.post('/MeetingMng/api/v1/manage/department/delete',$scope.currdepart, PostCfg)
+    .success(function(data){
+      refreshTree();
+    });
+  }
+
 
 })
 

@@ -23,7 +23,9 @@ a:visited{
 a:hover{
 	color: #00adef;
 }
-
+.validater-helper{
+  color: red;
+}
 
 
 

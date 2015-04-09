@@ -160,6 +160,7 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	public String companyNameRepeat(){
 		jsonData = new HashMap<String,Object>();
+		System.out.println(companyName);
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if(companyManagerService.companyNameRepeat(companyName)){
 			jsonData.put("code",-10400);
@@ -168,6 +169,8 @@ public class CompanyManagerAction extends ActionSupport{
 	}
 	
 	public String usernameRepeat(){
+		jsonData = new HashMap<String,Object>();
+		System.out.println(username);
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if(companyManagerService.usernameRepeat(username)){
 			jsonData.put("code",-10400);

@@ -6,8 +6,7 @@ var mControllers = angular.module("mControllers", [])
   $scope.user = {
     username: "1833559609@qq.com",
     password: "123456",
-    usertype: "1",
-    autoLogin: false
+    usertype: "1"
   }
   $scope.submitLoginForm = function(isValid){
     console.log($scope.user);
@@ -24,9 +23,15 @@ var mControllers = angular.module("mControllers", [])
         });
     }
     else{
-        $http.post('/MeetingMng/api/v1/oridinaryManagerRegister',$scope.user)
+        $http.post('/MeetingMng/api/v1/oridinaryUserLogin',$scope.user)
         .success(function(data){
-            window.location.href="/MeetingMng/manage";
+            if(data.code == 0){
+                window.location.href="/MeetingMng/manage";
+                $cookieStore.put("username",$scope.user.username);
+            }
+            else{
+                alert("用户名或密码错误");
+            }
         });
     }
   }
@@ -44,6 +49,13 @@ var mControllers = angular.module("mControllers", [])
     vm.city = null;
   });
 
+  $scope.showError = function(str){
+    if(str === 'username'){
+
+    }
+    return true;
+  }
+
   $scope.submitCompanyForm = function(isValid){
     if(!vcode.verify($scope.inputcode)){
         alert("验证码错误");
@@ -54,10 +66,6 @@ var mControllers = angular.module("mControllers", [])
         return;
     }
     if(isValid){
-        // alert("ok");
-        // alert([user.username,user.password,user.companyName,vm.province,
-        //     vm.city,vm.industy].join(";"));
-        // console.log(vm);
         $http.post('/MeetingMng/api/v1/companyManagerRegister',{
             'username': user.username,
             'password': user.password,
@@ -66,32 +74,25 @@ var mControllers = angular.module("mControllers", [])
             'companyName':user.companyName
         }, PostCfg).success(function(data){
             switch(data.code){
-                case "10401":
-                    alert("该用户名已存在");
+                case -10401:
+                    alert("用户名或者公司名已被注册");
                     break;
-                case "10402":
-                    alert("该公司名已存在");
-                    break;
-                case "10403":
-                    alert("请选择正确的行业类型");
-                    break;
-                case "10404":
-                    alert("请选择正确的公司地理位置");
-                    break;
-                case "10408":
+                case -10408:
                     alert("邮件发送失败。。。");
                     break;
-                case "0":
-                    alert("恭喜您注册成功");
-                    $(".company-regist-form").fadeOut();
-                    $(".email-box").fadeIn();
+                case 0:
+                    window.location.href= "#/callemail";
                     break;
                 default:
-                    alert("您注册的姿势不对，请按太阳穴，轮刮眼眶。")
+                    alert("参数错误");
             }
         });
     }
   };
+})
+
+.controller("callemailCtrl", function($scope, $http, $cookieStore, PostCfg) {
+    
 })
 
 .constant('PostCfg',{

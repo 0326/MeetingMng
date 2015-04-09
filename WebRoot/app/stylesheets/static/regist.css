@@ -58,6 +58,13 @@ form[name="userForm2"]{
 	display: none;
 }
 
+/*email page*/
 .email-box{
-	display: none;
+	margin:0 auto;
+	display: block;
 }
+.email-box button{
+	display: inline-block;
+	margin: .5em;
+}
+/*end email*/

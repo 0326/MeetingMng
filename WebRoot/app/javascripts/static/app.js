@@ -8,6 +8,9 @@ mApp.config(function($routeProvider) {
 	}).when('/regist', {
 		templateUrl: 'app/templates/static/regist.html',
 		controller: 'registCtrl'
+	}).when('/callemail', {
+		templateUrl: 'app/templates/static/callemail.html',
+		controller: 'callemailCtrl'
 	}).otherwise({
 		redirectTo: '/'
 	});
