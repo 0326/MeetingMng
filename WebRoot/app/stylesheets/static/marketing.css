@@ -59,6 +59,16 @@ h6{
     font-weight: bold;
     font-size: 100%;
 }
+
+.pure-form .form-label{
+    display: block;
+    width: 100%;
+    padding-bottom: .1em;
+    font-size: 120%;
+    color: #00adef;
+    border-bottom: 2px solid #eee;
+}
+
 .pure-form label.pure-radio{
     display: inline-block;
     margin-right: 1em;
@@ -97,7 +107,9 @@ a.pure-button-primary {
     border-radius: 5px;
     font-size: 120%;
 }
-
+a.pure-button-primary:hover{
+    background: white;
+}
 
 /*
  * -- MENU STYLES --
@@ -146,9 +158,6 @@ a.pure-button-primary {
     height: 30px;
 }
 
-.home-menu .pure-menu-selected a {
-    color: #fff;
-}
 .home-menu .pure-menu-list{
     padding: .5em 1em;
 }
@@ -156,7 +165,7 @@ a.pure-button-primary {
 .home-menu li a:focus {
     background: none;
     border: none;
-    color: #f90;
+    color: #25AAFC;
 }
 
 

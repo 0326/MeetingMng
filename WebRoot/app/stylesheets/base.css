@@ -13,8 +13,15 @@ body {
 }
 .pull-right{float: right;}
 
-.vcode-box{
-	width:100px; height: 30px; border: 1px solid #ccc; display: inline-block;
+a{
+	color: #1D85C9;
+	text-decoration: none;
+}
+a:visited{
+	color: #aaa;
+}
+a:hover{
+	color: #00adef;
 }
 
 

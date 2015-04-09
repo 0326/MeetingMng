@@ -1,16 +1,21 @@
 
 <div class="pure-g static-container" >
 	<div class="regist-tab">
-        <div class="pure-u-12-24">
-        	<button class="pure-button pure-button-primary action-button" id="user-regist-btn">普通用户注册</button>
+        <div class="pure-u-12-24 regist-tab-user">
+        	<img src="app/images/userbg.jpg">
+            <a class="pure-button pure-button-primary action-button animated fadeInLeft" id="user-regist-btn">普通用户注册</a>
+            <p>适用于企业员工,组织,团体中的成员</p>
         </div>
-        <div class="pure-u-12-24">
-        	<button class="pure-button pure-button-primary action-button" id="company-regist-btn">公司管理员注册</button>
+        <div class="pure-u-12-24 regist-tab-company">
+            <img src="app/images/companybg.jpg">
+            <a class="pure-button pure-button-primary action-button animated fadeInLeft" id="company-regist-btn">公司管理员注册</a>
+            <p>适用于企业,组织,团体的管理者,每个组织只能有一个管理员账号</p>
         </div>
     </div>
   <div class="regist-forms pure-g">
     <div class="pure-u-1 pure-u-md-2-5">
         <form class="pure-form pure-form-aligned user-regist-form" name="userForm1" ng-submit="submitUserForm1(userForm1.$valid)" novalidate>
+            <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>普通用户注册</label>
         	<fieldset>
                 <div class="pure-control-group">
                     <label for="cellphone">手机号(该手机号将作为登录账号)</label>
@@ -18,8 +23,8 @@
                 </div>
                  <div class="pure-control-group">
                     <label for="phonecode">验证码</label>
-                    <input class="pure-input-3-5" id="phonecode" type="text" placeholder="请输入手机收到的验证码">
-                    <button class="pure-button pure-button-primary" id="phonecodeBtn" ng-click="sendPhoneCode();">发送手机验证码</button>
+                    <input class="pure-input-3-5" id="phonecode" type="text" placeholder="请输入手机收到的验证码,测试请输入1234">
+                    <button class="pure-button pure-button-primary" id="phonecodeBtn">发送手机验证码</button>
                 </div>
                 <div class="pure-control-group">
                     <button class="pure-button pure-button-primary" id="submitForm1">下一步</button>
@@ -29,7 +34,7 @@
         <form class="pure-form pure-form-aligned user-regist-form" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
             <fieldset>
                 <div class="pure-control-group">
-                    <label for="password">密码</label>
+                    <label for="password">设置密码</label>
                     <input id="password" ng-model="user.password" type="password" placeholder="请输入密码"  required>
                 </div>
 
@@ -43,10 +48,8 @@
                     <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的注册公司名称" required>
                 </div>
                 <div class="pure-control-group">
-                    <label for="cb" class="pure-checkbox">
-                        <input id="cb" type="checkbox">我已阅读会管家用户使用协议
-                    </label>
-
+                    <input id="cb1" type="checkbox">
+                    <label for="cb1" class="pure-checkbox">我已阅读《会管家用户使用协议》</label>
                     <button type="submit" class="pure-button pure-button-primary" ng-disabled="userForm2.$invalid">注册</button>
                     <a href="#">已有账号，直接登录</a>
                 </div>
@@ -55,16 +58,17 @@
     </div>
     <div class="pure-u-1 pure-u-md-2-5 ">
     	<form class="pure-form pure-form-aligned  company-regist-form" name="companyForm" ng-submit="submitCompanyForm(companyForm.$valid)" novalidate>
+            <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>企业注册</label>
     	    <fieldset>
     	        <div class="pure-control-group">
     	            <label for="username">邮箱(该邮箱将作为登录账号)</label>
-    	            <input id="username" ng-model="user.username" type="email" placeholder="请不要使用QQ邮箱,骗你的呵呵" required>
+    	            <input id="username" ng-model="user.username" type="email" placeholder="请不要使用公司内网邮箱账号" required>
                     <p ng-show="user.username.$invalid">请输入注册邮箱{{user.username}}</p>
     	        </div>
 
     	        <div class="pure-control-group">
-    	            <label for="password">密码</label>
-    	            <input id="password" ng-model="user.password" type="password" placeholder="请输入密码"  required>
+    	            <label for="password">设置密码</label>
+    	            <input id="password" ng-model="user.password" type="password" placeholder="建议数字,字母,大小写组合"  required>
     	        </div>
 
     	        <div class="pure-control-group">
@@ -99,9 +103,8 @@
     	            <!-- <button class="pure-button pure-button-primary vcode-btn">验证</button> -->
     	        </div>
     	        <div class="pure-control-group">
-    	            <label for="cb" class="pure-checkbox">
-    	                <input id="cb" type="checkbox">我已阅读会管家用户使用协议
-    	            </label>
+                    <input id="cb2" type="checkbox">
+    	            <label for="cb2" class="pure-checkbox">我已阅读《会管家用户使用协议》</label>
 
     	            <button type="submit" class="pure-button pure-button-primary" ng-disabled="companyForm.$invalid">注册</button>
     	            <a href="#">已有账号，直接登录</a>
@@ -119,20 +122,42 @@
 <script src="app/javascripts/vCode.js"></script>
 <script type="text/javascript">
 	// 选择注册方式
+    $(".click-reload").on("click", function(){
+        window.location.reload();
+    });
+
     $(".action-button").on('click', function(){
 		if(this.id == 'user-regist-btn'){
-			$(".regist-forms form[name='userForm1']").css({'display':'block'})
+			$(".regist-forms form[name='userForm1']").css({'display':'block'});
 		}
 		else if(this.id == 'company-regist-btn'){
-			$(".regist-forms .company-regist-form").css({'display':'block'})
+			$(".regist-forms .company-regist-form").css({'display':'block'});
 		}
-		$(".regist-tab").css({'display':'none'})
-	})
+		$(".regist-tab").css({'display':'none'});
+	});
     //普通用户注册：1.填写手机验证码；2.填写公司个人信息，注册完成；
-    //管理员注册：1.填写公司信息；2.验证邮箱，注册完成
+    $("#phonecodeBtn").on("click", function(){
+        $("#phonecodeBtn").html("(<span id='phonecount'>6</span>)请输入手机短信验证码");
+        var timeLeft;
+        var timer = setInterval(function(){
+            timeLeft = $("#phonecount").text() - 1;
+            if(timeLeft < 0){
+                clearInterval(timer);
+                $("#phonecodeBtn").text("验证超时，请重新发送验证码");
+            }
+            else{
+                $("#phonecount").text(timeLeft);
+            }
+        },1000);
+    });
+
     $("#submitForm1").on('click', function(){
-        $("#submitForm1").slideUp();
-        $("#phonecodeBtn").slideUp();
-        $(".regist-forms form[name='userForm2']").css({'display':'block'})
+        if($("#phonecode").val() != "1234"){
+            alert("验证码错误");
+            return;
+        }
+        $("#submitForm1,#phonecodeBtn").slideUp();
+        $(".regist-forms form[name='userForm2']").slideDown();
     })
+    //管理员注册：1.填写公司信息；2.验证邮箱，注册完成
 </script>
