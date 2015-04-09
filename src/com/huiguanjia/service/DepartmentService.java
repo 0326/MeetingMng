@@ -2,7 +2,12 @@ package com.huiguanjia.service;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.DepartmentDao;
+import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.Department;
 
 public class DepartmentService {
@@ -13,8 +18,28 @@ public class DepartmentService {
 	 * @return
 	 */
 	public boolean add(Department department){
-		DepartmentDao d = new DepartmentDao();
-		return d.add(department);
+		
+		boolean res;
+		BaseDAO aDAO = new BaseDAO();
+		
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		try
+		{
+			aDAO.saveObject(department);
+			ts.commit();
+			res = true;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = false;
+			System.out.println(e);
+		}
+		
+		SessionDAO.closeSession();
+		
+		return res;
 	}
 	
 	/**

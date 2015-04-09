@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-08 10:16:09
+Date: 2015-04-09 17:15:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -71,13 +71,13 @@ CREATE TABLE `department` (
   `departmentId` int(11) NOT NULL AUTO_INCREMENT,
   `companyId` varchar(80) NOT NULL,
   `departmentName` varchar(50) NOT NULL,
-  `parentId` int(11) NOT NULL,
+  `parentId` int(11) DEFAULT NULL,
   `depth` int(11) NOT NULL,
   PRIMARY KEY (`departmentId`),
   KEY `FK_department_company_companyId` (`companyId`),
   KEY `FK_department_parentId` (`parentId`),
-  CONSTRAINT `FK_department_parentId` FOREIGN KEY (`parentId`) REFERENCES `department` (`departmentId`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_department_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_department_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_department_parentId` FOREIGN KEY (`parentId`) REFERENCES `department` (`departmentId`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
