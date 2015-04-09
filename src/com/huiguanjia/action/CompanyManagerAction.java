@@ -75,12 +75,12 @@ public class CompanyManagerAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		
-		if(companyManagerService.login(password,username)){
+		if(true == companyManagerService.login(username,password)){
 			jsonData.put("code", 0);
 			ActionContext.getContext().getSession().put("username",username);
 		}
 		else{
-			jsonData.put("code", 0);
+			jsonData.put("code", -10401);
 		}
 		
 		return SUCCESS;
@@ -96,7 +96,7 @@ public class CompanyManagerAction extends ActionSupport{
 			ActionContext.getContext().getSession().remove("username");
 		}
 		else{
-			jsonData.put("code",-10400);
+			jsonData.put("code",-10408);
 		}
 		return SUCCESS;
 	}

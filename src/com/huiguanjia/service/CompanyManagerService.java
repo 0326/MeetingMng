@@ -1,15 +1,12 @@
 package com.huiguanjia.service;
 
-import java.util.Date;
-import java.util.List;
-
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
+import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.CompanyAndCompanyAdminDao;
-import com.huiguanjia.dao.HibernateSessionFactory;
 import com.huiguanjia.dao.IndustryDao;
 import com.huiguanjia.dao.ProvinceAndCityDao;
+import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.dao.TempCompanyAndCompanyAdminDao;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
@@ -106,11 +103,23 @@ public class CompanyManagerService {
 	 * 
 	 * @param username String
 	 * @param password String 
-	 * @return
+	 * @return boolean
+	 * true,用户名密码匹配
+	 * false，用户名不存在或密码错误
 	 */
 	public boolean login(String username,String password){
 		
-		return true;
+		BaseDAO b = new BaseDAO();
+		
+		Session sess = SessionDAO.getSession();
+		CompanyAndCompanyAdmin ca = (CompanyAndCompanyAdmin)b.findObjectById(CompanyAndCompanyAdmin.class, username);
+		
+		if(null == ca)
+			return false;
+		else if(true == password.equals(ca.getPassword()))
+			return true;
+		else 
+			return false;
 	}
 	
 	/**
