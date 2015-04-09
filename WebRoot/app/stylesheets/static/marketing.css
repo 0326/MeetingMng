@@ -130,9 +130,9 @@ a.pure-button-primary:hover{
     position: fixed;
     top: 0;
     width: 100%;
-    -webkit-box-shadow: #dedede 0 0 8px;
+/*    -webkit-box-shadow: #dedede 0 0 8px;
     -moz-box-shadow: #dedede 0 0 8px;
-    box-shadow: #dedede 0 0 8px;
+    box-shadow: #dedede 0 0 8px;*/
 }
 .home-menu li a:hover{
   color: #f90;
@@ -168,7 +168,142 @@ a.pure-button-primary:hover{
     color: #25AAFC;
 }
 
+/*for input*/
+.input {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    margin: 1em 0;
+    width: 100%;
+    vertical-align: top;
+}
 
+.input__field {
+    position: relative;
+    display: block;
+    float: right;
+    padding: 0.8em;
+    width: 60%;
+    border: none;
+    border-radius: 0;
+    background: #f0f0f0;
+    color: #aaa;
+    font-weight: bold;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-appearance: none; /* for box shadows to show on iOS */
+}
+
+.input__field:focus {
+    outline: none;
+}
+
+.input__label {
+    display: inline-block;
+    float: right;
+    text-align: center;
+    padding: 0 1em;
+    width: 40%;
+    color: #6a7989;
+    font-weight: bold;
+    font-size: 70.25%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.input__label-content {
+    position: relative;
+    display: block;
+    padding: 1.6em 0;
+    width: 100%;
+}
+
+.graphic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    fill: none;
+}
+
+.icon {
+    color: #ddd;
+    font-size: 150%;
+}
+
+/* Hideo */
+.input--hideo {
+    overflow: hidden;
+    background: #fff;
+}
+
+.input__field--hideo {
+    padding: 0.85em 0.85em 0.85em 3em;
+    width: 100%;
+    background: transparent;
+    -webkit-transform: translate3d(1em, 0, 0);
+    transform: translate3d(1em, 0, 0);
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.input__label--hideo {
+    position: absolute;
+    padding: 1.25em 0 0;
+    width: 4em;
+    height: 100%;
+}
+
+.input__label--hideo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 4em;
+    height: 100%;
+    background: #899dda;
+    -webkit-transform-origin: 0% 50%;
+    transform-origin: 0% 50%;
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.icon--hideo {
+    color: #fff;
+    -webkit-transform: scale3d(1, 1, 1); /* Needed for Chrome bug */
+    transform: scale3d(1, 1, 1);
+    -webkit-transform-origin: 0% 50%;
+    transform-origin: 0% 50%;
+    -webkit-transition: -webkit-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.input__label-content--hideo {
+    position: absolute;
+    top: 100%;
+}
+
+.input__field--hideo:focus {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.input__field--hideo:focus + .input__label--hideo::before {
+    -webkit-transform: scale3d(0.8, 1, 1);
+    transform: scale3d(0.8, 1, 1);
+}
+
+.input__field--hideo:focus + .input__label--hideo .icon--hideo {
+    -webkit-transform: scale3d(0.6, 0.6, 1);
+    transform: scale3d(0.6, 0.6, 1);
+}
+
+/*end input  style*/
 /*
  * -- SPLASH STYLES --
  * This is the blue top section that appears on the page.
@@ -190,7 +325,8 @@ a.pure-button-primary:hover{
 
 .splash {
     /* absolute center .splash within .splash-container */
-    width: 40%;
+    width: 350px;
+    min-width: 200px;
     height: 50%;
     margin: auto;
     position: absolute;
@@ -198,13 +334,22 @@ a.pure-button-primary:hover{
     right: 100px;
     text-transform: uppercase;
 }
-
-.splash .pure-form{
+.splash fieldset{border:none;}
+.splash form[name="loginForm"]{
     padding: 1em .6em;
     color: #fff;
     background: rgba(0,0,0,0.5);
 }
-
+.splash .submit-button{
+    width: 100%;
+    background: #899dda;
+    border:none;
+    padding: .4em;
+    margin: .4em 0;
+}
+.splash .submit-button:hover{
+    background: #7080B2;
+}
 /*
  * -- CONTENT STYLES --
  * This represents the content area (everything below the blue section)
@@ -284,14 +429,6 @@ a.pure-button-primary:hover{
 
     /* We decrease the width of the .splash, since we have more width
     to work with */
-    .splash {
-        width: 30%;
-        height: 50%;
-    }
-
-    .splash-head {
-        font-size: 250%;
-    }
 
 
     /* We remove the border-separator assigned to .l-box-lrg */

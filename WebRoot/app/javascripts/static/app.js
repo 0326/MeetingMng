@@ -1,4 +1,4 @@
-var mApp = angular.module("appstatic", ["ngRoute", "ngAnimate", 
+var mApp = angular.module("appstatic", ["ngRoute", "ngAnimate", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
 mApp.config(function($routeProvider) {

@@ -2,7 +2,7 @@
 var mControllers = angular.module("mControllers", [])
 
 
-.controller("homeCtrl", function($scope, $http, PostCfg) {
+.controller("homeCtrl", function($scope, $http, $cookieStore, PostCfg) {
   $scope.user = {
     username: "1833559609@qq.com",
     password: "123456",
@@ -16,7 +16,7 @@ var mControllers = angular.module("mControllers", [])
         .success(function(data){
             if(data.code == 0){
                 window.location.href="/MeetingMng/manage";
-                document.cookie = data.username;
+                $cookieStore.put("username",$scope.user.username);
             }
             else{
                 alert("用户名或密码错误");

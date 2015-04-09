@@ -1,12 +1,15 @@
 
-angular.module("appmanage", ["ngRoute", "ngAnimate", 
+angular.module("appmanage", ["ngRoute", "ngAnimate", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
-.factory('CompanyData', function(){
+.factory('CompanyData', function($cookieStore){
+	console.log($cookieStore.get("username"));
+	if($cookieStore.get("username") == undefined){
+		window.location.href="/MeetingMng";
+	}
 	var company = {};
-
   company.companyName = "软酷管家科技有限公司";
-  company.username = "1833559609@qq.com";
+  company.username = $cookieStore.get("username");
   company.avatarUrl = "app/images/userimg.jpg";
   // console.log(company);
   return company;

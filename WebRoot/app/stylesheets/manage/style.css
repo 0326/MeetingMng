@@ -274,7 +274,7 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     position: relative;
 }
 
-#menu #profilebtn{
+/*#menu #profilebtn{
     position: absolute;
     top: 10%;right: 15%;
     background: #fff;
@@ -287,7 +287,7 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 #menu #profilebtn:hover{
     background-color: #fff;
 }
-
+*/
 .headimg-50{
     width: 50px;
 }

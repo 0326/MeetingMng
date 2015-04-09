@@ -11,13 +11,14 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("profileCtrl", function($scope, CompanyData, PostCfg) {
+.controller("profileCtrl", function($scope, $cookieStore,$http, CompanyData, PostCfg) {
    $scope.company = CompanyData;
    $scope.userLogout = function(){
     $http.post("/MeetingMng/api/v1/companyManagerLogout",{
-      username: document.cookie
+      username: $scope.company.username
     },PostCfg).success(function(data){
-
+      $cookieStore.remove("username");
+      window.location.href = "/MeetingMng";
     });
    }
 })
