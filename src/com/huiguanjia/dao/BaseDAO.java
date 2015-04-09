@@ -3,20 +3,17 @@ package com.huiguanjia.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-/**
- * ͨ�õ���ݲ�����
- * 
- * @author lipeng
- * 
- */
+
 public class BaseDAO{
 
+	/*POJO方式操作数据库*/
+	
 	/**
-	 * �������
-	 * 
+	 * @info 添加记录
 	 * @param entity 
 	 */
 	public void saveObject(Object entity) throws Exception{
@@ -24,23 +21,21 @@ public class BaseDAO{
 	}
 
 	/**
-	 * ɾ�����
-	 * 
+	 * @info 根据主键删除一个记录
 	 * @param entityClass 
 	 * @param entityId
 	 */
-	public void deleteObject(Class<?> entityClass, Serializable entityId) throws Exception{
+	public void deleteObjectById(Class<?> entityClass, Serializable entityId) throws Exception{
 			Session session = SessionDAO.getSession();
 			session.delete(session.load(entityClass, entityId));
 	}
 
 
 	/**
-	 * ��������ѯ
-	 * 
+	 * @info 根据主键查询一条记录 
 	 * @param entityClass
 	 * @param entityId
-	 * @return
+	 * @return 对象有可能为空，有可能不为空
 	 */
 	public Object findObjectById(Class<?> entityClass, Serializable entityId){
 		    return SessionDAO.getSession().get(entityClass, entityId);
@@ -48,18 +43,20 @@ public class BaseDAO{
 	}
 	
 	/**
-	 * ���¶���
-	 * 
+	 * @info 更新一条记录 
 	 * @param entity
 	 */
 	public void updateObject(Object entity)throws Exception {
 		 SessionDAO.getSession().update(entity);
 	}
 	
+	
+	/*HQL方式操作数据库*/
+	
 	/**
-	 * ���HQL�����¶���
-	 * @param hql  �������
-	 * @param values ��������
+	 * @info HQL方式更新记录
+	 * @param hql  
+	 * @param values
 	 * @return
 	 */
 	public void updateObjectByHql(String hql,Object[] values)throws Exception{
@@ -74,9 +71,9 @@ public class BaseDAO{
 	}
 	
    /**
-    * ���HQl���в�ѯ
-    * @param hql ��ѯ���
-    * @param values ��������
+    * @info HQL方式查询记录
+    * @param hql
+    * @param values
     * @return
     */
 	public List<?> findObjectByHql(String hql,Object[] values){
@@ -91,14 +88,31 @@ public class BaseDAO{
 			list=query.list();
 		return list;
 	}
+	
+	/**
+	    * @info HQL方式删除记录
+	    * @param hql
+	    * @param values
+	    * @return
+	    */
+		public void deleteObjectByHql(String hql,Object[] values)throws Exception{
+			Query query =  SessionDAO.getSession().createQuery(hql);
+			if (values != null) {
+				int j = values.length;
+				for (int i = 0; i < j; i++) {
+					query.setParameter(i, values[i]);
+				}
+			}
+			query.executeUpdate();
+		}
 
 	/**
-	 * ��ѯ��һ���
+	 * @info
 	 * @param hql
-	 * @param values ��������
+	 * @param values
 	 * @return
 	 */
-	public Object getSingletonResult(String hql,Object[] values){
+	public Object findSingletonResultByHql(String hql,Object[] values){
 		Query query = SessionDAO.getSession().createQuery(hql);
 		if (values != null) {
 			int j = values.length;
@@ -110,14 +124,14 @@ public class BaseDAO{
 	} 
 	
 	/**
-	 * ��ҳ��ѯ
+	 * @info HQL方式查询记录，并对结果进行分页
 	 * @param hql 
-	 * @param offset ����һ�п�ʼ��ѯ
-	 * @param pageSize ��ѯ������
-	 * @param values ��������
+	 * @param offset 
+	 * @param pageSize 
+	 * @param values 
 	 * @return
 	 */
-	public List<?> findObjectByFenYe(String hql, int offset,int pageSize,Object[] values){
+	public List<?> findPagingObjectByHql(String hql, int offset,int pageSize,Object[] values){
 		Query query = SessionDAO.getSession().createQuery(hql);
 		if (values != null) {
 			int j = values.length;
