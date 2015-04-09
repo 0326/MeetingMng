@@ -195,10 +195,13 @@ public class MailSendUtil {
 	 * true:发送成功
 	 */
 	public static boolean send(String email,String activelink) {
-		MailSendUtil theMailSendUtil = new MailSendUtil("smtp.sina.com");
+		//MailSendUtil theMailSendUtil = new MailSendUtil("smtp.sina.com");
+		MailSendUtil theMailSendUtil = new MailSendUtil("smtp.qq.com");
 		theMailSendUtil.setNeedAuth(true); 
 		
-		theMailSendUtil.setFrom("huiguanjia@sina.com");
+		//theMailSendUtil.setFrom("huiguanjia@sina.com");
+		//theMailSendUtil.setSubject("会管家账号激活");
+		theMailSendUtil.setFrom("1921991840@qq.com");
 		theMailSendUtil.setSubject("会管家账号激活");
 		theMailSendUtil.setTo(email);
 
@@ -207,10 +210,15 @@ public class MailSendUtil {
 		content.append("<a href='"+activelink+"'>"+activelink+"</a></p>");
 		
 		theMailSendUtil.setBody(content);
-		theMailSendUtil.setNamePass("huiguanjia@sina.com","huiguanjia2015");
+		//theMailSendUtil.setNamePass("huiguanjia@sina.com","huiguanjia2015");
+		theMailSendUtil.setNamePass("1921991840@qq.com","ifeng326");
 		
 		if(!theMailSendUtil.sendOut()) return false;
 		return true;
 	}
+	
+//	public static void main(String[] args){
+//		MailSendUtil.send("1833559609@qq.com", "hellolink");
+//	}
 } 
 
