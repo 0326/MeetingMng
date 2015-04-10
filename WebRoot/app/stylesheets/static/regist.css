@@ -19,15 +19,19 @@
 
 }
 
+.regist-forms{
+	width: 100%;
+}
+
 .regist-forms .company-regist-form, .regist-forms .user-regist-form{
 	display: none;
 	margin:0 auto;
 }
 
-.regist-forms > div{
-	display: block;
+/*.regist-forms form{
+	width: 100%;
 	margin: 0 auto;
-}
+}*/
 .pure-form-aligned .pure-control-group label{
 	text-align: left;
 	width: auto;

@@ -1,7 +1,7 @@
-var mApp = angular.module("appstatic", ["ngRoute", "ngAnimate", "ngCookies",
+angular.module("appstatic", ["ngRoute", "ngAnimate", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
-mApp.config(function($routeProvider) {
+.config(function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: 'app/templates/static/home.html',
 		controller: 'homeCtrl'
@@ -11,6 +11,10 @@ mApp.config(function($routeProvider) {
 	}).when('/callemail', {
 		templateUrl: 'app/templates/static/callemail.html',
 		controller: 'callemailCtrl'
+	}).when('/activition', {
+		templateUrl: 'app/templates/static/activition.html',
+		// resolve:{},
+		controller: 'activitionCtrl'
 	}).otherwise({
 		redirectTo: '/'
 	});

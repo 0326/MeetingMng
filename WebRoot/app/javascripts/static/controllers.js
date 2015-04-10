@@ -5,13 +5,13 @@ var mControllers = angular.module("mControllers", [])
 .controller("homeCtrl", function($scope, $http, $cookieStore, PostCfg) {
   $scope.user = {
     username: "1833559609@qq.com",
-    password: "123456",
+    password: "111111",
     usertype: "1"
   }
   $scope.submitLoginForm = function(isValid){
     console.log($scope.user);
     if($scope.user.usertype === "1"){
-        $http.post('/MeetingMng/api/v1/companyManagerLogin',$scope.user)
+        $http.post('/MeetingMng/api/v1/companyManagerLogin',$scope.user,PostCfg)
         .success(function(data){
             if(data.code == 0){
                 window.location.href="/MeetingMng/manage";
@@ -23,7 +23,7 @@ var mControllers = angular.module("mControllers", [])
         });
     }
     else{
-        $http.post('/MeetingMng/api/v1/oridinaryUserLogin',$scope.user)
+        $http.post('/MeetingMng/api/v1/oridinaryUserLogin',$scope.user,PostCfg)
         .success(function(data){
             if(data.code == 0){
                 window.location.href="/MeetingMng/manage";
@@ -93,6 +93,24 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("callemailCtrl", function($scope, $http, $cookieStore, PostCfg) {
     
+})
+
+.controller("activitionCtrl", function($scope, $http, $route, PostCfg) {
+    console.log($route.current.params);
+    $scope.activeSuccess = true;
+    $http.post('/MeetingMng/api/v1/activemail',{
+        uid:$route.current.params.uid,
+        aid:$route.current.params.aid
+    }, PostCfg).success(function(data){
+        if(data.code == 0){
+            //激活成功
+        }
+        else{
+            //激活失败
+           $scope.activeSuccess = false;
+        }
+        console.log(data);
+    });
 })
 
 .constant('PostCfg',{

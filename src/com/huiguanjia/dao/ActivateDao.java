@@ -110,13 +110,11 @@ public class ActivateDao {
 		String hqlQuery = "select a from Activate as a where a.activateAddr = :b and " +
 				"a.activateInfo = :c";
 		List l = sess.createQuery(hqlQuery).setString("b", activateAddr).setString("c", activateInfo).list();
-		
 		if(1 == l.size())
 		{
 			Activate tmp = (Activate)l.get(0);
 			long t1 = activateTime.getTime();
 			long t2 = tmp.getSendTime().getTime();
-			
 			if(t2 + 24*60*60*1000 < t1)
 				username = null;
 			else
@@ -125,9 +123,7 @@ public class ActivateDao {
 		else if(0 == l.size())
 		{
 			username = null;
-		}
-			
-		
+		}		
 		return username;
 	}
 }

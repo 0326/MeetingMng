@@ -74,7 +74,7 @@ public class CompanyManagerAction extends ActionSupport{
 	public String login() {
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		
+		System.out.print(username+";"+password);
 		if(true == companyManagerService.login(username,password)){
 			jsonData.put("code", 0);
 			ActionContext.getContext().getSession().put("username",username);
@@ -124,7 +124,7 @@ public class CompanyManagerAction extends ActionSupport{
 				boolean mode = false;//閭婵�椿
 				activateCode = MD5Util.MD5Code(sendTime.toString());
 				String activatelink= "http://localhost:8080/MeetingMng"+ 
-						"/api/v1/activemail?uid="+userId+"&aid="+activateCode;
+						"/#/activition?uid="+userId+"&aid="+activateCode;
 				System.out.print(MailSendUtil.send(username, activatelink));
 				if(MailSendUtil.send(username, activatelink)){
 					ActivateService activateService = new ActivateService();	

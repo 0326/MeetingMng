@@ -13,8 +13,8 @@
         </div>
     </div>
   <div class="regist-forms pure-g">
-    <div class="pure-u-1 pure-u-md-2-5">
-        <form class="pure-form pure-form-aligned user-regist-form" name="userForm1" ng-submit="submitUserForm1(userForm1.$valid)" novalidate>
+    <div class="pure-u-1 pure-u-md-2-5  user-regist-form">
+        <form class="pure-form pure-form-aligned" name="userForm1" ng-submit="submitUserForm1(userForm1.$valid)" novalidate>
             <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>普通用户注册</label>
         	<fieldset>
                 <div class="pure-control-group">
@@ -31,7 +31,7 @@
                 </div>
             </fieldset>
         </form>
-        <form class="pure-form pure-form-aligned user-regist-form" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
+        <form class="pure-form pure-form-aligned" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
             <fieldset>
                 <div class="pure-control-group">
                     <label for="password">设置密码</label>
@@ -51,13 +51,13 @@
                     <input id="cb1" type="checkbox">
                     <label for="cb1" class="pure-checkbox">我已阅读《会管家用户使用协议》</label>
                     <button type="submit" class="pure-button pure-button-primary" ng-disabled="userForm2.$invalid">注册</button>
-                    <a href="#">已有账号，直接登录</a>
+                    <a href="#/">已有账号，直接登录</a>
                 </div>
             </fieldset>
         </form>
     </div>
-    <div class="pure-u-1 pure-u-md-2-5 ">
-    	<form class="pure-form pure-form-aligned  company-regist-form" name="companyForm" ng-submit="submitCompanyForm(companyForm.$valid)" novalidate>
+    <div class="pure-u-1 pure-u-md-2-5 company-regist-form">
+    	<form class="pure-form pure-form-aligned " name="companyForm" ng-submit="submitCompanyForm(companyForm.$valid)" novalidate>
             <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>企业注册</label>
     	    <fieldset>
     	        <div class="pure-control-group">
@@ -110,7 +110,7 @@
     	            <label for="cb2" class="pure-checkbox">我已阅读《会管家用户使用协议》</label>
 
     	            <button type="submit" class="pure-button pure-button-primary" ng-disabled="companyForm.$invalid">注册</button>
-    	            <a href="#">已有账号，直接登录</a>
+    	            <a href="#/">已有账号，直接登录</a>
     	        </div>
     	    </fieldset>
     	</form>
@@ -127,7 +127,7 @@
 
     $(".action-button").on('click', function(){
 		if(this.id == 'user-regist-btn'){
-			$(".regist-forms form[name='userForm1']").css({'display':'block'});
+			$(".regist-forms .user-regist-form").css({'display':'block'});
 		}
 		else if(this.id == 'company-regist-btn'){
 			$(".regist-forms .company-regist-form").css({'display':'block'});
