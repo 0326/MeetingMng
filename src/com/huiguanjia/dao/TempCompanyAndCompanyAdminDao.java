@@ -149,4 +149,9 @@ public class TempCompanyAndCompanyAdminDao {
 		
 		return res;
 	}
+	public static void main(String[] args) {
+		TempCompanyAndCompanyAdminDao cd= new TempCompanyAndCompanyAdminDao();
+		
+		
+	}
 }

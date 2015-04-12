@@ -8,19 +8,68 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.huiguanjia.service.ActivateService;
 import com.huiguanjia.service.CompanyManagerService;
+import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
+import com.huiguanjia.pojo.Industry;
+import com.huiguanjia.pojo.ProvinceAndCity;
 import com.huiguanjia.util.MD5Util;
 import com.huiguanjia.util.MailSendUtil;
 
 @SuppressWarnings("serial")
 public class CompanyManagerAction extends ActionSupport{
+	private String email;
+	private String name;
+	private String officePhone;
+	private String officeLocation;
+	private String cellphone;
 	
 	private String username;
 	private String password;
+	private String newpassword;
 	private String type;
 	private String companyName;
 	private String location;
 	private Map<String,Object> jsonData;
 	
+	
+	public String getEmail(){
+		return email;
+	} 
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getName(){
+		return name;
+	} 
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getOfficePhone(){
+		return officePhone;
+	} 
+	
+	public void setOfficePhone(String officePhone) {
+		this.officePhone = officePhone;
+	}
+	
+	public String getOfficeLocation(){
+		return officeLocation;
+	} 
+	
+	public void setOfficeLocation(String officeLocation) {
+		this.officeLocation = officeLocation;
+	}
+	
+	public String getCellphone(){
+		return cellphone;
+	} 
+	
+	public void setCellphone(String cellphone) {
+		this.cellphone = cellphone;
+	}
 	
 	public String getUsername(){
 		return username;
@@ -36,6 +85,14 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	public void setPassword(String password) {	
 		this.password = password;
+	}
+	
+	public String getNewpassword() {
+		return newpassword;
+	}
+	
+	public void setNewpassword(String newpassword) {	
+		this.newpassword = newpassword;
 	}
 	
 	public String getType() {
@@ -74,7 +131,7 @@ public class CompanyManagerAction extends ActionSupport{
 	public String login() {
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		System.out.print(username+";"+password);
+		//System.out.print(username+";"+password);
 		if(true == companyManagerService.login(username,password)){
 			jsonData.put("code", 0);
 			ActionContext.getContext().getSession().put("username",username);
@@ -89,8 +146,8 @@ public class CompanyManagerAction extends ActionSupport{
 	public String logout() {
 		jsonData = new HashMap<String,Object>();
 		String name = (String) ActionContext.getContext().getSession().get("username");
-		System.out.println(name);
-		System.out.println(username);
+		//System.out.println(name);
+		//System.out.println(username);
 		if(name.equals(username)) {
 			jsonData.put("code",0);
 			ActionContext.getContext().getSession().remove("username");
@@ -105,7 +162,7 @@ public class CompanyManagerAction extends ActionSupport{
 	public String register() {
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		System.out.println(companyName);
+		//System.out.println(companyName);
 		//return 1,2,3,4,5,6... refer to jsonData.put("code","num")
 		switch(companyManagerService.register(username,password,type,companyName,location))
 		{
@@ -160,7 +217,7 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	public String companyNameRepeat(){
 		jsonData = new HashMap<String,Object>();
-		System.out.println(companyName);
+		//System.out.println(companyName);
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if(companyManagerService.companyNameRepeat(companyName)){
 			jsonData.put("code",-10400);
@@ -170,7 +227,7 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	public String usernameRepeat(){
 		jsonData = new HashMap<String,Object>();
-		System.out.println(username);
+		//System.out.println(username);
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if(companyManagerService.usernameRepeat(username)){
 			jsonData.put("code",-10400);
@@ -182,8 +239,34 @@ public class CompanyManagerAction extends ActionSupport{
 	 * @info 淇敼绠＄悊鍛樿处鍙蜂俊鎭�
 	 * @return
 	 */
+	
 	public String updateInfo(){
+		CompanyAndCompanyAdmin companyAndCompanyAdmin =new CompanyAndCompanyAdmin();
+		//companyAndCompanyAdmin.setHeadimg(headimg);
+		companyAndCompanyAdmin.setName(name);
+		companyAndCompanyAdmin.setEmail(email);
+		companyAndCompanyAdmin.setCellphone(cellphone);
+		companyAndCompanyAdmin.setOfficePhone(officePhone);
+		companyAndCompanyAdmin.setOfficeLocation(officeLocation);
 		
+		
+		System.out.println(companyAndCompanyAdmin);
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		companyManagerService.updateInfo(companyAndCompanyAdmin);
+		
+		jsonData = new HashMap<String,Object>();
+		if(companyManagerService.updateInfo(companyAndCompanyAdmin) == true){
+			jsonData.put("code", "0");
+			//ActionContext.getContext().getSession().put("headimg", headimg);
+			ActionContext.getContext().getSession().put("name", name);
+			ActionContext.getContext().getSession().put("email", email);
+			ActionContext.getContext().getSession().put("cellphone", cellphone);
+			ActionContext.getContext().getSession().put("officePhone", officePhone);
+			ActionContext.getContext().getSession().put("officeLocation", officeLocation);
+		}
+		else{
+			jsonData.put("code", "1");
+		}
 		return SUCCESS;
 	}
 	
@@ -192,6 +275,40 @@ public class CompanyManagerAction extends ActionSupport{
 	 * @return
 	 */
 	public String updatePass(){
+		jsonData = new HashMap<String,Object>();		
+		System.out.println("password:"+password);
+		System.out.println("newpassword:"+newpassword);
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		//login to test if username is ture?
+		if(companyManagerService.login(username, password)){
+			companyManagerService.updatePass(username,newpassword);
+			jsonData.put("code", "0");
+		}
+		else{
+			jsonData.put("code", "-1");
+		}
+		return SUCCESS;
+	}
+	
+	public String getInfo(){
+		jsonData = new HashMap<String,Object>();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		CompanyAndCompanyAdmin u = companyManagerService.getInfo(username);
+		if(u == null){
+			jsonData.put("code", "-1"); 
+		}
+		else{
+			u.setPassword("");//
+			jsonData.put("code", "0");
+			jsonData.put("user", u);
+			ActionContext.getContext().getSession().put("name", name);
+		}
+		//System.out.println(u);
+		
+		return SUCCESS;
+	}
+	
+	public String getAllInfo(){
 		
 		return SUCCESS;
 	}

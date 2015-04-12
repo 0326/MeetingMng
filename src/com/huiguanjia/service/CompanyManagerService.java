@@ -1,6 +1,10 @@
 package com.huiguanjia.service;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
+
 
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.CompanyAndCompanyAdminDao;
@@ -18,6 +22,10 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return boolean；若存在，返回true
 	 */
+	
+	private static SessionFactory sf = new  AnnotationConfiguration().configure().buildSessionFactory();
+	private Session session;
+	
 	public boolean usernameRepeat(String username)
 	{
 		boolean res;
@@ -122,12 +130,39 @@ public class CompanyManagerService {
 			return false;
 	}
 	
+	
+	public CompanyAndCompanyAdmin getInfo(String username){	
+		session = sf.openSession();
+		session.beginTransaction();
+		String qstr = "select u from CompanyAndCompanyAdmin u where u.username = :name";
+		Query q = session.createQuery(qstr);
+		q.setParameter("name", username);
+		if(q.list().size() == 1){
+			return (CompanyAndCompanyAdmin)q.list().get(0);
+		}
+		session.close();
+		return null;
+	}
+	
 	/**
 	 * @info 修改账号信息，action层直接传pojo对象来获取数据
 	 * @param admin
 	 * @return
 	 */
 	public boolean updateInfo(CompanyAndCompanyAdmin admin){
+		session = sf.openSession();
+		session.beginTransaction();
+		String hqlstr="update companyAndCompanyAdmin u set u.name=:name,u.email=:email,u.cellphone=:cellphone,u.officePhone=:officePhone,u.officeLocation=:officeLocation where u.username=:username";
+		Query q = session.createQuery(hqlstr);
+		q.setParameter("name", admin.getName());
+		q.setParameter("email", admin.getEmail());
+		q.setParameter("cellphone",admin.getCellphone());
+		q.setParameter("officePhone",admin.getOfficePhone());
+		q.setParameter("officeLocation",admin.getOfficeLocation());
+
+		q.executeUpdate();
+		session.getTransaction().commit();
+		session.close();
 		
 		return true;
 	}
@@ -138,8 +173,18 @@ public class CompanyManagerService {
 	 * @param newpass String 新密码
 	 * @return
 	 */
-	public boolean updatePass(CompanyAndCompanyAdmin admin,String newpass){
-		
+	public boolean updatePass(String username,String newpassword){
+		System.out.println(username);
+		System.out.println(newpassword);
+		session = sf.openSession();
+		session.beginTransaction();
+		String hqlstr="update CompanyAndCompanyAdmin u set u.password=:password where u.username=:username";
+		Query q = session.createQuery(hqlstr);
+		q.setParameter("username", username);
+		q.setParameter("password", newpassword);
+		q.executeUpdate();
+		session.getTransaction().commit();
+		session.close();
 		return true;
 	}
 }
