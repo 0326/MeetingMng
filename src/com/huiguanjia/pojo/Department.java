@@ -68,7 +68,7 @@ public class Department implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parentId", nullable = false)
+	@JoinColumn(name = "parentId", nullable = true)
 	public Department getDepartment() {
 		return this.department;
 	}

@@ -78,7 +78,7 @@ public class BaseDAO{
     */
 	public List<?> findObjectByHql(String hql,Object[] values){
         List<?> list = null;	
-			Query query = SessionDAO.getSession().createQuery(hql);
+            Query query = SessionDAO.getSession().createQuery(hql);
 			if (values != null) {
 				int j = values.length;
 				for (int i = 0; i < j; i++) {

@@ -133,9 +133,5 @@ public class CompanyAndCompanyAdminDao {
 		return res;
 	}
 	
-	public static void main(String[] args) {
-		CompanyAndCompanyAdminDao cd= new CompanyAndCompanyAdminDao();
-		cd.usernameExist("123");
-		
-	}
+	
 }

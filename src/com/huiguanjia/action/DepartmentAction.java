@@ -36,8 +36,17 @@ public class DepartmentAction extends ActionSupport{
 		
 		CompanyAndCompanyAdmin ca = new CompanyAndCompanyAdmin();
 		ca.setUsername(companyId);
-		Department parentDepart = new Department();
-		parentDepart.setDepartmentId(Integer.valueOf(parentId));
+		
+		Department parentDepart;
+		if(0 == parentId)
+		{
+			parentDepart = null;
+		}
+		else
+		{
+			parentDepart = new Department();
+			parentDepart.setDepartmentId(Integer.valueOf(parentId));
+		}
 		
 		Department depart = new Department(ca,parentDepart,departmentName,Integer.valueOf(depth));
 		
@@ -96,13 +105,14 @@ public class DepartmentAction extends ActionSupport{
 	
 	public String findByCompanyId(){
 		jsonData = new HashMap<String,Object>();
-		Department depart = new Department(companyId,departmentName,parentId,depth);
-		DepartmentService departService = new DepartmentService();
-		if(false == departService.update(depart)){
-			jsonData.put("code", "-1");
+		DepartmentService ds = new DepartmentService();
+		String departmentList = ds.findByCompanyId(companyId);
+		
+		if(null == departmentList){
+			jsonData.put("departments", "");
 		}
 		else{
-			jsonData.put("code", "0");
+			jsonData.put("departments", departmentList);
 		}
 		
 		return SUCCESS;
