@@ -18,27 +18,53 @@ public class CompanyAndCompanyAdmin implements java.io.Serializable {
 
 	// Fields
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String companyName;
 	private Industry industry;
 	private ProvinceAndCity provinceAndCity;
+	private String officeLocation;
 	private String username;
+	
 	private String password;
-	private Date registerTime;
-	private boolean isLogin;
 	private String email;
 	private String name;
 	private boolean sex;
 	private String officePhone;
-	private String avatarUrl;
-	private String officeLocation;
+	private String avatarUrl;	
 	private String cellphone;
+	
+	private Date registerTime;
+	private boolean isLogin;
 
 	// Constructors
-
 	/** default constructor */
 	public CompanyAndCompanyAdmin() {
 	}
-
+	/*
+	//companyAndCompanyAdmin修改密码
+	public CompanyAndCompanyAdmin(String username,String newpassword) {
+		this.username = username;
+		this.password = newpassword;
+	}
+	
+	
+	 // companyAndCompanyManager修改个人基本信息
+	public CompanyAndCompanyAdmin(String username,String email,String name,boolean sex,
+			String officePhone,String avatarUrl,String cellphone) {
+		this.username = username;
+		this.name = name;
+		this.email = email;
+		this.cellphone = cellphone;
+		this.avatarUrl = avatarUrl;
+		this.officePhone = officePhone;
+		this.sex = sex;
+	}
+	*/
+	
+	
 	/** minimal constructor */
 	public CompanyAndCompanyAdmin(String companyName, Industry industry,
 			ProvinceAndCity provinceAndCity, String username,

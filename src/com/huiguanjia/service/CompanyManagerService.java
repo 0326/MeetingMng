@@ -3,6 +3,7 @@ package com.huiguanjia.service;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 
@@ -13,6 +14,7 @@ import com.huiguanjia.dao.ProvinceAndCityDao;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.dao.TempCompanyAndCompanyAdminDao;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
+import com.huiguanjia.pojo.Department;
 import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
 
 public class CompanyManagerService {
@@ -22,8 +24,9 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return boolean；若存在，返回true
 	 */
-	
-	private static SessionFactory sf = new  AnnotationConfiguration().configure().buildSessionFactory();
+	private static SessionFactory sf = new  AnnotationConfiguration()
+	.configure()
+	.buildSessionFactory();
 	private Session session;
 	
 	public boolean usernameRepeat(String username)
@@ -132,40 +135,50 @@ public class CompanyManagerService {
 	
 	
 	public CompanyAndCompanyAdmin getInfo(String username){	
-		session = sf.openSession();
-		session.beginTransaction();
-		String qstr = "select u from CompanyAndCompanyAdmin u where u.username = :name";
-		Query q = session.createQuery(qstr);
-		q.setParameter("name", username);
-		if(q.list().size() == 1){
-			return (CompanyAndCompanyAdmin)q.list().get(0);
-		}
-		session.close();
-		return null;
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+		CompanyAndCompanyAdmin admin = new CompanyAndCompanyAdmin();
+		CompanyAndCompanyAdmin ca = (CompanyAndCompanyAdmin)b.findObjectById(CompanyAndCompanyAdmin.class, username);
+		
+		if(null == ca)
+			return null;
+		else 
+			return ca;
 	}
+	
 	
 	/**
 	 * @info 修改账号信息，action层直接传pojo对象来获取数据
 	 * @param admin
 	 * @return
 	 */
-	public boolean updateInfo(CompanyAndCompanyAdmin admin){
-		session = sf.openSession();
-		session.beginTransaction();
-		String hqlstr="update companyAndCompanyAdmin u set u.name=:name,u.email=:email,u.cellphone=:cellphone,u.officePhone=:officePhone,u.officeLocation=:officeLocation where u.username=:username";
-		Query q = session.createQuery(hqlstr);
-		q.setParameter("name", admin.getName());
-		q.setParameter("email", admin.getEmail());
-		q.setParameter("cellphone",admin.getCellphone());
-		q.setParameter("officePhone",admin.getOfficePhone());
-		q.setParameter("officeLocation",admin.getOfficeLocation());
+	public boolean updateInfo(String username,String email,String name,boolean sex,String officePhone,String avatarUrl,String cellphone){
+		boolean res;
 
-		q.executeUpdate();
-		session.getTransaction().commit();
-		session.close();
+		BaseDAO b = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		try
+		{
+			String hql = "update CompanyAndCompanyAdmin u set u.email=?,u.name=?,u.sex=?,u.officePhone=?,u.avatarUrl=?,u.cellphone=?" +
+					"where u.username=?";
+			Object[] values = new Object[]{email,name,sex,officePhone,avatarUrl,cellphone,username};
+			b.updateObjectByHql(hql,values);
+			ts.commit();
+			res = true;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = false;
+			System.out.println(e);
+		}
 		
-		return true;
+		SessionDAO.closeSession();
+		
+		return res;
 	}
+
 
 	/**
 	 * @info 修改密码
@@ -173,18 +186,29 @@ public class CompanyManagerService {
 	 * @param newpass String 新密码
 	 * @return
 	 */
-	public boolean updatePass(String username,String newpassword){
-		System.out.println(username);
-		System.out.println(newpassword);
-		session = sf.openSession();
-		session.beginTransaction();
-		String hqlstr="update CompanyAndCompanyAdmin u set u.password=:password where u.username=:username";
-		Query q = session.createQuery(hqlstr);
-		q.setParameter("username", username);
-		q.setParameter("password", newpassword);
-		q.executeUpdate();
-		session.getTransaction().commit();
-		session.close();
-		return true;
+	public boolean updatePass(String username,String password){
+		boolean res;
+
+		BaseDAO b = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		try
+		{
+			String hql = "update CompanyAndCompanyAdmin u set u.password=? where u.username=?";
+			Object[] values = new Object[]{password,username};
+			b.updateObjectByHql(hql,values);
+			ts.commit();
+			res = true;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = false;
+			System.out.println(e);
+		}
+		
+		SessionDAO.closeSession();
+		
+		return res;
 	}
 }
