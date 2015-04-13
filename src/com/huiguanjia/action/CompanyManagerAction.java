@@ -19,8 +19,9 @@ public class CompanyManagerAction extends ActionSupport{
 	private String email;
 	private String name;
 	private String officePhone;
-	private String officeLocation;
 	private String cellphone;
+	private String avatarUrl;
+	private boolean sex;
 	
 	private String username;
 	private String password;
@@ -53,14 +54,6 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	public void setOfficePhone(String officePhone) {
 		this.officePhone = officePhone;
-	}
-	
-	public String getOfficeLocation(){
-		return officeLocation;
-	} 
-	
-	public void setOfficeLocation(String officeLocation) {
-		this.officeLocation = officeLocation;
 	}
 	
 	public String getCellphone(){
@@ -241,31 +234,20 @@ public class CompanyManagerAction extends ActionSupport{
 	 */
 	
 	public String updateInfo(){
-		CompanyAndCompanyAdmin companyAndCompanyAdmin =new CompanyAndCompanyAdmin();
-		//companyAndCompanyAdmin.setHeadimg(headimg);
-		companyAndCompanyAdmin.setName(name);
-		companyAndCompanyAdmin.setEmail(email);
-		companyAndCompanyAdmin.setCellphone(cellphone);
-		companyAndCompanyAdmin.setOfficePhone(officePhone);
-		companyAndCompanyAdmin.setOfficeLocation(officeLocation);
-		
-		
-		System.out.println(companyAndCompanyAdmin);
-		CompanyManagerService companyManagerService = new CompanyManagerService();
-		companyManagerService.updateInfo(companyAndCompanyAdmin);
-		
 		jsonData = new HashMap<String,Object>();
-		if(companyManagerService.updateInfo(companyAndCompanyAdmin) == true){
+		
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		if( companyManagerService.updateInfo(username,email,name,sex,officePhone,avatarUrl,cellphone)){
 			jsonData.put("code", "0");
-			//ActionContext.getContext().getSession().put("headimg", headimg);
-			ActionContext.getContext().getSession().put("name", name);
-			ActionContext.getContext().getSession().put("email", email);
-			ActionContext.getContext().getSession().put("cellphone", cellphone);
-			ActionContext.getContext().getSession().put("officePhone", officePhone);
-			ActionContext.getContext().getSession().put("officeLocation", officeLocation);
+			jsonData.put("username",username);
+			jsonData.put("email",email);
+			jsonData.put("sex", sex);
+			jsonData.put("officePhone", officePhone);
+			jsonData.put("avatarUrl", avatarUrl);
+			jsonData.put("cellphone",cellphone);
 		}
 		else{
-			jsonData.put("code", "1");
+			jsonData.put("code", "-1");
 		}
 		return SUCCESS;
 	}
@@ -273,22 +255,37 @@ public class CompanyManagerAction extends ActionSupport{
 	/**
 	 * @info 淇敼瀵嗙爜
 	 * @return
+	 * String companyName, Industry industry,
+			ProvinceAndCity provinceAndCity, String username,
+			String password, Date registerTime, boolean isLogin, String name,
+			boolean sex, String avatarUrl
 	 */
 	public String updatePass(){
-		jsonData = new HashMap<String,Object>();		
+		jsonData = new HashMap<String,Object>();	
+		String apassword = (String) ActionContext.getContext().getSession().get("password");
+		/*
+		Industry aindustry = (Industry) ActionContext.getContext().getSession().get("industry");
+		ProvinceAndCity aprovinceAndCity = (ProvinceAndCity) ActionContext.getContext().getSession().get("provinceAndCity");
+		String ausername = (String) ActionContext.getContext().getSession().get("username");
+		*/
+		
 		System.out.println("password:"+password);
 		System.out.println("newpassword:"+newpassword);
+		
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		//login to test if username is ture?
-		if(companyManagerService.login(username, password)){
-			companyManagerService.updatePass(username,newpassword);
+		if(!apassword.equals(password)){
+			jsonData.put("code","-10411");
+		}
+		else if(companyManagerService.updatePass(username,newpassword)){
 			jsonData.put("code", "0");
 		}
 		else{
-			jsonData.put("code", "-1");
+			jsonData.put("code", "-10412");
 		}
 		return SUCCESS;
 	}
+	
 	
 	public String getInfo(){
 		jsonData = new HashMap<String,Object>();
@@ -298,10 +295,16 @@ public class CompanyManagerAction extends ActionSupport{
 			jsonData.put("code", "-1"); 
 		}
 		else{
-			u.setPassword("");//
-			jsonData.put("code", "0");
+			/*
+			 * jsonData.put("code", "0");
+			jsonData.put("name",name);
+			jsonData.put("email",email);
+			jsonData.put("cellphone",cellphone);
+			jsonData.put("officeLocation",officeLocation);
+			jsonData.put("officePhone",officePhone);
+			*/
 			jsonData.put("user", u);
-			ActionContext.getContext().getSession().put("name", name);
+			//ActionContext.getContext().getSession().put("name", name);
 		}
 		//System.out.println(u);
 		

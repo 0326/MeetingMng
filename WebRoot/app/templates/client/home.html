@@ -1,0 +1,31 @@
+<div class="page-head">
+	<ul class="button-group even-3">
+	  <li><a href="#/?x=1" class="button">所有会议</a></li>
+	  <li><a href="#/?x=1" class="button">我参与的</a></li>
+	  <li><a href="#/?x=1" class="button">我创建的</a></li>
+	</ul>
+</div>
+<div class="page-content">
+	<table>
+	  <thead>
+	    <tr>
+	      <th>标题</th>
+	      <th>时间</th>
+	      <th>地点</th>
+	      <th>操作</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr ng-repeat="m in meetinglist">
+	      <td>{{m.title}}</td>
+	      <td>{{m.date}}</td>
+	      <td>{{m.addr}}</td>
+	      <td><a href="#/meeting-detail?mid={{m.id}}" class="button tiny">详细</a></td>
+	    </tr>
+	  </tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+
+</script>

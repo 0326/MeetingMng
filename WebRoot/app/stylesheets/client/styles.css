@@ -1,0 +1,53 @@
+html, body/*, .off-canvas-wrap, .off-canvas-wrap .inner-wrap, .main-section*/{
+  min-height: 100%;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family: 'STHeiti Light', 'STXihei', 'Microsoft YaHei', 'SimHei',Arial,sans-serif;;
+}
+
+table{ width: 100%;}
+
+.textarea-prefix{ margin: 0;padding: .5rem 1rem;}
+.button-sm{padding: .6rem 2rem;}
+.main-section{
+	padding:  2em 2em;
+  /*height: 500px;*/
+}
+
+.menu-head{
+	height: 2.8125rem;
+	padding: .4rem;
+	line-height: 2.8125rem;
+}
+.menu-head img{
+	height: 100%;
+	display: block;
+}
+.menu-avatar{
+	text-align: center;
+}
+.menu-avatar img{
+	display: block;
+	margin: 0 auto;
+	width: 100%;
+}
+
+.page-head{
+	text-align: center;
+}
+.page-content{
+	min-height: 800px;
+}
+
+
+#meetingnew form .error{
+	display: none;
+}
+#meetingnew form .columns{
+	padding-right: 0;
+	padding-left: 0;
+}
+#meetingnew form textarea{
+	height: 160px;
+}

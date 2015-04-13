@@ -11,19 +11,16 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("profileCtrl", function($scope, $cookieStore,$http, CompanyData, PostCfg) {
+.controller("profileCtrl", function($scope, CompanyData, userService) {
    $scope.company = CompanyData;
    $scope.userLogout = function(){
-    $http.post("/MeetingMng/api/v1/companyManagerLogout",{
+    userService.logout({
       username: $scope.company.username
-    },PostCfg).success(function(data){
-      $cookieStore.remove("username");
-      window.location.href = "/MeetingMng";
     });
    }
 })
 
-.controller("departmanageCtrl", function($scope, $http, departsData, CompanyData, PostCfg) {
+.controller("departmanageCtrl", function($scope, departmentService, departsData, CompanyData) {
   $scope.company = CompanyData;
   $scope.departs = departsData;
   $scope.depart = {};
@@ -66,19 +63,21 @@ var mControllers = angular.module("mControllers", [])
       parentId: 1,
       depth:1
     }
-
-    $http.post('/MeetingMng/api/v1/manage/department/add', department, PostCfg)
-    .success(function(data){
-        console.log(data);
-        refreshTree();
-    });
-    
-  }
-  $scope.deleteForm = function(){
-    $http.post('/MeetingMng/api/v1/manage/department/delete',$scope.currdepart, PostCfg)
-    .success(function(data){
+    if(departmentService.add(department)){
       refreshTree();
-    });
+    }
+  }
+
+  $scope.deleteForm = function(){
+    var department = {
+      companyId: $scope.company.username,
+      departmentName: $scope.depart.text,
+      parentId: 1,
+      depth:1
+    }
+    if(departmentService.delete(department)){
+      refreshTree();
+    }
   }
 
 
@@ -119,47 +118,4 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.constant('PostCfg',{
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-  transformRequest: function(data) {
-      return $.param(data);
-  }
-})
 
-.constant('departsData',[
-    {
-      text: "研发部",
-      icon: "glyphicon glyphicon-stop",
-      backColor: "#eee",
-      href: "#node",
-      nodes: [
-        {
-          text: "移动客户端开发",
-          nodes: [
-            {
-              text: "安卓组"
-            },
-            {
-              text: "IOS组"
-            }
-          ]
-        },
-        {
-          text: "后台开发"
-        }
-      ]
-    },
-    {
-      text: "财务部",
-      backColor: "#eee",
-      href: "#node",
-      nodes: [
-        {text: "财务组"}
-      ]
-    },
-    {
-      text: "运营部",
-      backColor: "#eee",
-      href: "#node"
-    },
-  ])
