@@ -8,7 +8,7 @@ angular.module("appmanage", ["ngRoute", "ngAnimate", "ngCookies",
 		// window.location.href="/MeetingMng";
 	}
 	var company = {};
-  company.companyName = "软酷管家科技有限公司";
+  company.companyName = "会管家科技责任有限公司";
   company.username = $cookieStore.get("username") || "test@mm.com";
   company.avatarUrl = "app/images/userimg.jpg";
   // console.log(company);
