@@ -1,5 +1,7 @@
 package com.huiguanjia.service;
 
+import java.util.Date;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,6 +18,7 @@ import com.huiguanjia.dao.TempCompanyAndCompanyAdminDao;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
+import com.huiguanjia.pojo.OrdinaryUser;
 
 public class CompanyManagerService {
 
@@ -211,4 +214,29 @@ public class CompanyManagerService {
 		
 		return res;
 	}
+	
+	public boolean addOrdinaryUser(OrdinaryUser u){
+		
+		boolean res;
+		BaseDAO aDAO = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		try
+		{
+			aDAO.saveObject(u);
+			ts.commit();
+			res = true;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = false;
+			System.out.println(e);
+		}
+		
+		SessionDAO.closeSession();
+		
+		return res;
+	}
+	
 }
