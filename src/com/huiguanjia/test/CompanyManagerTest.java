@@ -1,6 +1,7 @@
 package com.huiguanjia.test;
 
 import java.util.Date;
+import java.util.List;
 
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
@@ -24,9 +25,8 @@ public class CompanyManagerTest {
 		
 		return flag;
 	}
-	
-	public static void main(String[] args){
-		CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
+	/*
+	 * CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
 		c.setUsername("1833559609@qq.com");
 
 		Department d = new Department();
@@ -52,5 +52,25 @@ public class CompanyManagerTest {
 		u.setWorkNo("7");
 		
 		CompanyManagerTest.addTest(u);
+		
+	 */
+	
+	public static List<OrdinaryUser> getAllInfo(String username){
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.getAllInfo(username) != null){
+			flag = true;
+			System.out.println("succeed");
+			}
+		else{
+			System.out.println("failed");
+		}
+		
+		return cs.getAllInfo(username);
+	}
+	public static void main(String[] args){
+		System.out.print(CompanyManagerTest.getAllInfo("1833559609@qq.com"));
+	    
 	}
 }

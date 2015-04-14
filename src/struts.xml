@@ -151,6 +151,11 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action> 	
+    	<action name="companyManagerGetAllInfo" class="com.huiguanjia.action.CompanyManagerAction" method="getAllInfo">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action> 
  	 </package>
 
 </struts>    

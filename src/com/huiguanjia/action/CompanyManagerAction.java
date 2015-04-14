@@ -3,6 +3,7 @@ package com.huiguanjia.action;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -302,7 +303,7 @@ public class CompanyManagerAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		if( companyManagerService.updateInfo(username,email,name,sex,officePhone,avatarUrl,cellphone)){
+		if( companyManagerService.updateInfo(username,email,name,sex,officePhone,avatarUrl,cellphone,officeLocation)){
 			jsonData.put("code", "0");
 			jsonData.put("username",username);
 			jsonData.put("email",email);
@@ -310,6 +311,7 @@ public class CompanyManagerAction extends ActionSupport{
 			jsonData.put("officePhone", officePhone);
 			jsonData.put("avatarUrl", avatarUrl);
 			jsonData.put("cellphone",cellphone);
+			jsonData.put("officeLocation",officeLocation);
 		}
 		else{
 			jsonData.put("code", "-1");
@@ -377,7 +379,16 @@ public class CompanyManagerAction extends ActionSupport{
 	}
 	
 	public String getAllInfo(){
-		
+		jsonData = new HashMap<String,Object>();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		List<OrdinaryUser> u = companyManagerService.getAllInfo(username);
+		if(u == null){
+			jsonData.put("code", -10416); 
+		}
+		else{
+			jsonData.put("user", u);
+			
+		}
 		return SUCCESS;
 	}
 	
@@ -415,6 +426,12 @@ public class CompanyManagerAction extends ActionSupport{
 		else {
 			jsonData.put("code", -10415);
 		}
+		
+		return SUCCESS;
+	}
+	
+	
+	public updateOrdinaryUser(){
 		
 		return SUCCESS;
 	}
