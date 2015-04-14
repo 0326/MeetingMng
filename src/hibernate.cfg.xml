@@ -29,6 +29,7 @@
 		<mapping class="com.huiguanjia.pojo.CompanyAndCompanyAdmin" />
 		<mapping class="com.huiguanjia.pojo.TempCompanyAndCompanyAdmin" />
 		<mapping class="com.huiguanjia.pojo.Department" />
+		<mapping class="com.huiguanjia.pojo.OrdinaryUser" />
 	</session-factory>
 
 </hibernate-configuration>

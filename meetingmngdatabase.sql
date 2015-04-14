@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-09 17:15:43
+Date: 2015-04-14 09:12:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,11 +78,17 @@ CREATE TABLE `department` (
   KEY `FK_department_parentId` (`parentId`),
   CONSTRAINT `FK_department_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_department_parentId` FOREIGN KEY (`parentId`) REFERENCES `department` (`departmentId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of department
 -- ----------------------------
+INSERT INTO `department` VALUES ('1', '1833559609@qq.com', '总裁办公室', null, '1');
+INSERT INTO `department` VALUES ('2', '1833559609@qq.com', '财务部', null, '1');
+INSERT INTO `department` VALUES ('3', '1833559609@qq.com', '秘书部', '1', '2');
+INSERT INTO `department` VALUES ('4', '1833559609@qq.com', '管家部', '1', '2');
+INSERT INTO `department` VALUES ('5', '1833559609@qq.com', '私人秘书部', '3', '3');
+INSERT INTO `department` VALUES ('6', '1833559609@qq.com', '财务1部', '2', '2');
 
 -- ----------------------------
 -- Table structure for industry
@@ -168,23 +174,26 @@ INSERT INTO `industry` VALUES ('90005', '运输/铁路/航空', '贸易物流行
 DROP TABLE IF EXISTS `ordinary_user`;
 CREATE TABLE `ordinary_user` (
   `cellphone` varchar(15) NOT NULL,
-  `isCellphoneHide` tinyint(1) NOT NULL,
+  `isCellphoneHide` tinyint(1) NOT NULL DEFAULT '1',
   `name` varchar(20) NOT NULL,
-  `companyName` varchar(50) NOT NULL,
-  `departmentNo` char(30) NOT NULL,
+  `companyId` varchar(80) NOT NULL,
+  `departmentId` int(11) NOT NULL,
   `password` varchar(15) NOT NULL,
   `isRegister` tinyint(1) NOT NULL,
-  `isLogin` tinyint(1) NOT NULL,
-  `registerTime` datetime NOT NULL,
+  `registerTime` datetime DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
-  `isBindEmail` tinyint(1) NOT NULL,
-  `sex` tinyint(1) NOT NULL,
+  `isBindEmail` tinyint(1) NOT NULL DEFAULT '0',
+  `sex` tinyint(1) NOT NULL DEFAULT '1',
   `officePhone` varchar(20) DEFAULT NULL,
-  `position` varchar(30) DEFAULT NULL,
+  `job` varchar(30) DEFAULT NULL,
   `avatarUrl` varchar(80) NOT NULL,
   `officeLocation` varchar(80) DEFAULT NULL,
   `workNo` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`cellphone`)
+  PRIMARY KEY (`cellphone`),
+  KEY `FK_ordinary_company_companyId` (`companyId`),
+  KEY `FK_ordinary_department_departmentId` (`departmentId`),
+  CONSTRAINT `FK_ordinary_department_departmentId` FOREIGN KEY (`departmentId`) REFERENCES `department` (`departmentId`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `FK_ordinary_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

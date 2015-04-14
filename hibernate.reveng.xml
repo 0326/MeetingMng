@@ -28,4 +28,9 @@
 	<table name="department" catalog="meetingmngdatabase">
 		<column name="departmentName"></column>
 	</table>
+<table name="ordinary_user" catalog="meetingmngdatabase">
+	<primary-key>
+		<generator class="assigned"></generator>
+	</primary-key>
+</table>
 </hibernate-reverse-engineering>
