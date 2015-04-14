@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="app/bower_components/foundation-5.5.1/css/normalize.css">
     <link rel="stylesheet" href="app/bower_components/foundation-5.5.1/css/foundation.min.css">
     <link rel="stylesheet" href="app/bower_components/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="app/bower_components/messenger-1.4.1/build/css/messenger.css">
+    <link rel="stylesheet" href="app/bower_components/messenger-1.4.1/build/css/messenger-theme-flat.css">
+
     <link rel="stylesheet" href="app/stylesheets/client/styles.css">
 
     <script src="app/bower_components/jquery/jquery.min.js"></script>
@@ -26,7 +29,7 @@
 	  <div class="inner-wrap">
 	    <nav class="tab-bar">
 	      <section class="left-small">
-	        <a class="left-off-canvas-toggle menu-icon" href="#/"><span></span></a>
+	        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
 	      </section>
 
 	      <section class="middle tab-bar-section">
@@ -34,7 +37,7 @@
 	      </section>
 
 	      <section class="right-small">
-	        <a class="right-off-canvas-toggle menu-icon" href="#"><span></span></a>
+	        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
 	      </section>
 	    </nav>
 
@@ -82,10 +85,15 @@
 	<script src="app/javascripts/client/filters.js"></script> 
 	<script src="app/javascripts/client/services.js"></script>
 
+	<script src="app/bower_components/messenger-1.4.1/build/js/messenger.js"></script>
+	<script src="app/bower_components/messenger-1.4.1/build/js/messenger-theme-flat.js"></script>
+	<script src="app/javascripts/client/messenger.js"></script>
+
+
 	<script type="text/javascript">
-		$('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
-		// $(document).foundation();
-		$(document).foundation('main-section', 'reflow');
+		// $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
+		$(document).foundation();
+		// $(document).foundation('main-section', 'reflow');
 	</script>
 </body>
 </html>

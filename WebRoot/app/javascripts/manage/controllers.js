@@ -1,85 +1,81 @@
 // controllers.js
 var mControllers = angular.module("mControllers", [])
 
-.controller("companyCtrl", function($scope, CompanyData) {
-  $scope.company = CompanyData;
-
+.controller("sidemenuCtrl", function($scope, $cookieStore, userService, CompanyData) {
+  $scope.company = CompanyData.getAll();
 })
  
 .controller("homeCtrl", function($scope, CompanyData) {
-   $scope.company = CompanyData;
+   $scope.company = CompanyData.getAll();
 
 })
 
 .controller("profileCtrl", function($scope, CompanyData, userService) {
-   $scope.company = CompanyData;
+   $scope.company = CompanyData.getAll();
+   console.log($scope.company);
    $scope.userLogout = function(){
     userService.logout({
       username: $scope.company.username
     });
    }
+
+   $scope.updatePass = function(){
+    userService.updatePass($scope.company.username,$scope.company.password,$scope.company.newpassword);
+   }
+
+   $scope.updateInfo = function(){
+    userService.updateInfo($scope.company);
+   }
 })
 
-.controller("departmanageCtrl", function($scope, departmentService, departsData, CompanyData) {
-  $scope.company = CompanyData;
-  $scope.departs = departsData;
-  $scope.depart = {};
+.controller("departmanageCtrl", function($scope, departmentService, CompanyData) {
+  $scope.company = CompanyData.getAll(); //公司用户信息
+  $scope.departlist = {}; //公司所有部门
+  $scope.newdepart = {
+    username: $scope.company.username
+  };//添加的新部门信息
   $scope.currdepart ={
-    text: $scope.company.companyName,
-    id: "departmentID",
-    nodes: $scope.departs,
-    totalStuff: 102
-  };
-  
-  function refreshTree(){
-    $http.post('/MeetingMng/api/v1/manage/department/getAll', {
-      companyId: $scope.company.username,
-    }, PostCfg)
-    .success(function(data){
-        departsData = data.departsData;
-    });
+    username: $scope.company.username,
+    departmentName: $scope.company.companyName,
+    departmentId: -1,
+    parentId: -1,
+    depth: 0
+  };//当前操作部门,初始化为整个公司信息
 
-    $("#departstree").treeview({data: departsData});
-  }
-  
-  $('#departstree').treeview({
-    // data: departsData,
-    onNodeSelected: function(event, data) {
-      $scope.$apply(function(){
-        $scope.currdepart.text = data.text;
-        $scope.currdepart.nodes = data.nodes;
-        $scope.currdepart.totalStuff = 4;
-        $scope.currdepart.charge = "李全蛋";
-      })
-    }
+  departmentService
+  .getDepartments()
+  .then(function(data){
+    //初始化departlist
+    $scope.departlist = data;
+    //初始化部门树形图
+    $('#departstree').treeview({
+      data: $scope.departlist,
+      onNodeSelected: function(event, data) {
+        $scope.$apply(function(){
+          $scope.currdepart.departmentName = data.text;
+          $scope.currdepart.departmentId = data.departmentId;
+          $scope.currdepart.parentId = data.parentId;
+          $scope.currdepart.depth = data.depth;
+
+          $scope.currdepart.nodes = data.nodes;
+          $scope.currdepart.totalStuff = 40;
+          $scope.currdepart.charge = "李全蛋";
+
+          $scope.newdepart.depth = $scope.currdepart.depth + 1;
+          $scope.newdepart.parentId = $scope.currdepart.departmentId;
+
+          console.log($scope.currdepart);
+        })
+      }
+    });
+    console.log($scope.departlist);
   });
 
-  refreshTree();
-
+  // departmentService.refreshTree($scope.company.username);
   $scope.submitAddForm = function(isValid){
-    var department = {
-      companyId: $scope.company.username,
-      departmentName: $scope.depart.text,
-      parentId: 1,
-      depth:1
-    }
-    if(departmentService.add(department)){
-      refreshTree();
-    }
+    departmentService.add($scope.newdepart);
+    console.log($scope.newdepart);
   }
-
-  $scope.deleteForm = function(){
-    var department = {
-      companyId: $scope.company.username,
-      departmentName: $scope.depart.text,
-      parentId: 1,
-      depth:1
-    }
-    if(departmentService.delete(department)){
-      refreshTree();
-    }
-  }
-
 
 })
 
@@ -117,5 +113,3 @@ var mControllers = angular.module("mControllers", [])
 .controller("statstuffCtrl", function($scope, CompanyData) {
 
 })
-
-
