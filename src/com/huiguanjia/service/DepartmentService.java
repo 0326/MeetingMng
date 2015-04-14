@@ -18,10 +18,10 @@ public class DepartmentService {
 	
 	public class DepartmentNode{
 		private int departmentId;
-		private String departmentName;
+		private String text;
 		private int depth;
 		private int parentId;
-		private List<DepartmentNode> children;
+		private List<DepartmentNode> nodes;
 		
 		public int getDepartmentId() {
 			return departmentId;
@@ -29,11 +29,11 @@ public class DepartmentService {
 		public void setDepartmentId(int departmentId) {
 			this.departmentId = departmentId;
 		}
-		public String getDepartmentName() {
-			return departmentName;
+		public String getText() {
+			return text;
 		}
-		public void setDepartmentName(String departmentName) {
-			this.departmentName = departmentName;
+		public void setText(String text) {
+			this.text = text;
 		}
 		public int getDepth() {
 			return depth;
@@ -47,11 +47,11 @@ public class DepartmentService {
 		public void setParentId(int parentId) {
 			this.parentId = parentId;
 		}
-		public List<DepartmentNode> getChildren() {
-			return children;
+		public List<DepartmentNode> getNodes() {
+			return nodes;
 		}
-		public void setChildren(List<DepartmentNode> children) {
-			this.children = children;
+		public void setNodes(List<DepartmentNode> nodes) {
+			this.nodes = nodes;
 		}
 		
 	}
@@ -151,7 +151,7 @@ public class DepartmentService {
 				Department tmp = (Department)it.next();
 				DepartmentNode tmpNode = new DepartmentNode();
 				tmpNode.setDepartmentId(tmp.getDepartmentId());
-				tmpNode.setDepartmentName(tmp.getDepartmentName());
+				tmpNode.setText(tmp.getDepartmentName());
 				tmpNode.setDepth(tmp.getDepth());
 				if(null == tmp.getDepartment())
 					tmpNode.setParentId(-1);
@@ -200,9 +200,9 @@ public class DepartmentService {
 							tmpParentNode = departmentList.get(j);
 							if(tmpNode.getParentId() == tmpParentNode.getDepartmentId())
 							{
-								if(null == tmpParentNode.getChildren())  
-					                tmpParentNode.setChildren(new ArrayList<DepartmentNode>());  
-					            tmpParentNode.getChildren().add(tmpNode);
+								if(null == tmpParentNode.getNodes())  
+					                tmpParentNode.setNodes(new ArrayList<DepartmentNode>());  
+					            tmpParentNode.getNodes().add(tmpNode);
 					            
 					            break;
 							}
