@@ -2,7 +2,9 @@ package com.huiguanjia.service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import net.sf.json.JSONArray;
 
@@ -56,6 +58,33 @@ public class DepartmentService {
 		
 	}
 	
+	public class DepthNode{
+		private int departmentId;
+		private int depth;
+		
+		public int getDepartmentId() {
+			return departmentId;
+		}
+		public void setDepartmentId(int departmentId) {
+			this.departmentId = departmentId;
+		}
+		public int getDepth() {
+			return depth;
+		}
+		public void setDepth(int depth) {
+			this.depth = depth;
+		}
+		
+		public DepthNode(){
+		}
+		
+		public DepthNode(int departmentId,int depth)
+		{
+			this.departmentId = departmentId;
+			this.depth = depth;
+		}
+	}
+	
 	
 	/**
 	 * @info 添加部门
@@ -88,13 +117,35 @@ public class DepartmentService {
 	}
 	
 	/**
-	 * @info 删除部门
+	 * @info 删除部门及以该部门为根的子树中的所有部门
 	 * @param department
 	 * @return
 	 */
 	public boolean delete(int departmentId){
-		DepartmentDao d = new DepartmentDao();
-		return d.delete(departmentId);
+		boolean res;
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		
+		try{
+			String hql = "delete from Department where departmentId = ?";
+			Object[] values = new Object[]{departmentId};
+			
+			aBaseDao.deleteObjectByHql(hql, values);
+			
+			ts.commit();
+			res = true;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = false;
+			System.out.println(e);
+		}
+		
+		return res;
 	}
 	
 	/**
@@ -103,9 +154,89 @@ public class DepartmentService {
 	 * @return
 	 */
 	public boolean update(Department department){
+		boolean res;
 		
-		DepartmentDao d = new DepartmentDao();
-		return d.update(department);
+		int departmentId = department.getDepartmentId();
+		Department parentDepart = department.getDepartment();
+		String departmentName = department.getDepartmentName();
+		int depth = department.getDepth();
+		
+		int previousDepth;
+		int updatedDepth;
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		
+		try{
+			//储存该部门的原来的深度
+			String hql1 = "select d.depth from Department as d where d.departmentId = ?";
+			Object[] values1 = new Object[]{departmentId};
+			List<Integer> tmpList = (List<Integer>)aBaseDao.findObjectByHql(hql1, values1);
+			DepthNode aDepthNode = new DepthNode();
+			aDepthNode.setDepartmentId(departmentId);
+			aDepthNode.setDepth(tmpList.get(0));
+			
+			//更新该部门的信息
+			String hql2 = "update Department set department = ?,departmentName = ?,depth = ? where departmentId = ?";
+			Object[] values2 = new Object[]{parentDepart,departmentName,depth,departmentId};
+			
+			aBaseDao.updateObjectByHql(hql2, values2);
+			
+			//更新以该部门为根的子树的所有节点部门的深度
+			previousDepth = aDepthNode.getDepth();
+			updatedDepth = depth;
+			
+			Queue<DepthNode> queue = new LinkedList<DepthNode>();
+			queue.offer(aDepthNode);
+			
+			DepthNode parentNode;
+			
+			while(null != (parentNode = queue.poll()))
+			{
+				if((previousDepth+1) == parentNode.getDepth())
+				{
+					previousDepth += 1;
+					updatedDepth += 1;
+				}
+				
+				//将直接子部门加入到队列中
+				String hql3 = "select d.departmentId,d.depth from Department as d " +
+						"where d.department.departmentId = ?";
+				Object[] values3 = new Object[]{parentNode.getDepartmentId()};
+				List<Object[]> tmpList2 = (List<Object[]>)aBaseDao.findObjectByHql(hql3, values3);
+				Iterator it = tmpList2.iterator();
+				while(true == it.hasNext())
+				{
+					DepthNode tmpDepthNode2 = new DepthNode();
+					Object[] tmpObj = (Object[])it.next();
+					tmpDepthNode2.setDepartmentId((Integer)tmpObj[0]);
+					tmpDepthNode2.setDepth((Integer)tmpObj[1]);
+					
+					queue.offer(tmpDepthNode2);
+				}
+				
+				//更新该部门的深度
+				String hql4 = "update Department set depth = ? where departmentId = ?";
+				Object[] values4 = new Object[]{updatedDepth,parentNode.getDepartmentId()};
+				aBaseDao.updateObjectByHql(hql4, values4);
+				
+			}
+			
+			ts.commit();
+			res = true;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = false;
+			System.out.println(e);
+		}
+		
+		SessionDAO.closeSession();
+		
+		return res;
+		
 	}
 	
 

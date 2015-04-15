@@ -66,10 +66,10 @@ public class DepartmentAction extends ActionSupport{
 		
 		DepartmentService departService = new DepartmentService();
 		if(false == departService.delete(departmentId)){
-			jsonData.put("code", "-1");
+			jsonData.put("code", -1);
 		}
 		else{
-			jsonData.put("code", "0");
+			jsonData.put("code", 0);
 		}
 		
 		return SUCCESS;
@@ -77,13 +77,27 @@ public class DepartmentAction extends ActionSupport{
 	
 	public String update(){
 		jsonData = new HashMap<String,Object>();
-		Department depart = new Department(companyId,departmentName,parentId,depth);
+		
+		Department depart = new Department();
+		depart.setDepartmentId(departmentId);
+		depart.setDepartmentName(departmentName);
+		depart.setDepth(depth);
+		Department parentDepart;
+		if(-1 == parentId)
+			parentDepart = null;
+		else 
+		{
+			parentDepart = new Department();
+			parentDepart.setDepartmentId(parentId);
+		}
+		depart.setDepartment(parentDepart);
+		
 		DepartmentService departService = new DepartmentService();
 		if(false == departService.update(depart)){
-			jsonData.put("code", "-1");
+			jsonData.put("code", -1);
 		}
 		else{
-			jsonData.put("code", "0");
+			jsonData.put("code", 0);
 		}
 		
 		return SUCCESS;

@@ -1,5 +1,7 @@
 package com.huiguanjia.test;
 
+import java.util.HashMap;
+
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.service.DepartmentService;
@@ -45,5 +47,36 @@ public class DepartmentTest {
 			System.out.println(departmentList);
 		}
 	}
+	
+	public void updateTest()
+	{
+		Department depart = new Department();
+		depart.setDepartmentId(3);
+		depart.setDepartmentName("秘书总部");
+		depart.setDepth(3);
+		Department parentDepart = new Department();
+		parentDepart.setDepartmentId(4);
+		depart.setDepartment(parentDepart);
+		
+		DepartmentService departService = new DepartmentService();
+		if(false == departService.update(depart)){
+			System.out.println("更新部门失败");
+		}
+		else{
+			System.out.println("更新部门成功");
+		}
+		
+	}
 
+	public void deleteTest()
+	{
+		DepartmentService departService = new DepartmentService();
+		if(false == departService.delete(3)){
+			System.out.println("删除部门及其子部门失败");
+		}
+		else{
+			System.out.println("删除部门及其子部门成功");
+		}
+		
+	}
 }
