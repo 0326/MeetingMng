@@ -145,6 +145,8 @@ public class DepartmentService {
 			System.out.println(e);
 		}
 		
+		SessionDAO.closeSession();
+		
 		return res;
 	}
 	
