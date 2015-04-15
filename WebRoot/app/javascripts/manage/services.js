@@ -1,9 +1,9 @@
 // services.js
 var mServices = angular.module("mServices", [])
 
-.factory('userService',['$http', '$q', '$cookieStore', 'PostCfg', 
+.factory('userService',['$http', '$q', '$cookieStore', 'PostCfg',
   function($http, $q, $cookieStore, PostCfg){
-  	return {
+    var service = {
   		logout: function(user){
         $http.post("/MeetingMng/api/v1/companyManagerLogout", user, PostCfg)
         .success(function(data){
@@ -36,6 +36,7 @@ var mServices = angular.module("mServices", [])
         });
       },
       updateInfo: function(company){
+        var d = $q.defer();
         $http.post("/MeetingMng/api/v1/companyManagerUpdateInfo",company, PostCfg)
         .success(function(data){
           if(data.code != '0'){
@@ -43,11 +44,14 @@ var mServices = angular.module("mServices", [])
           }
           else{
             alert("修改成功！");
-          
+            d.resolve(data);
           }
         });
+        return d.promise;
       }
-  	};
+  	};//service end
+
+    return service;
   }
 ])
 
@@ -68,7 +72,7 @@ function($http, $q, PostCfg, CompanyData){
         service.refreshTree(currdepart.username);
         alert("添加成功！");
         $("#addModal").modal('hide');
-
+        service.refreshTree(currdepart.username);
       }
       else{
         alert("添加失败");
@@ -104,41 +108,3 @@ function($http, $q, PostCfg, CompanyData){
       return $.param(data);
   }
 })
-
-// .constant('departsData',[
-//   {
-//     text: "研发部",
-//     icon: "glyphicon glyphicon-stop",
-//     backColor: "#eee",
-//     href: "#node",
-//     nodes: [
-//       {
-//         text: "移动客户端开发",
-//         nodes: [
-//           {
-//             text: "安卓组"
-//           },
-//           {
-//             text: "IOS组"
-//           }
-//         ]
-//       },
-//       {
-//         text: "后台开发"
-//       }
-//     ]
-//   },
-//   {
-//     text: "财务部",
-//     backColor: "#eee",
-//     href: "#node",
-//     nodes: [
-//       {text: "财务组"}
-//     ]
-//   },
-//   {
-//     text: "运营部",
-//     backColor: "#eee",
-//     href: "#node"
-//   },
-// ])

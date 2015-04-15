@@ -3,6 +3,12 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("sidemenuCtrl", function($scope, $cookieStore, userService, CompanyData) {
   $scope.company = CompanyData.getAll();
+  //监听事件，随时广播
+  $scope.$on('CompanyDataChange',function(event, company){
+    console.log('this is in sidemenuCtrl:', company);
+    $scope.company = company;
+    $scope.$broadcast('CompanyDataBroadcast', company);
+  });
 })
  
 .controller("homeCtrl", function($scope, CompanyData) {
@@ -12,7 +18,7 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("profileCtrl", function($scope, CompanyData, userService) {
    $scope.company = CompanyData.getAll();
-   console.log($scope.company);
+   // console.log($scope.company);
    $scope.userLogout = function(){
     userService.logout({
       username: $scope.company.username
@@ -24,8 +30,24 @@ var mControllers = angular.module("mControllers", [])
    }
 
    $scope.updateInfo = function(){
-    userService.updateInfo($scope.company);
+    $scope.company.avatarUrl = $("#headimg100")[0].src;
+    // console.log($scope.company);
+    userService.updateInfo($scope.company)
+    .then(function(data){
+      CompanyData.setAvatarUrl($scope.company.avatarUrl);
+      CompanyData.setCellphone($scope.company.cellphone);
+      CompanyData.setEmail($scope.company.email);
+      CompanyData.setName($scope.company.name);
+      CompanyData.setOfficeLocation($scope.company.officeLocation);
+      CompanyData.setOfficePhone($scope.company.officePhone);
+      CompanyData.setSex($scope.company.sex);  
+
+      console.log('profileCtrl change data:', $scope.company);
+      $scope.$emit('CompanyDataChange',$scope.company);
+      // console.log(CompanyData);
+    });
    }
+
 })
 
 .controller("departmanageCtrl", function($scope, departmentService, CompanyData) {

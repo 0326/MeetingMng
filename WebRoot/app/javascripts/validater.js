@@ -20,7 +20,10 @@ author: Ling
 			});
 		},
 		password: function(val, classname){
-			if(val.length < 6){
+			if(val.length == 0 ){
+				showError(classname,"密码不能为空");
+			}
+			else if(val.length < 6){
 				showError(classname,"密码长度太短");
 			}
 			else{
@@ -35,6 +38,23 @@ author: Ling
 				hideError(classname);
 			}
 		},
+		phone: function(phone, classname){
+			// console.log(/^1[3|4|5|7|8][0-9]\d{8}$/.test($.trim(phone)));
+			if( /^1[3|4|5|7|8][0-9]\d{8}$/.test($.trim(phone)) == false ){
+				showError(classname, "手机格式不正确");
+			}
+			else{
+				hideError(classname);
+			}
+		},
+		notEmpty: function(val, classname){
+			if($.trim(val) == ""){
+				showError(classname, "此项不能为空");
+			}
+			else{
+				hideError(classname);
+			}
+		}
 		other: function(){
 
 		}
@@ -66,6 +86,14 @@ author: Ling
 			validater.repassword($(this).val(),$("#password").val(), "validater-repassword");
 		}
 		
+		else if($(this).hasClass("validater-phone")){
+			validater.phone($(this).val(),"validater-phone");
+		}
+
+		else if($(this).hasClass("validater-username")){
+			validater.notEmpty($(this).val(),"validater-username");
+		}
+
 		else{
 			
 		}

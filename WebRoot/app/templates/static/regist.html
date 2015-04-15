@@ -19,7 +19,8 @@
         	<fieldset>
                 <div class="pure-control-group">
                     <label for="cellphone">手机号(该手机号将作为登录账号)</label>
-                    <input id="cellphone" ng-model="user.cellphone" type="text" placeholder="" required>
+                    <input id="cellphone" ng-model="user.cellphone" type="text" placeholder="" class="i-validater validater-phone" required>
+                    <p class="validater-helper"></p>
                 </div>
                  <div class="pure-control-group">
                     <label for="phonecode">验证码</label>
@@ -35,20 +36,28 @@
             <fieldset>
                 <div class="pure-control-group">
                     <label for="password">设置密码</label>
-                    <input id="password" ng-model="user.password" type="password" placeholder="请输入密码"  required>
+                    <input id="password" ng-model="user.password" type="password" placeholder="请输入密码" class="i-validater validater-password" required>
+                    <p class="validater-helper"></p>
                 </div>
 
                 <div class="pure-control-group">
                     <label for="repassword">重复密码</label>
-                    <input id="repassword" ng-model="user.repassword" type="password" placeholder="请确认密码" required>
+                    <input id="repassword" ng-model="user.repassword" type="password" placeholder="请确认密码" class="i-validater validater-repassword" required>
+                    <p class="validater-helper"></p>
                 </div>
 
                 <div class="pure-control-group">
                     <label for="foo">公司名称</label>
-                    <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的注册公司名称" required>
+                    <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的注册公司名称" class="i-validater validater-company-user" required>
+                    <p class="validater-helper"></p>
                 </div>
                 <div class="pure-control-group">
-                    <input id="cb1" type="checkbox">
+                    <label for="foo">用户姓名</label>
+                    <input id="foo" ng-model="user.username" type="text" placeholder="请输入您的真实姓名" class="i-validater validater-username" required>
+                    <p class="validater-helper"></p>
+                </div>
+                <div class="pure-control-group">
+                    <input id="cb1" type="checkbox" required>
                     <label for="cb1" class="pure-checkbox">我已阅读《会管家用户使用协议》</label>
                     <button type="submit" class="pure-button pure-button-primary" ng-disabled="userForm2.$invalid">注册</button>
                     <a href="#/">已有账号，直接登录</a>
@@ -137,12 +146,20 @@
 
     //普通用户注册：1.填写手机验证码；2.填写公司个人信息，注册完成；
     $("#phonecodeBtn").on("click", function(){
-        $("#phonecodeBtn").html("(<span id='phonecount'>6</span>)请输入手机短信验证码");
+        //调用发送验证码api
+        // $.ajax();
+
+        $("#phonecodeBtn").addClass("pure-button-disabled");
+
+        $("#phonecode").val("1234");
+
+        $("#phonecodeBtn").html("(<span id='phonecount'>60</span>)请输入手机短信验证码");
         var timeLeft;
         var timer = setInterval(function(){
             timeLeft = $("#phonecount").text() - 1;
             if(timeLeft < 0){
                 clearInterval(timer);
+                $("#phonecodeBtn").removeClass("pure-button-disabled");
                 $("#phonecodeBtn").text("验证超时，请重新发送验证码");
             }
             else{
@@ -156,9 +173,9 @@
             alert("验证码错误");
             return;
         }
+        //验证码成功，获取后台用户数据，有则自动填充，无则用户手动填充
         $("#submitForm1,#phonecodeBtn").slideUp();
         $(".regist-forms form[name='userForm2']").slideDown();
     })
-    //管理员注册：1.填写公司信息；2.验证邮箱，注册完成
 
 </script>

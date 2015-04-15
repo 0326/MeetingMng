@@ -25,13 +25,13 @@
     <script src="app/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body ng-app="appmanage">
-<div id="layout">
+<div id="layout" ng-controller="sidemenuCtrl">
     <!-- Menu toggle -->
     <a href="#menu" id="menuLink" class="menu-link">
         <!-- Hamburger icon -->
         <span></span>
     </a>
-    <div id="menu" ng-controller="sidemenuCtrl">
+    <div id="menu">
         <div class="pure-menu">
             <a class="pure-menu-heading" href="#/">
                 <img src="app/images/logo-b.png" class="pure-img-responsive">
@@ -74,15 +74,15 @@
 
 <script src="app/javascripts/comet4j.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-    var cometTest = document.getElementById('cometTest');
-    JS.Engine.on({
-        hello : function(kb){//侦听一个channel
-            cometTest.innerHTML = kb;
-        }
-    });
-    JS.Engine.start('/MeetingMng/conn');
-});
+// $(document).ready(function(){
+//     var cometTest = document.getElementById('cometTest');
+//     JS.Engine.on({
+//         hello : function(kb){//侦听一个channel
+//             cometTest.innerHTML = kb;
+//         }
+//     });
+//     JS.Engine.start('/MeetingMng/conn');
+// });
 
 </script>
 </body>
