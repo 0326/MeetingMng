@@ -1,5 +1,9 @@
 package com.huiguanjia.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,6 +20,8 @@ import com.huiguanjia.dao.TempCompanyAndCompanyAdminDao;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
+import com.huiguanjia.pojo.OrdinaryUser;
+import com.huiguanjia.service.DepartmentService.DepartmentNode;
 
 public class CompanyManagerService {
 
@@ -24,11 +30,7 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return boolean；若存在，返回true
 	 */
-	private static SessionFactory sf = new  AnnotationConfiguration()
-	.configure()
-	.buildSessionFactory();
-	private Session session;
-	
+
 	public boolean usernameRepeat(String username)
 	{
 		boolean res;
@@ -146,13 +148,26 @@ public class CompanyManagerService {
 			return ca;
 	}
 	
+	public List<OrdinaryUser> getAllInfo(String username){	
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from OrdinaryUser as o where o.companyAndCompanyAdmin.username = ?"; 
+		Object[] values = new Object[]{username};
+		List<OrdinaryUser> or = (List<OrdinaryUser>)b.findPagingObjectByHql(hql, 0, 10, values);
+		
+		if(null == or)
+			return null;
+		else 
+			return or;
+	}
 	
 	/**
 	 * @info 修改账号信息，action层直接传pojo对象来获取数据
 	 * @param admin
 	 * @return
 	 */
-	public boolean updateInfo(String username,String email,String name,boolean sex,String officePhone,String avatarUrl,String cellphone){
+	public boolean updateInfo(String username,String email,String name,boolean sex,String officePhone,String avatarUrl,String cellphone,String officeLocation){
 		boolean res;
 
 		BaseDAO b = new BaseDAO();
@@ -160,9 +175,9 @@ public class CompanyManagerService {
 		Transaction ts = sess.beginTransaction();
 		try
 		{
-			String hql = "update CompanyAndCompanyAdmin u set u.email=?,u.name=?,u.sex=?,u.officePhone=?,u.avatarUrl=?,u.cellphone=?" +
+			String hql = "update CompanyAndCompanyAdmin u set u.email=?,u.name=?,u.sex=?,u.officePhone=?,u.avatarUrl=?,u.cellphone=?,u.officeLocation=?" +
 					"where u.username=?";
-			Object[] values = new Object[]{email,name,sex,officePhone,avatarUrl,cellphone,username};
+			Object[] values = new Object[]{email,name,sex,officePhone,avatarUrl,cellphone,officeLocation,username};
 			b.updateObjectByHql(hql,values);
 			ts.commit();
 			res = true;
@@ -211,4 +226,29 @@ public class CompanyManagerService {
 		
 		return res;
 	}
+	
+	public boolean addOrdinaryUser(OrdinaryUser u){
+		
+		boolean res;
+		BaseDAO aDAO = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		try
+		{
+			aDAO.saveObject(u);
+			ts.commit();
+			res = true;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = false;
+			System.out.println(e);
+		}
+		
+		SessionDAO.closeSession();
+		
+		return res;
+	}
+	
 }

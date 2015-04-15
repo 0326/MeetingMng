@@ -5,31 +5,25 @@
 
 <div class="content">
     <div class="content-subhead">
-			<button type="button" class="pure-button pure-button-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> 添加部门 </button>
-
 			<!-- Modal -->
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="myModalLabel">添加部门</h4>
+			        <h4 class="modal-title" id="addModalLabel">添加部门</h4>
 			      </div>
 			      <div class="modal-body">
 			        <form class="pure-form pure-form-aligned" name="addForm" ng-submit="submitAddForm(addForm.$valid)" novalidate>
 			            <fieldset>
 			                <div class="pure-control-group">
-			                    <label for="name">部门名称{{depart.text}}</label>
-			                    <input id="name" type="text" placeholder="" ng-model="depart.text">
+			                    <label for="name">部门名称</label>
+			                    <input id="name" type="text" placeholder="" ng-model="newdepart.departmentName">
 			                </div>
 
 			                <div class="pure-control-group">
 			                    <label for="supdepart">上级部门</label>
-			                    <select id="supdepart" ng-model="depart.parentDepart">
-                              <option>--无--</option>
-                              <option>开发部</option>
-                              <option>财务部</option>
-                          </select>
+			                    <input type="text" id="supdepart" value="{{currdepart.departmentName}}" readyonly>
 			                </div>
 
 			                <div class="pure-controls">
@@ -50,11 +44,12 @@
       </div>
       <div class="col-sm-7">
 
-        <h2>{{currdepart.text}}</h2>
+        <h2>{{currdepart.departmentName}}</h2>
         <p>主管：{{currdepart.charge}}</p>
         <p>共{{currdepart.nodes.length || 0}}个子部门，总共有{{currdepart.totalStuff}}名员工</p>
-        <button class="btn btn-primary">编辑部门</button>
-        <button class="btn btn-danger" ng-click="deleteForm">删除部门</button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> 添加子部门 </button>
+        <button class="btn btn-success">编辑此部门</button>
+        <button class="btn btn-danger" ng-click="deleteForm">删除该部门</button>
       </div>
     </div>
 </div>

@@ -3,6 +3,7 @@ package com.huiguanjia.action;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -13,6 +14,8 @@ import com.huiguanjia.pojo.Industry;
 import com.huiguanjia.pojo.ProvinceAndCity;
 import com.huiguanjia.util.MD5Util;
 import com.huiguanjia.util.MailSendUtil;
+import com.huiguanjia.pojo.OrdinaryUser;
+import com.huiguanjia.pojo.Department;
 
 @SuppressWarnings("serial")
 public class CompanyManagerAction extends ActionSupport{
@@ -29,6 +32,13 @@ public class CompanyManagerAction extends ActionSupport{
 	private String type;
 	private String companyName;
 	private String location;
+	
+	private boolean isCellphoneHide;
+	private String job;
+	private String officeLocation;
+	private String workNo;
+	private int departmentId;
+	
 	private Map<String,Object> jsonData;
 	
 	
@@ -62,6 +72,22 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	public void setCellphone(String cellphone) {
 		this.cellphone = cellphone;
+	}
+	
+	public String getAvatarurl(){
+		return avatarUrl;
+	} 
+	
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+	
+	public boolean getSex(){
+		return sex;
+	}
+	
+	public void setSex(boolean sex){
+		this.sex = sex;
 	}
 	
 	public String getUsername(){
@@ -110,6 +136,46 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	public void setLocation(String location){
 		this.location = location;
+	}
+	
+	public boolean getIsCellphoneHide(){
+		return isCellphoneHide;
+	}
+	
+	public void setIsCellphoneHide(boolean isCellphoneHide){
+		this.isCellphoneHide = isCellphoneHide;
+	}
+	
+	public String getJob(){
+		return job;
+	}
+	
+	public void setJob(String job){
+		this.job = job;
+	}
+	
+	public String getOfficeLocation(){
+		return officeLocation;
+	}
+	
+	public void setOfficeLocation(String officeLocation){
+		this.officeLocation = officeLocation;
+	}
+	
+	public String getWorkNo(){
+		return workNo;
+	}
+	
+	public void setWorkNo(String workNo){
+		this.workNo = workNo;
+	}
+	
+	public int getDepartmentId(){
+		return departmentId;
+	}
+	
+	public void setDepartmentId(int departmentId){
+		this.departmentId = departmentId;
 	}
 	
 	public Map<String,Object> getJsonData(){
@@ -237,7 +303,7 @@ public class CompanyManagerAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		if( companyManagerService.updateInfo(username,email,name,sex,officePhone,avatarUrl,cellphone)){
+		if( companyManagerService.updateInfo(username,email,name,sex,officePhone,avatarUrl,cellphone,officeLocation)){
 			jsonData.put("code", "0");
 			jsonData.put("username",username);
 			jsonData.put("email",email);
@@ -245,6 +311,7 @@ public class CompanyManagerAction extends ActionSupport{
 			jsonData.put("officePhone", officePhone);
 			jsonData.put("avatarUrl", avatarUrl);
 			jsonData.put("cellphone",cellphone);
+			jsonData.put("officeLocation",officeLocation);
 		}
 		else{
 			jsonData.put("code", "-1");
@@ -312,6 +379,59 @@ public class CompanyManagerAction extends ActionSupport{
 	}
 	
 	public String getAllInfo(){
+		jsonData = new HashMap<String,Object>();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		List<OrdinaryUser> u = companyManagerService.getAllInfo(username);
+		if(u == null){
+			jsonData.put("code", -10416); 
+		}
+		else{
+			jsonData.put("user", u);
+			
+		}
+		return SUCCESS;
+	}
+	
+	public String addOriginUser(){
+		jsonData = new HashMap<String,Object>();
+		
+		CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
+		c.setUsername(username);
+		Department d = new Department();
+		d.setDepartmentId(departmentId);
+		Date registerTime = new Date();
+		
+		
+		OrdinaryUser u = new OrdinaryUser();
+		u.setCompanyAndCompanyAdmin(c);
+		u.setDepartment(d);
+		u.setRegisterTime(registerTime);
+		u.setCellphone(cellphone);
+		u.setIsCellphoneHide(isCellphoneHide);
+		u.setName(name);
+		//default password "123456"
+		u.setPassword("123456"); 
+		u.setEmail(email);
+		u.setSex(sex);
+		u.setOfficePhone(officePhone);
+		u.setJob(job);
+		u.setAvatarUrl(avatarUrl);
+		u.setOfficeLocation(officeLocation);
+		u.setWorkNo(workNo);
+		
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		if(companyManagerService.addOrdinaryUser(u)){
+			jsonData.put("code", 0);
+		}
+		else {
+			jsonData.put("code", -10415);
+		}
+		
+		return SUCCESS;
+	}
+	
+	
+	public updateOrdinaryUser(){
 		
 		return SUCCESS;
 	}

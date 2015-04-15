@@ -5,35 +5,34 @@
 
 <div class="content">
     <div class="content-subhead">
-    	<button class="pure-button" data-toggle="modal" data-target="#myModal"><i class="fa fa-unlock-alt"></i> 修改密码</button>
+    	<button class="pure-button" data-toggle="modal" data-target="#passModal"><i class="fa fa-unlock-alt"></i> 修改密码</button>
       <button class="pure-button" ng-click="userLogout()"><i class="fa fa-unlock-alt"></i>退出账号</button>
-      <button class="pure-button" ng-click="testService()"><i class="fa fa-unlock-alt"></i>服务测试</button>
 			<!-- Modal -->
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade" id="passModal" tabindex="-1" role="dialog" aria-labelledby="passModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+			        <h4 class="modal-title">修改密码</h4>
 			      </div>
 			      <div class="modal-body">
 			        <form class="pure-form pure-form-aligned">
 			            <fieldset>
 			                <div class="pure-control-group">
 			                    <label for="password">原密码</label>
-			                    <input id="password" type="password" placeholder="原密码">
+			                    <input id="password" type="password" ng-model="company.password" placeholder="原密码">
 			                </div>
 			                <div class="pure-control-group">
 			                    <label for="newpassword">新密码</label>
-			                    <input id="newpassword" type="password" placeholder="新密码">
+			                    <input id="newpassword" type="password" ng-model="company.newpassword" placeholder="新密码">
 			                </div>
 			                <div class="pure-control-group">
 			                    <label for="repassword">确认新密码</label>
-			                    <input id="repassword" type="password" placeholder="请再输入一遍新密码">
+			                    <input id="repassword" type="password" ng-model="company.repassword" placeholder="请再输入一遍新密码">
 			                </div>
 			                
 			                <div class="pure-controls">
-			                    <button type="submit" class="pure-button pure-button-primary">确认</button>
+			                    <button type="submit" class="pure-button pure-button-primary" ng-click="updatePass()">确认</button>
 			                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 			                </div>
 			            </fieldset>
@@ -50,7 +49,7 @@
          		<legend>管理员信息</legend>
          		<div class="pure-control-group">
          			<label>个人头像</label>
-              <img alt="100x100" src="{{company.avatarUrl}}" id="headimg100" class="headimg headimg-100">
+              <img ng-model="company.avatarUrl" alt="100x100" src="{{company.avatarUrl}}" id="headimg100" class="headimg headimg-100">
               <img alt="50x50" src="{{company.avatarUrl}}" id="headimg50" class="headimg headimg-50">
              	<span id="qiniu_upload_container">
              		<button id="qiniu_upload_pickfiles">上传新头像</button>
@@ -58,26 +57,30 @@
 	          </div>
             <div class="pure-control-group">
                  <label for="name">姓名</label>
-                 <input id="name" type="text" placeholder="">
+                 <input ng-model="company.name" id="name" type="text" placeholder="">
+                 <select ng-model="company.sex">
+                  <option value="0">先生</option>
+                  <option value="1">女士</option>
+                 </select>
              </div>
              <div class="pure-control-group">
                  <label for="name">个人邮箱</label>
-                 <input id="name" type="text" placeholder="">
+                 <input id="name" type="text" placeholder="" ng-model="company.email">
              </div>
              <div class="pure-control-group">
                  <label for="name">手机号</label>
-                 <input id="name" type="text" placeholder="">
+                 <input id="name" type="text" placeholder="" ng-model="company.cellphone">
              </div>
              <div class="pure-control-group">
                  <label for="name">办公电话</label>
-                 <input id="name" type="text" placeholder="">
+                 <input id="name" type="text" placeholder="" ng-model="company.officePhone">
              </div>
              <div class="pure-control-group">
                  <label for="name">办公室</label>
-                 <input id="name" type="text" placeholder="">
+                 <input id="name" type="text" placeholder="" ng-model="company.officeLocation">
              </div>
              <div class="pure-controls">
-                 <button type="submit" class="pure-button pure-button-primary">修改资料</button>
+                 <button type="submit" class="pure-button pure-button-primary" ng-click="updateInfo()">修改资料</button>
              </div>
          	</fieldset>
           <fieldset>
@@ -92,11 +95,11 @@
               </div>
               <div class="pure-control-group">
                   <label>公司位置</label>
-                  <input type="text" value="{{company.location}}" readonly>
+                  <input type="text" value="{{company.provinceAndCity.provinceName+'-'+company.provinceAndCity.cityName}}" readonly>
               </div>
               <div class="pure-control-group">
                   <label>所属行业</label>
-                  <input type="text" value="{{company.type}}" readonly>
+                  <input type="text" value="{{company.industry.category+'-'+company.industry.industryName}}" readonly>
               </div>
           </fieldset>
         </form>
@@ -108,20 +111,21 @@
 <script src="app/bower_components/qiniu/qiniu.js"></script>
 <script src="app/bower_components/qiniu/upload.js"></script>
 <script type="text/javascript">
-    //init qiniu uploader
-    var uploader = QiniuUploaderFactoray({
-      'UploadProgress': function(up, file) {
-      	$("#qiniu_upload_pickfiles").text("正在上传中...");
-      	//console.log("UploadProgress");
-      },
-      'FileUploaded': function(up, file, info) {
-        var domain = up.getOption('domain');
-        var res = $.parseJSON(info);
-        var url = domain + res.key; 
-        $("#headimg100")[0].src= url+"-head100";
-        $("#headimg50")[0].src= url+"-head50"; 
-        $("#qiniu_upload_pickfiles").text("上传成功")
-      }
+  //init qiniu uploader
+  var uploader = QiniuUploaderFactoray({
+    'UploadProgress': function(up, file) {
+    	$("#qiniu_upload_pickfiles").text("正在上传中...");
+    	//console.log("UploadProgress");
+    },
+    'FileUploaded': function(up, file, info) {
+      var domain = up.getOption('domain');
+      var res = $.parseJSON(info);
+      var url = domain + res.key; 
+      $("#headimg100")[0].src= url+"-head100";
+      $("#headimg50")[0].src= url+"-head50"; 
+      $("#qiniu_upload_pickfiles").text("上传成功")
+    }
 	});
+
 
 </script>

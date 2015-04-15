@@ -16,6 +16,9 @@ body {
 .nav-paginaton{
     text-align: center;
 }
+.pure-form select{
+    height: 2.6em;
+}
 /*
 Add transition to containers so they can push in and out.
 */
