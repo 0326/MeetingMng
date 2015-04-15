@@ -103,20 +103,6 @@ public class DepartmentAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	public String findByName(){
-		jsonData = new HashMap<String,Object>();
-		Department depart = new Department(companyId,departmentName,parentId,depth);
-		DepartmentService departService = new DepartmentService();
-		if(false == departService.update(depart)){
-			jsonData.put("code", "-1");
-		}
-		else{
-			jsonData.put("code", "0");
-		}
-		
-		return SUCCESS;
-	}
-	
 	public String findByCompanyId(){
 		jsonData = new HashMap<String,Object>();
 		DepartmentService ds = new DepartmentService();
