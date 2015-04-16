@@ -5,6 +5,7 @@
 
 <div class="content">
     <div class="content-subhead">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> 添加部门 </button>
 			<!-- Modal -->
 			<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
@@ -17,15 +18,15 @@
 			        <form class="pure-form pure-form-aligned" name="addForm" ng-submit="submitAddForm(addForm.$valid)" novalidate>
 			            <fieldset>
 			                <div class="pure-control-group">
-			                    <label for="name">部门名称</label>
-			                    <input id="name" type="text" placeholder="" ng-model="newdepart.departmentName">
+			                    <label>部门名称</label>
+			                    <input type="text" placeholder="" ng-model="newdepart.departmentName">
 			                </div>
-
 			                <div class="pure-control-group">
-			                    <label for="supdepart">上级部门</label>
-			                    <input type="text" id="supdepart" value="{{currdepart.departmentName}}" readyonly>
+			                    <label>上级部门</label>
+			                    <select ng-model="newdepart.parentId" ng-options="d.departmentId as d.text for d in selectlist">
+			                    	<option value="">--无--</option>
+			                    </select>
 			                </div>
-
 			                <div class="pure-controls">
 			                    <button type="submit" class="pure-button pure-button-primary"  ng-disabled="addForm.$invalid">添加</button>
 			                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -47,9 +48,40 @@
         <h2>{{currdepart.departmentName}}</h2>
         <p>主管：{{currdepart.charge}}</p>
         <p>共{{currdepart.nodes.length || 0}}个子部门，总共有{{currdepart.totalStuff}}名员工</p>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> 添加子部门 </button>
-        <button class="btn btn-success">编辑此部门</button>
-        <button class="btn btn-danger" ng-click="deleteForm">删除该部门</button>
+        <button class="btn btn-success" data-toggle="modal" data-target="#modifyModal"><i class="fa fa-plus"></i> 编辑此部门</button>
+        <button class="btn btn-danger" ng-click="submitDelete()">删除该部门</button>
+        <!-- Modal -->
+        <div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="modifyModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="modifyModalLabel">编辑部门</h4>
+              </div>
+              <div class="modal-body">
+                <form class="pure-form pure-form-aligned" name="modifyForm" ng-submit="submitModifyForm(modifyForm.$valid)" novalidate>
+                    <fieldset>
+                        <div class="pure-control-group">
+                            <label>部门名称</label>
+                            <input type="text" placeholder="" ng-model="currdepart.departmentName" value="{{currdepart.departmentName}}">
+                        </div>
+                        <div class="pure-control-group">
+                            <label>上级部门</label>
+                            <select class="parentDepartSelect" ng-model="currdepart.parentId" ng-options="d.departmentId as d.text for d in selectlist">
+                            	<option value="">--无--</option>
+                            </select>
+                        </div>
+                        <div class="pure-controls">
+                            <button type="submit" class="pure-button pure-button-primary"  ng-disabled="modifyForm.$invalid">修改</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+                    </fieldset>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal end -->
       </div>
     </div>
 </div>

@@ -22,7 +22,7 @@ public class DepartmentService {
 		private int departmentId;
 		private String text;
 		private int depth;
-		private int parentId;
+		private int pid;
 		private List<DepartmentNode> nodes;
 		
 		public int getDepartmentId() {
@@ -43,11 +43,11 @@ public class DepartmentService {
 		public void setDepth(int depth) {
 			this.depth = depth;
 		}
-		public int getParentId() {
-			return parentId;
+		public int getPid() {
+			return pid;
 		}
-		public void setParentId(int parentId) {
-			this.parentId = parentId;
+		public void setPid(int parentId) {
+			this.pid = parentId;
 		}
 		public List<DepartmentNode> getNodes() {
 			return nodes;
@@ -287,9 +287,9 @@ public class DepartmentService {
 				tmpNode.setText(tmp.getDepartmentName());
 				tmpNode.setDepth(tmp.getDepth());
 				if(null == tmp.getDepartment())
-					tmpNode.setParentId(-1);
+					tmpNode.setPid(-1);
 				else
-				    tmpNode.setParentId(tmp.getDepartment().getDepartmentId());
+				    tmpNode.setPid(tmp.getDepartment().getDepartmentId());
 				
 				departmentList.add(tmpNode);
 			}
@@ -331,7 +331,7 @@ public class DepartmentService {
 						for(int j=parentStart;j <= parentEnd;j++)
 						{
 							tmpParentNode = departmentList.get(j);
-							if(tmpNode.getParentId() == tmpParentNode.getDepartmentId())
+							if(tmpNode.getPid() == tmpParentNode.getDepartmentId())
 							{
 								if(null == tmpParentNode.getNodes())  
 					                tmpParentNode.setNodes(new ArrayList<DepartmentNode>());  

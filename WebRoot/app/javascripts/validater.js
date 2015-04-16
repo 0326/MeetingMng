@@ -54,7 +54,7 @@ author: Ling
 			else{
 				hideError(classname);
 			}
-		}
+		},
 		other: function(){
 
 		}

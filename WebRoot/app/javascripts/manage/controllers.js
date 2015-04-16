@@ -3,7 +3,7 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("sidemenuCtrl", function($scope, $cookieStore, userService, CompanyData) {
   $scope.company = CompanyData.getAll();
-  //监听事件，随时广播
+  //CompanyData监听事件，随时广播
   $scope.$on('CompanyDataChange',function(event, company){
     console.log('this is in sidemenuCtrl:', company);
     $scope.company = company;
@@ -53,9 +53,8 @@ var mControllers = angular.module("mControllers", [])
 .controller("departmanageCtrl", function($scope, departmentService, CompanyData) {
   $scope.company = CompanyData.getAll(); //公司用户信息
   $scope.departlist = {}; //公司所有部门
-  $scope.newdepart = {
-    username: $scope.company.username
-  };//添加的新部门信息
+  $scope.selectlist = [{text:'hello',id:'this id '}]; // 添加/编辑部门下拉列表数据
+  $scope.newdepart = {username: $scope.company.username};//添加的新部门信息
   $scope.currdepart ={
     username: $scope.company.username,
     departmentName: $scope.company.companyName,
@@ -64,40 +63,90 @@ var mControllers = angular.module("mControllers", [])
     depth: 0
   };//当前操作部门,初始化为整个公司信息
 
-  departmentService
-  .getDepartments()
-  .then(function(data){
-    //初始化departlist
-    $scope.departlist = data;
-    //初始化部门树形图
-    $('#departstree').treeview({
-      data: $scope.departlist,
-      onNodeSelected: function(event, data) {
-        $scope.$apply(function(){
-          $scope.currdepart.departmentName = data.text;
-          $scope.currdepart.departmentId = data.departmentId;
-          $scope.currdepart.parentId = data.parentId;
-          $scope.currdepart.depth = data.depth;
+  var _resetDepartTree = function(){
+    departmentService
+    .getDepartments()
+    .then(function(data){
+      $scope.departlist = data;
+      $('#departstree').treeview({
+        data: $scope.departlist,
+        onNodeSelected: function(event, data) {
+          _setCurrdepart(data);
+        }
+      });
+      $scope.selectlist = departmentService.form2list($scope.departlist);
+      console.log($scope.departlist);
+    });
+  };
 
-          $scope.currdepart.nodes = data.nodes;
-          $scope.currdepart.totalStuff = 40;
-          $scope.currdepart.charge = "李全蛋";
+  var _setCurrdepart = function(data){
+    $scope.$apply(function(){
+      $scope.currdepart.departmentName = data.text;
+      $scope.currdepart.departmentId = data.departmentId;
+      $scope.currdepart.parentId = data.pid;
+      $scope.currdepart.depth = data.depth;
 
-          $scope.newdepart.depth = $scope.currdepart.depth + 1;
-          $scope.newdepart.parentId = $scope.currdepart.departmentId;
+      $scope.currdepart.nodes = data.nodes;
+      $scope.currdepart.totalStuff = 40;
+      $scope.currdepart.charge = "李全蛋";
+    })
+  };
+  _resetDepartTree();
 
-          console.log($scope.currdepart);
-        })
+  $scope.submitAddForm = function(isValid){
+    var pa = departmentService.findDepartById(
+      $scope.newdepart.parentId == undefined ? -1 : $scope.newdepart.parentId,
+      $scope.departlist
+    );
+    $scope.newdepart.depth =pa.depth +1;    
+    // $scope.newdepart.parentId = pa.departmentId;
+    console.log('add:',$scope.newdepart);
+    departmentService
+    .add($scope.newdepart)
+    .then(function(code){
+      if( code == '0'){
+        alert("添加成功！");
+        $("#addModal").modal('hide');
+        _resetDepartTree();
+        // service.refreshTree(currdepart.username);
+      }
+      else{
+        alert("添加失败");
       }
     });
-    console.log($scope.departlist);
-  });
+  };
 
-  // departmentService.refreshTree($scope.company.username);
-  $scope.submitAddForm = function(isValid){
-    departmentService.add($scope.newdepart);
-    console.log($scope.newdepart);
-  }
+  $scope.submitModifyForm = function(isValid){
+
+    departmentService
+    .modify($scope.currdepart)
+    .then(function(code){
+      if( code == '0'){
+        alert("修改成功！");
+        $("#modifyModal").modal('hide');
+        _resetDepartTree();
+        // service.refreshTree(currdepart.username);
+      }
+      else{
+        alert("修改失败");
+      }
+    });
+  };
+
+  $scope.submitDelete = function(isValid){
+    departmentService
+    .delete($scope.currdepart.departmentId)
+    .then(function(code){
+      if( code == '0'){
+        alert("删除成功！");
+        _resetDepartTree();
+      }
+      else{
+        alert("该部门下还有员工，无法删除！请先转移下属员工到其他部门再删除。");
+      }
+    });
+  };
+
 
 })
 

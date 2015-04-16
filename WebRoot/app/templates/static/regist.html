@@ -16,24 +16,17 @@
     <div class="pure-u-1 pure-u-md-2-5  user-regist-form">
         <form class="pure-form pure-form-aligned" name="userForm1" ng-submit="submitUserForm1(userForm1.$valid)" novalidate>
             <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>普通用户注册</label>
-        	<fieldset>
+            <fieldset>
                 <div class="pure-control-group">
-                    <label for="cellphone">手机号(该手机号将作为登录账号)</label>
-                    <input id="cellphone" ng-model="user.cellphone" type="text" placeholder="" class="i-validater validater-phone" required>
+                    <label for="foo">所在公司</label>
+                    <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的所属公司名称" class="i-validater validater-company-user" required>
                     <p class="validater-helper"></p>
                 </div>
-                 <div class="pure-control-group">
-                    <label for="phonecode">验证码</label>
-                    <input class="pure-input-3-5" id="phonecode" type="text" placeholder="请输入手机收到的验证码,测试请输入1234">
-                    <button class="pure-button pure-button-primary" id="phonecodeBtn">发送手机验证码</button>
-                </div>
                 <div class="pure-control-group">
-                    <button class="pure-button pure-button-primary" id="submitForm1">下一步</button>
+                    <label for="foo">用户姓名</label>
+                    <input id="foo" ng-model="user.username" type="text" placeholder="请输入您的真实姓名" class="i-validater validater-username" required>
+                    <p class="validater-helper"></p>
                 </div>
-            </fieldset>
-        </form>
-        <form class="pure-form pure-form-aligned" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
-            <fieldset>
                 <div class="pure-control-group">
                     <label for="password">设置密码</label>
                     <input id="password" ng-model="user.password" type="password" placeholder="请输入密码" class="i-validater validater-password" required>
@@ -45,16 +38,22 @@
                     <input id="repassword" ng-model="user.repassword" type="password" placeholder="请确认密码" class="i-validater validater-repassword" required>
                     <p class="validater-helper"></p>
                 </div>
-
                 <div class="pure-control-group">
-                    <label for="foo">公司名称</label>
-                    <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的注册公司名称" class="i-validater validater-company-user" required>
+                    <button class="pure-button pure-button-primary" id="submitForm1">下一步</button>
+                </div>
+            </fieldset>
+        </form>
+        <form class="pure-form pure-form-aligned" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
+        	<fieldset>
+                <div class="pure-control-group">
+                    <label for="cellphone">手机号(该手机号将作为登录账号)</label>
+                    <input id="cellphone" ng-model="user.cellphone" type="text" placeholder="" class="i-validater validater-phone" required>
                     <p class="validater-helper"></p>
                 </div>
-                <div class="pure-control-group">
-                    <label for="foo">用户姓名</label>
-                    <input id="foo" ng-model="user.username" type="text" placeholder="请输入您的真实姓名" class="i-validater validater-username" required>
-                    <p class="validater-helper"></p>
+                 <div class="pure-control-group">
+                    <label for="phonecode">验证码</label>
+                    <input class="pure-input-3-5" id="phonecode" type="text" placeholder="请输入手机收到的验证码,测试请输入1234">
+                    <button class="pure-button pure-button-primary" id="phonecodeBtn">发送手机验证码</button>
                 </div>
                 <div class="pure-control-group">
                     <input id="cb1" type="checkbox" required>
@@ -169,13 +168,14 @@
     });
 
     $("#submitForm1").on('click', function(){
-        if($("#phonecode").val() != "1234"){
-            alert("验证码错误");
-            return;
-        }
-        //验证码成功，获取后台用户数据，有则自动填充，无则用户手动填充
         $("#submitForm1,#phonecodeBtn").slideUp();
         $(".regist-forms form[name='userForm2']").slideDown();
     })
 
+    $("#submitForm2").on('click', function(){
+        if($("#phonecode").val() != "1234"){
+            alert("验证码错误");
+            return;
+        }
+    })
 </script>

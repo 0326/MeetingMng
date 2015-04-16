@@ -61,6 +61,7 @@ function($http, $q, PostCfg, CompanyData){
   var _departments = {};
 
   service.add = function(currdepart){
+    var d = $q.defer();
     $http.post("/MeetingMng/api/v1/manage/department/add",{
       companyId: currdepart.username,
       departmentName: currdepart.departmentName,
@@ -68,35 +69,92 @@ function($http, $q, PostCfg, CompanyData){
       parentId: currdepart.parentId
     }, PostCfg)
     .success(function(data){
-      if(data.code == '0'){
-        service.refreshTree(currdepart.username);
-        alert("添加成功！");
-        $("#addModal").modal('hide');
-        service.refreshTree(currdepart.username);
-      }
-      else{
-        alert("添加失败");
-      }
+      d.resolve(data.code);
     });
+    return d.promise;
   };
-  
-  service.refreshTree = function(username){
-    service.getDepartments().then(function(data){
-      _departments = data.departments;
-      $("#departstree").treeview({data: _departments});
+
+  service.modify = function(currdepart){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/manage/department/update",{
+      departmentId: currdepart.departmentId,
+      departmentName: currdepart.departmentName,
+      depth: currdepart.depth,
+      parentId: currdepart.parentId
+    }, PostCfg)
+    .success(function(data){
+      d.resolve(data.code);
     });
-  }
+    return d.promise;
+  };
+
+  service.delete = function(id){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/manage/department/delete",{
+      departmentId: id
+    }, PostCfg)
+    .success(function(data){
+      d.resolve(data.code);
+    });
+    return d.promise;
+  };
 
   service.getDepartments = function(){
     var d = $q.defer();
-    $http.post("/MeetingMng/api/v1/manage/department/findByCompanyId",{
-      companyId: CompanyData.getUsername(),
-    }, PostCfg)
+    $http.get("/MeetingMng/api/v1/manage/department/findByCompanyId?companyId="+CompanyData.getUsername())
     .success(function(data){
-      d.resolve(data.departments);
       _departments = data.departments;
+      d.resolve(_departments);
     });
     return d.promise;
+  }
+  //将层级树结构转化成一级列表
+  service.form2list = function(data){
+    var list = [];//[{name:'部门名称',id:'部门id'},...]
+    var p;        //父部门-子部门-全名
+
+    (function recur(parent, data){
+      for(var i = 0;i<data.length;i++){
+        if(parent == null){
+          p = data[i].text;
+        }
+        else{
+          p = parent + '-' + data[i].text;
+        }
+
+        list.push({text:p, departmentId:data[i].departmentId});
+
+        if(data[i].nodes && data[i].nodes.length > 0){
+          recur(p, data[i].nodes);
+        }
+      }
+    })(null, $.parseJSON(data));
+
+    return list;
+  }
+  //根据部门id在所有部门中查询指定部门
+  service.findDepartById = function(id, data){
+    //添加的是一级部门
+    if(id == -1){
+      return {depth: 0};
+    }
+    var flag = false;
+    var obj = null;
+    (function recur(id,data){
+      if(flag) return;
+      for(var i=0;i<data.length;i++){
+        if(data[i].departmentId == id){
+          obj = data[i];
+          flag = true;
+          return;
+        }
+        if(data[i].nodes && data[i].nodes.length > 0){
+          recur(id, data[i].nodes);
+        }
+      }
+    })(id,$.parseJSON(data));
+
+    return obj;
   }
 
   return service;

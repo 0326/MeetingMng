@@ -13,4 +13,5 @@ public class PhoneSendUtil {
 		code = RandomUtil.randomStr(4);
 		return code;
 	}
+	
 }
