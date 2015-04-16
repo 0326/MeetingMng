@@ -151,11 +151,36 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action> 	
+    	<action name="companyManagerDeleteOrdinaryUser" class="com.huiguanjia.action.CompanyManagerAction" method="deleteOrdinaryUser">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action> 	
+    	<action name="companyManagerUpdateOrdinaryUser" class="com.huiguanjia.action.CompanyManagerAction" method="updateOrdinaryUser">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action> 	
     	<action name="companyManagerGetAllInfo" class="com.huiguanjia.action.CompanyManagerAction" method="getAllInfo">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
     	</action> 
+    	<action name="companyManagerGetOrdinaryUserInfo" class="com.huiguanjia.action.CompanyManagerAction" method="getOrdinaryUserInfo">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="companyManagerWorkNoRepeat" class="com.huiguanjia.action.CompanyManagerAction" method="workNoRepeat">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="companyManagerSearch" class="com.huiguanjia.action.CompanyManagerAction" method="search">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
  	 </package>
 
 </struts>    

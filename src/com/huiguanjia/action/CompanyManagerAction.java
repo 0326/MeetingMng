@@ -1,5 +1,6 @@
 package com.huiguanjia.action;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +10,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.huiguanjia.service.ActivateService;
 import com.huiguanjia.service.CompanyManagerService;
+import com.huiguanjia.service.DepartmentService;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Industry;
 import com.huiguanjia.pojo.ProvinceAndCity;
@@ -16,6 +18,9 @@ import com.huiguanjia.util.MD5Util;
 import com.huiguanjia.util.MailSendUtil;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.pojo.Department;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("serial")
 public class CompanyManagerAction extends ActionSupport{
@@ -38,6 +43,8 @@ public class CompanyManagerAction extends ActionSupport{
 	private String officeLocation;
 	private String workNo;
 	private int departmentId;
+	
+	private String keyword;
 	
 	private Map<String,Object> jsonData;
 	
@@ -178,6 +185,14 @@ public class CompanyManagerAction extends ActionSupport{
 		this.departmentId = departmentId;
 	}
 	
+	public String getKeyword(){
+		return keyword;
+	}
+	
+	public void setKeyword(String keyword){
+		this.keyword = keyword;
+	}
+	
 	public Map<String,Object> getJsonData(){
 		return jsonData;
 	}
@@ -187,6 +202,10 @@ public class CompanyManagerAction extends ActionSupport{
 
 	}
 	
+	/**
+	 * 公司管理员登录
+	 * @return
+	 */
 	public String login() {
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
@@ -202,6 +221,10 @@ public class CompanyManagerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 公司管理员登出
+	 * @return
+	 */
 	public String logout() {
 		jsonData = new HashMap<String,Object>();
 		String name = (String) ActionContext.getContext().getSession().get("username");
@@ -217,7 +240,10 @@ public class CompanyManagerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	
+	/**
+	 * 公司管理员注册
+	 * @return
+	 */
 	public String register() {
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
@@ -256,6 +282,10 @@ public class CompanyManagerAction extends ActionSupport{
 		
 	}
 	
+	/**
+	 * 公司管理员激活
+	 * @return
+	 */
 	public String activate(){
 		Date activateTime = new Date();
 		String activateCode;
@@ -274,6 +304,10 @@ public class CompanyManagerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 公司名重复
+	 * @return
+	 */
 	public String companyNameRepeat(){
 		jsonData = new HashMap<String,Object>();
 		//System.out.println(companyName);
@@ -284,6 +318,10 @@ public class CompanyManagerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 用户名重复
+	 * @return
+	 */
 	public String usernameRepeat(){
 		jsonData = new HashMap<String,Object>();
 		//System.out.println(username);
@@ -295,7 +333,21 @@ public class CompanyManagerAction extends ActionSupport{
 	}
 	
 	/**
-	 * @info 淇敼绠＄悊鍛樿处鍙蜂俊鎭�
+	 * 管理员天添加或者修改用户工号是否重复
+	 * @return
+	 */
+	public String workNoRepeat(){
+		jsonData = new HashMap<String,Object>();
+		//System.out.println(companyName);
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		if(companyManagerService.workNoRepeat(username,workNo)){
+			jsonData.put("code",-10409);
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 公司管理员修改个人信息
 	 * @return
 	 */
 	
@@ -320,7 +372,7 @@ public class CompanyManagerAction extends ActionSupport{
 	}
 	
 	/**
-	 * @info 淇敼瀵嗙爜
+	 * @info 公司管理员修改密码
 	 * @return
 	 * String companyName, Industry industry,
 			ProvinceAndCity provinceAndCity, String username,
@@ -353,7 +405,10 @@ public class CompanyManagerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	
+	/**
+	 * @info 公司管理员取得公司管理员信息
+	 * @return
+	 */
 	public String getInfo(){
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
@@ -362,22 +417,18 @@ public class CompanyManagerAction extends ActionSupport{
 			jsonData.put("code", "-1"); 
 		}
 		else{
-			/*
-			 * jsonData.put("code", "0");
-			jsonData.put("name",name);
-			jsonData.put("email",email);
-			jsonData.put("cellphone",cellphone);
-			jsonData.put("officeLocation",officeLocation);
-			jsonData.put("officePhone",officePhone);
-			*/
 			jsonData.put("user", u);
-			//ActionContext.getContext().getSession().put("name", name);
 		}
 		//System.out.println(u);
 		
 		return SUCCESS;
 	}
 	
+	
+	/**
+	 * @info 公司管理员得到所有用户信息
+	 * @return
+	 */
 	public String getAllInfo(){
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
@@ -392,6 +443,10 @@ public class CompanyManagerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * 公司管理员手动添加普通用户
+	 * @return
+	 */
 	public String addOriginUser(){
 		jsonData = new HashMap<String,Object>();
 		
@@ -399,15 +454,15 @@ public class CompanyManagerAction extends ActionSupport{
 		c.setUsername(username);
 		Department d = new Department();
 		d.setDepartmentId(departmentId);
-		Date registerTime = new Date();
+		// Date registerTime = new Date();
 		
 		
 		OrdinaryUser u = new OrdinaryUser();
 		u.setCompanyAndCompanyAdmin(c);
 		u.setDepartment(d);
-		u.setRegisterTime(registerTime);
+		// u.setRegisterTime(registerTime);
 		u.setCellphone(cellphone);
-		u.setIsCellphoneHide(isCellphoneHide);
+		//u.setIsCellphoneHide(false);
 		u.setName(name);
 		//default password "123456"
 		u.setPassword("123456"); 
@@ -430,9 +485,118 @@ public class CompanyManagerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	
-	public updateOrdinaryUser(){
+	/**
+	 * 公司管理员删除用户
+	 * @return
+	 */
+	public String deleteOrdinaryUser(){
+		jsonData = new HashMap<String,Object>();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		if(false == companyManagerService.deleteOrdinaryUser(cellphone)){
+			jsonData.put("code", -10417);
+		}
+		else{
+			jsonData.put("code", "0");
+		}
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * 公司管理员修改普通用户信息
+	 * @return
+	 */
+	public String updateOrdinaryUser(){
+		jsonData = new HashMap<String,Object>();
+		CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
+		c.setUsername(username);
+		Department d = new Department();
+		d.setDepartmentId(departmentId);
+		// Date registerTime = new Date();
+		
+		OrdinaryUser u = new OrdinaryUser();
+		u.setCompanyAndCompanyAdmin(c);
+		u.setDepartment(d);
+		// u.setRegisterTime(registerTime);
+		// u.setCellphone(cellphone);
+		// u.setIsCellphoneHide(false);
+		u.setName(name);
+		// u.setPassword("123456"); 
+		u.setEmail(email);
+		u.setSex(sex);
+		u.setOfficePhone(officePhone);
+		u.setJob(job);
+		u.setAvatarUrl(avatarUrl);
+		u.setOfficeLocation(officeLocation);
+		u.setWorkNo(workNo);
+		
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		if(companyManagerService.updateOrdinaryUser(u)){
+			jsonData.put("code", 0);
+			jsonData.put("user",u);
+		}
+		else {
+			jsonData.put("code", -10418);
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * 公司管理员取得单个用户信息
+	 * @return
+	 */
+	public String getOrdinaryUserInfo(){
+		jsonData = new HashMap<String,Object>();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		OrdinaryUser u = companyManagerService.getOrdinaryUserInfo(username,cellphone);
+		if(u == null){
+			jsonData.put("code", -10416); 
+		}
+		else{
+			jsonData.put("user", u);
+			
+		}
+		return SUCCESS;
+	}
+	
+	public String search(){
+		jsonData = new HashMap<String,Object>();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		String line = keyword;
+	    String pattern1 = "[0-9]*";
+	    // 创建 Pattern 对象
+	    Pattern r1 = Pattern.compile(pattern1);
+	    // 现在创建 matcher 对象
+	    Matcher m1 = r1.matcher(line);
+	    if(m1.find()){
+	    	List<OrdinaryUser> u1 = companyManagerService.searchWorkNo(username,keyword);
+	    	List<OrdinaryUser> u2 = companyManagerService.searchCellphone(username,keyword);	    	
+	    	if(u1 == null && u2 == null){
+				jsonData.put("code", -10420); 
+			}
+			else{
+				u1.removeAll(u2);
+				u1.addAll(u2);
+				/*
+				List<OrdinaryUser> u = new ArrayList<OrdinaryUser>();
+				u.addAll(u1);
+				u.addAll(u2);
+				*/
+				jsonData.put("user", u1);				
+			}
+	    }
+	    else{
+	    	List<OrdinaryUser> u3 = companyManagerService.searchName(username,keyword);	
+	    	if(u3 == null){
+				jsonData.put("code", -10420); 
+			}
+			else{
+				jsonData.put("user", u3);			
+			}
+	    }
+	    
+		return SUCCESS;
+	}
+	
 }

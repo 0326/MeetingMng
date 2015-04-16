@@ -1,21 +1,26 @@
 package com.huiguanjia.test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.huiguanjia.action.CompanyManagerAction;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
-
+import java.util.regex.*;
 
 public class CompanyManagerTest {
-	public static boolean addTest(OrdinaryUser u){
+	public static boolean addTest(OrdinaryUser u,String username,String workNo){
 		boolean flag = false;
 		CompanyManagerService cs = new CompanyManagerService();
-	
-		if(cs.addOrdinaryUser(u)){
+		if(cs.workNoRepeat(username, workNo)){
+			System.out.println("repeat");
+			
+		}
+		else if(cs.addOrdinaryUser(u)){
 			flag = true;
 			System.out.println("succeed");
 		}
@@ -69,8 +74,115 @@ public class CompanyManagerTest {
 		
 		return cs.getAllInfo(username);
 	}
+	
+	public static OrdinaryUser getOrdinaryUserInfo(String username,String cellphone){
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.getOrdinaryUserInfo(username,cellphone) != null){
+			flag = true;
+			System.out.println("succeed");
+			System.out.println(cs.getOrdinaryUserInfo(username,cellphone));
+			}
+		else{
+			System.out.println("failed");
+		}
+		
+		return cs.getOrdinaryUserInfo(username,cellphone);
+	}
+	
+	public static boolean deleteTest(String cellphone){
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.deleteOrdinaryUser(cellphone)){
+			flag = true;
+			System.out.println("succeed");
+		}
+		else{
+			System.out.println("failed");
+		}
+		
+		return flag;
+	}
+	
+	public static boolean updateTest(OrdinaryUser u){
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.addOrdinaryUser(u)){
+			flag = true;
+			System.out.println("succeed");
+		}
+		else{
+			System.out.println("failed");
+		}
+		
+		return flag;
+	}
+	
+	public static List<OrdinaryUser> searchHan(String username,String name){
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.search(username,name) != null){
+			flag = true;
+			System.out.println("succeed");
+			System.out.println(name);
+			System.out.println(cs.search(username,name));
+			}
+		else{
+			System.out.println("failed");
+		}
+		
+		return cs.search(username,name);
+	}
+	
+	public static List<OrdinaryUser> searchTest(String username,String keyword){
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.search(username,keyword) != null){
+			flag = true;
+			System.out.println("succeed");
+			System.out.println(keyword);
+			System.out.println(cs.search(username,keyword));
+			}
+		else{
+			System.out.println("failed");
+		}
+		
+		return cs.search(username,keyword);
+	}
+	
+	public static List<OrdinaryUser> searchTest1(String username,String keyword){
+		boolean flag = false;
+		
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.searchName(username,keyword) != null){
+			flag = true;
+			System.out.println("succeed");
+			System.out.println(keyword);
+			System.out.println(cs.searchName(username,keyword));
+			}
+		else{
+			System.out.println("failed");
+		}
+		
+		return cs.searchName(username,keyword);
+	}
+	
+	
 	public static void main(String[] args){
-		System.out.print(CompanyManagerTest.getAllInfo("1833559609@qq.com"));
-	    
+		List<String> listA = new ArrayList<String>();
+        System.out.println(listA);
+        List<String> listB = new ArrayList<String>();
+        listB.add("B");
+        List<String> listFinal = new ArrayList<String>();
+        listA.removeAll(listB);
+        listA.addAll(listB);
+        System.out.println(listA);
+
 	}
 }
