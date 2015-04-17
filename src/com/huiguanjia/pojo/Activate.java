@@ -75,7 +75,7 @@ public class Activate implements java.io.Serializable {
 		this.sendTime = sendTime;
 	}
 	
-	@Column(name = "username", nullable = false, length = 50)
+	@Column(name = "username", nullable = true, length = 50)
 	public String getUsername() {
 		return this.username;
 	}

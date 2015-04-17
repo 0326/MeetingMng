@@ -1,30 +1,27 @@
 package com.huiguanjia.service;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.hibernate.Query;
+import net.sf.json.JSONArray;
+
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
-
 
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.CompanyAndCompanyAdminDao;
-import com.huiguanjia.dao.DepartmentDao;
 import com.huiguanjia.dao.IndustryDao;
 import com.huiguanjia.dao.ProvinceAndCityDao;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.dao.TempCompanyAndCompanyAdminDao;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
-import com.huiguanjia.pojo.Department;
-import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.OrdinaryUser;
-import com.huiguanjia.service.DepartmentService.DepartmentNode;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
 
 public class CompanyManagerService {
 
@@ -465,5 +462,42 @@ public class CompanyManagerService {
 			return or;	
 	}
 	
-	
+	public String searchCompanyByName(String companyName)
+	{
+		String companyListStr;
+		List<Map> companyList = new ArrayList<Map>();
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		String hql = "select ca.username , ca.companyName from CompanyAndCompanyAdmin as ca " +
+				"where ca.companyName like ?";
+		Object[] values = new Object[]{'%' + companyName + '%'};
+		
+		Session sess = SessionDAO.getSession();
+		List<Object[]> l = (List<Object[]>)aBaseDao.findObjectByHql(hql, values);
+		Iterator it = l.iterator();
+		
+		if(false == it.hasNext())
+		{
+			companyListStr = null;
+		}
+		else
+		{
+			Object[] obj;
+			while(true == it.hasNext())
+			{
+				obj = (Object[])it.next();
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("id", obj[0]);
+				map.put("name", obj[1]);
+				
+				companyList.add(map);
+			}
+			
+			companyListStr = JSONArray.fromObject(companyList).toString();
+		}
+		
+		SessionDAO.closeSession();
+		
+		return companyListStr;
+	}
 }

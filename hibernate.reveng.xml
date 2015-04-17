@@ -28,9 +28,24 @@
 	<table name="department" catalog="meetingmngdatabase">
 		<column name="departmentName"></column>
 	</table>
-<table name="ordinary_user" catalog="meetingmngdatabase">
+	<table name="ordinary_user" catalog="meetingmngdatabase">
+		<primary-key>
+			<generator class="assigned"></generator>
+		</primary-key>
+	</table>
+	<table name="active_meeting_view" catalog="meetingmngdatabase">
+		<primary-key>
+			<key-column name="meetingId" />
+		</primary-key>
+	</table>
+	<table name="delete_meeting_view" catalog="meetingmngdatabase">
+		<primary-key>
+			<key-column name="meetingId" />
+		</primary-key>
+	</table>
+<table name="finish_meeting_view" catalog="meetingmngdatabase">
 	<primary-key>
-		<generator class="assigned"></generator>
+		<key-column name="meetingId" />
 	</primary-key>
 </table>
 </hibernate-reverse-engineering>

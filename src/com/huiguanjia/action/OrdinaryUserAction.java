@@ -7,6 +7,7 @@ import java.util.regex.*;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.OrdinaryUserService;
 
 @SuppressWarnings("serial")
@@ -16,6 +17,7 @@ public class OrdinaryUserAction extends ActionSupport{
 	private String cellphone;
 	private String email;
 	private String password;
+	private String companyName;
 	private Map<String,Object> jsonData;
 	
 	public String getUsername() {
@@ -54,6 +56,14 @@ public class OrdinaryUserAction extends ActionSupport{
 		return jsonData;
 	}
 	
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
 	public String execute() throws Exception {
 		return "json";
 	}
@@ -80,10 +90,40 @@ public class OrdinaryUserAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	public String findUserByPhone(){
+	public String findUserForRegister(){
 		jsonData = new HashMap<String,Object>();
+		
 		OrdinaryUserService service = new OrdinaryUserService();
-		jsonData.put("user", service.findUserByPhone(this.cellphone));
+		String userInfo = service.findUserForRegister(cellphone);
+		if(null == userInfo)
+		{
+			jsonData.put("code", -1);	
+		}
+		else
+		{
+			jsonData.put("code", 0);
+			jsonData.put("userInfo", userInfo);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String findCompanyByName()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+		CompanyManagerService service = new CompanyManagerService();
+		String companyList = service.searchCompanyByName(companyName);
+		
+		if(null == companyList)
+		{
+			jsonData.put("code", -1);
+		}
+		else
+		{
+			jsonData.put("code", 0);
+			jsonData.put("company", companyList);
+		}
 		
 		return SUCCESS;
 	}

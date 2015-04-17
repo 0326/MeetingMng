@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-14 09:12:38
+Date: 2015-04-17 16:06:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,13 +24,14 @@ CREATE TABLE `activate` (
   `activateMode` tinyint(1) NOT NULL,
   `activateInfo` varchar(100) NOT NULL,
   `sendTime` datetime NOT NULL,
-  `username` varchar(50) NOT NULL,
+  `username` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`activateAddr`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of activate
 -- ----------------------------
+INSERT INTO `activate` VALUES ('15071345115', '1', '5501', '2015-04-16 00:00:00', null);
 
 -- ----------------------------
 -- Table structure for company_and_company_admin
@@ -85,9 +86,7 @@ CREATE TABLE `department` (
 -- ----------------------------
 INSERT INTO `department` VALUES ('1', '1833559609@qq.com', '总裁办公室', null, '1');
 INSERT INTO `department` VALUES ('2', '1833559609@qq.com', '财务部', null, '1');
-INSERT INTO `department` VALUES ('3', '1833559609@qq.com', '秘书部', '1', '2');
 INSERT INTO `department` VALUES ('4', '1833559609@qq.com', '管家部', '1', '2');
-INSERT INTO `department` VALUES ('5', '1833559609@qq.com', '私人秘书部', '3', '3');
 INSERT INTO `department` VALUES ('6', '1833559609@qq.com', '财务1部', '2', '2');
 
 -- ----------------------------
@@ -169,6 +168,34 @@ INSERT INTO `industry` VALUES ('90004', '物流/仓储', '贸易物流行业');
 INSERT INTO `industry` VALUES ('90005', '运输/铁路/航空', '贸易物流行业');
 
 -- ----------------------------
+-- Table structure for meeting
+-- ----------------------------
+DROP TABLE IF EXISTS `meeting`;
+CREATE TABLE `meeting` (
+  `meetingId` int(11) NOT NULL AUTO_INCREMENT,
+  `meetingName` varchar(100) NOT NULL,
+  `meetingContent` text NOT NULL,
+  `meetingLocation` varchar(100) NOT NULL,
+  `meetingCreatorId` varchar(15) DEFAULT NULL,
+  `meetingRemark` text,
+  `meetingQRCode` varchar(100) NOT NULL,
+  `meetingState` int(11) NOT NULL,
+  `meetingFrequency` int(11) NOT NULL,
+  `meetingStartTime` char(13) NOT NULL,
+  `meetingPredictFinishTime` char(13) NOT NULL,
+  `meetingCreateTime` char(13) NOT NULL,
+  `meetingFinishTime` char(13) DEFAULT NULL,
+  `meetingDeleteTime` char(13) DEFAULT NULL,
+  PRIMARY KEY (`meetingId`),
+  KEY `FK_meeting_ordinary_creator` (`meetingCreatorId`),
+  CONSTRAINT `FK_meeting_ordinary_creator` FOREIGN KEY (`meetingCreatorId`) REFERENCES `ordinary_user` (`cellphone`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of meeting
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for ordinary_user
 -- ----------------------------
 DROP TABLE IF EXISTS `ordinary_user`;
@@ -192,13 +219,14 @@ CREATE TABLE `ordinary_user` (
   PRIMARY KEY (`cellphone`),
   KEY `FK_ordinary_company_companyId` (`companyId`),
   KEY `FK_ordinary_department_departmentId` (`departmentId`),
-  CONSTRAINT `FK_ordinary_department_departmentId` FOREIGN KEY (`departmentId`) REFERENCES `department` (`departmentId`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `FK_ordinary_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `FK_ordinary_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `FK_ordinary_department_departmentId` FOREIGN KEY (`departmentId`) REFERENCES `department` (`departmentId`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ordinary_user
 -- ----------------------------
+INSERT INTO `ordinary_user` VALUES ('15071345115', '1', '王峤', '1833559609@qq.com', '6', '123456', '0', null, null, '0', '0', null, null, 'www.huiguanjia.com', null, null);
 
 -- ----------------------------
 -- Table structure for province_and_city
@@ -683,3 +711,68 @@ CREATE TABLE `temp_company_and_company_admin` (
 -- ----------------------------
 -- Records of temp_company_and_company_admin
 -- ----------------------------
+
+-- ----------------------------
+-- View structure for active_meeting_view
+-- ----------------------------
+DROP VIEW IF EXISTS `active_meeting_view`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost`  VIEW `active_meeting_view` AS SELECT
+meeting.meetingId,
+meeting.meetingName,
+meeting.meetingContent,
+meeting.meetingLocation,
+meeting.meetingCreatorId,
+meeting.meetingRemark,
+meeting.meetingQRCode,
+meeting.meetingFrequency,
+meeting.meetingStartTime,
+meeting.meetingPredictFinishTime,
+meeting.meetingCreateTime
+FROM
+meeting
+WHERE
+meeting.meetingState = 0 ;
+
+-- ----------------------------
+-- View structure for delete_meeting_view
+-- ----------------------------
+DROP VIEW IF EXISTS `delete_meeting_view`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost`  VIEW `delete_meeting_view` AS SELECT
+meeting.meetingId,
+meeting.meetingName,
+meeting.meetingContent,
+meeting.meetingLocation,
+meeting.meetingCreatorId,
+meeting.meetingRemark,
+meeting.meetingQRCode,
+meeting.meetingFrequency,
+meeting.meetingStartTime,
+meeting.meetingPredictFinishTime,
+meeting.meetingCreateTime,
+meeting.meetingDeleteTime
+FROM
+meeting
+WHERE
+meeting.meetingState = 2 ;
+
+-- ----------------------------
+-- View structure for finish_meeting_view
+-- ----------------------------
+DROP VIEW IF EXISTS `finish_meeting_view`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost`  VIEW `finish_meeting_view` AS SELECT
+meeting.meetingId,
+meeting.meetingName,
+meeting.meetingContent,
+meeting.meetingLocation,
+meeting.meetingCreatorId,
+meeting.meetingRemark,
+meeting.meetingQRCode,
+meeting.meetingFrequency,
+meeting.meetingStartTime,
+meeting.meetingPredictFinishTime,
+meeting.meetingCreateTime,
+meeting.meetingFinishTime
+FROM
+meeting
+WHERE
+meeting.meetingState = 1 ;

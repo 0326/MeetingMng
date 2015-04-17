@@ -1,13 +1,17 @@
 package com.huiguanjia.service;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONArray;
 
 import org.hibernate.Session;
 
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.OrdinaryUser;
 import com.huiguanjia.dao.SessionDAO;
-import com.huiguanjia.pojo.Department;
 
 public class OrdinaryUserService {
 	
@@ -37,17 +41,35 @@ public class OrdinaryUserService {
 		return true;
 	}
 	
-	public OrdinaryUser findUserByPhone(String cellphone){
-		OrdinaryUser user = null;
-		BaseDAO dao = new BaseDAO();
-		String hql = "select user from OrdinaryUser as user where user.cellphone = ?";
-		Object[] values = new Object[]{cellphone};
-		Session sess = SessionDAO.getSession();
-		List<OrdinaryUser> list = (List<OrdinaryUser>)dao.findObjectByHql(hql, values);
-		if(list.iterator().hasNext()){
-			user = list.iterator().next();
-		}
-		
-		return user;
-	}
+    public String findUserForRegister(String cellphone)
+    {
+    	String userInfoStr;
+    	Map<String,Object> userInfoMap = new HashMap<String,Object>();
+    	
+    	BaseDAO aBaseDao = new BaseDAO();
+    	String hql = "select o.name , o.companyAndCompanyAdmin.username , o.companyAndCompanyAdmin.companyName " +
+    			"from OrdinaryUser as o where o.cellphone = ?";
+    	Object[] values = new Object[]{cellphone};
+    	
+    	Session sess = SessionDAO.getSession();
+    	List<Object[]> l = (List<Object[]>)aBaseDao.findObjectByHql(hql, values);
+    	Iterator it = l.iterator();
+    	
+    	if(false == it.hasNext())
+    		userInfoStr = null;
+    	else
+    	{
+    		Object[] obj = (Object[])it.next();
+    		userInfoMap.put("name", obj[0]);
+    		userInfoMap.put("companyId", obj[1]);
+    		userInfoMap.put("companyName", obj[2]);
+    		
+    		userInfoStr = JSONArray.fromObject(userInfoMap).toString();
+    		System.out.println(userInfoStr);
+    	}
+    	
+    	SessionDAO.closeSession();
+    	
+    	return userInfoStr;
+    }
 }
