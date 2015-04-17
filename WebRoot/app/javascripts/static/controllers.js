@@ -66,3 +66,6 @@ var mControllers = angular.module("mControllers", [])
     });
 })
 
+.controller("docCtrl", function($scope) {
+
+})

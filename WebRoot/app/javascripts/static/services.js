@@ -4,12 +4,16 @@ angular.module("mServices", [])
 .factory('loginService',['$http', '$cookieStore', 'PostCfg', function($http, $cookieStore, PostCfg){
 	return {
 		login: function(user){
+            var flag = false;
 			if(user.usertype == "1"){
 			    $http.post('/MeetingMng/api/v1/companyManagerLogin',user,PostCfg)
 			    .success(function(data){
 			        if(data.code == 0){
-			            window.location.href="/MeetingMng/manage";
 			            $cookieStore.put("username",user.username);
+                        //建立websocket长连接接收推送消息，
+                        //生产环境不能直接传username，应该传服务器端sessionid作为验证条件
+                        // window.MMComet.initialize(user.username);
+                        window.location.href="/MeetingMng/manage";
 			        }
 			        else{
 			            alert("用户名或密码错误");
@@ -20,15 +24,16 @@ angular.module("mServices", [])
 			    $http.post('/MeetingMng/api/v1/oridinaryUserLogin',user,PostCfg)
 			    .success(function(data){
 			        if(data.code == 0){
-			            window.location.href="/MeetingMng/manage";
 			            $cookieStore.put("username",user.username);
+                        // window.MMComet.initialize(user.username);
+                        window.location.href="/MeetingMng/manage";
 			        }
 			        else{
 			            alert("用户名或密码错误");
 			        }
 			    });
 			}
-			return 0;
+			
 		}
 	};
 }])

@@ -1,28 +1,32 @@
-<% include template_header.html %>
-<div id="doc" class="response-ctr clearfix">
-	<ul class="aside-menu">
-		<li class="current"><a href="">新手指南</a></li>
-		<li>
-			<a href="">二级菜单<span class="pull-right icon-down">></span></a>
-			<ul class="second-ul">
-				<li><a href="">1.二级菜单1好长</a></li>
-				<li><a href="">2.二级菜单2</a></li>
-			</ul>
-		</li>
-		<li><a href="">新手指南</a></li>
-		<li><a href="">新手指南</a></li>
-		<li><a href="">新手指南</a></li>
-		<li><a href="">新手指南</a></li>
-	</ul>
-	<div class="doc-main">
-		<h1>新手指南</h1>
-		<div>
-			<% for(var i=0;i<20;i++){%>
-			<p>这是新手指南</p>
-			<p>这是新手指南</p>
-			<%}%>
-		</div>
-	</div>
-</div>
+<style type="text/css">
+    input#chat {
+        width: 410px
+    }
 
-<% include template_footer.html %>
+    #console-container {
+        width: 400px;
+    }
+
+    #console {
+        border: 1px solid #CCCCCC;
+        border-right-color: #999999;
+        border-bottom-color: #999999;
+        height: 170px;
+        overflow-y: scroll;
+        padding: 5px;
+        width: 100%;
+    }
+
+    #console p {
+        padding: 0;
+        margin: 0;
+    }
+</style>
+<div class='pure-g static-container'>
+    <p>
+        <input type="text" placeholder="type and press enter to chat" id="chat">
+    </p>
+    <div id="console-container">
+        <div id="console"></div>
+    </div>
+</div>

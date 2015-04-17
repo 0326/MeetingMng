@@ -11,9 +11,9 @@ var mControllers = angular.module("mControllers", [])
   });
 })
  
-.controller("homeCtrl", function($scope, CompanyData) {
+.controller("homeCtrl", function($scope, $cookieStore, CompanyData) {
    $scope.company = CompanyData.getAll();
-
+   window.MMComet.initialize($cookieStore.get('username'));
 })
 
 .controller("profileCtrl", function($scope, CompanyData, userService) {
@@ -184,3 +184,4 @@ var mControllers = angular.module("mControllers", [])
 .controller("statstuffCtrl", function($scope, CompanyData) {
 
 })
+

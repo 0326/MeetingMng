@@ -17,11 +17,17 @@
     		</result>
     	</action>
  	</package>
- 	<!-- 公司管理后台首页 -->
-	<package name="manage-package" namespace="/" extends="struts-default">
-    	<action name="manage">  
-		    <result>/manage.html</result>  
-	    </action>
+    <!-- html页面路由 -->
+    <package name="page-package" namespace="/" extends="struts-default">
+        <action name="admin">  
+            <result>/admin.html</result>  
+        </action>
+        <action name="manage">  
+            <result>/manage.html</result>  
+        </action>
+        <action name="u">  
+            <result>/client.html</result>  
+        </action>
     </package>
     <!-- 公司管理后台-部门操作api -->
      <package name="department-package" namespace="/api/v1/manage/department" extends="json-default">

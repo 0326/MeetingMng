@@ -58,6 +58,12 @@
     </div>
     <div id="main" ng-view></div>
 </div>
+<!-- messenger for comet -->
+<link rel="stylesheet" href="app/bower_components/messenger-1.4.1/build/css/messenger.css">
+<link rel="stylesheet" href="app/bower_components/messenger-1.4.1/build/css/messenger-theme-flat.css">
+<script src="app/bower_components/messenger-1.4.1/build/js/messenger.js"></script>
+<script src="app/bower_components/messenger-1.4.1/build/js/messenger-theme-flat.js"></script>
+<script src="app/javascripts/mmcomet.js"></script>
 
 <script src="app/bower_components/angular-1.3.8/angular.js"></script>
 <script src="app/bower_components/angular-1.3.8/angular-route.js"></script>
@@ -72,18 +78,7 @@
 <script src="app/javascripts/manage/filters.js"></script> 
 <script src="app/javascripts/manage/services.js"></script>
 
-<script src="app/javascripts/comet4j.js"></script>
-<script type="text/javascript">
-// $(document).ready(function(){
-//     var cometTest = document.getElementById('cometTest');
-//     JS.Engine.on({
-//         hello : function(kb){//侦听一个channel
-//             cometTest.innerHTML = kb;
-//         }
-//     });
-//     JS.Engine.start('/MeetingMng/conn');
-// });
 
-</script>
+
 </body>
 </html>

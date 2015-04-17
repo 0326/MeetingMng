@@ -5,7 +5,14 @@ angular.module("appstatic", ["ngRoute", "ngAnimate", "ngCookies",
 	$routeProvider.when('/', {
 		templateUrl: 'app/templates/static/home.html',
 		controller: 'homeCtrl'
-	}).when('/regist', {
+	})
+
+	.when('/doc', {
+		templateUrl: 'app/templates/static/doc.html',
+		controller: 'docCtrl'
+	})
+
+	.when('/regist', {
 		templateUrl: 'app/templates/static/regist.html',
 		controller: 'registCtrl'
 	}).when('/callemail', {
