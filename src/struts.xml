@@ -4,6 +4,7 @@
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.serve.static.browserCache" value="false" />
+	<constant name="struts.action.excludePattern" value="/conn"></constant>
 	<!--开发环境api，生产环境需要去掉以下api-->
 	<package name="dev-package" namespace="/api/dev" extends="json-default">
     	<action name="createindusty" class="com.huiguanjia.action.DevAction" method="createIndusty">

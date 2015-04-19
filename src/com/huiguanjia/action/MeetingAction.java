@@ -1,14 +1,226 @@
 package com.huiguanjia.action;
 
 import java.util.*;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.huiguanjia.pojo.Department;
+import com.huiguanjia.pojo.Meeting;
+import com.huiguanjia.pojo.OrdinaryUser;
+import com.huiguanjia.service.DepartmentService;
 import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.service.MeetingBulletinService?
 
 public class MeetingAction  extends ActionSupport{
-	public String createMeeting() {
+
+	private Integer meetingId;                    //会议
+	private String meetingName;                  //会议名
+	private String meetingContent;               //会议内容
+	private String meetingLocation;              //会议地点
+	private String meetingCreatorId;             //创建者id(cellphone)，null=true?
+	private String meetingRemark;                //会议备注null=true
+	private String meetingQrcode;                //会议二维码
+	private Integer meetingState;				 //会议状态：1未开始2已开始3已结束4已删除
+	private Integer meetingFrequency;            //频率：1单次2每天3每周4每月
+	private String meetingStartTime;             //会议开始时间
+	private String meetingPredictFinishTime;     //预期结束时间
+	private String meetingCreateTime;            //该记录的创建时间
+	private String meetingFinishTime;            //会议实际完成时间
+	private String meetingDeleteTime;            //会议删除时间
+	
+	private Map<String,Object> jsonData;
+	
+	public String execute() throws Exception{
+		return "json";
+
+	}
+	
+	public String create() {
+		jsonData = new HashMap<String,Object>();
+		
+		OrdinaryUser user = new OrdinaryUser();
+		user.setCellphone(meetingCreatorId);
+		Meeting meeting = new Meeting(user, meetingName,
+				meetingContent, meetingLocation,
+				meetingRemark, meetingQrcode, 1,
+				meetingFrequency, meetingStartTime,
+				meetingPredictFinishTime, meetingCreateTime,
+				null, null);
+		MeetingService ms= new MeetingService();
+		if(false ==ms.create(meeting)){
+			jsonData.put("code", -1);
+		}
+		else{
+			jsonData.put("code", -1);
+		}
+		return SUCCESS;
+	}
+	
+	public String delete(){
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingService ms= new MeetingService();
+		if(false == ms.delete(meetingId)){
+			jsonData.put("code", -1);
+		}
+		else{
+			jsonData.put("code", 0);
+		}
 		
 		return SUCCESS;
 	}
 	
+
+	public String update(){
+		jsonData = new HashMap<String,Object>();
+		Meeting meeting = new Meeting();
+		meeting.setMeetingId(meetingId);
+		meeting.setMeetingName(meetingName);
+		meeting.setMeetingContent(meetingContent);
+		meeting.setMeetingLocation(meetingLocation);
+		meeting.setMeetingRemark(meetingRemark);
+		meeting.setMeetingStartTime(meetingStartTime);
+		meeting.setMeetingPredictFinishTime(meetingPredictFinishTime);
+		meeting.setMeetingFrequency(meetingFrequency);
+		
+		MeetingService ms = new MeetingService();
+		if(false == ms.update(meeting)){
+			jsonData.put("code", -1);
+		}
+		else{
+			jsonData.put("code", 0);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String findByCompanyId(){
+		jsonData = new HashMap<String,Object>();
+		MeetingService ms = new MeetingService();
+		String departmentList = ms.findByMeetingId(meetingId);
+		
+		if(null == departmentList){
+			jsonData.put("departments", "");
+		}
+		else{
+			jsonData.put("departments", departmentList);
+		}
+		
+		return SUCCESS;
+	}
+	
+	public String findByUserName(){
+		return SUCCESS;
+	}
+	//setter and getter
+	public int getMeetingId() {
+		return meetingId;
+	}
+
+	public void setMeetingId(int meetingId) {
+		this.meetingId = meetingId;
+	}
+	
+	public String getMeetingLocation() {
+		return meetingLocation;
+	}
+
+	public void setMeetingLocation(String meetingLocation) {
+		this.meetingLocation = meetingLocation;
+	}
+	
+	public String getMeetingContent() {
+		return meetingContent;
+	}
+
+	public void setMeetingContent(String meetingContent) {
+		this.meetingContent = meetingContent;
+	}
+	
+	public String getMeetingName() {
+		return meetingName;
+	}
+
+	public void setMeetingName(String meetingName) {
+		this.meetingName = meetingName;
+	}
+	
+	public String getMeetingRemark() {
+		return meetingRemark;
+	}
+
+	public void setMeetingRemark(String meetingRemark) {
+		this.meetingRemark = meetingRemark;
+	}
+	
+	public String getMeetingCreatorId() {
+		return meetingCreatorId;
+	}
+
+	public void setMeetingCreatorId(String meetingCreatorId) {
+		this.meetingCreatorId = meetingCreatorId;
+	}
+
+	public String getMeetingQrcode() {
+		return meetingQrcode;
+	}
+
+	public void setMeetingQrcode(String meetingQrcode) {
+		this.meetingQrcode = meetingQrcode;
+	}
+
+	public String getMeetingStartTime() {
+		return meetingStartTime;
+	}
+
+	public void setMeetingStartTime(String meetingStartTime) {
+		this.meetingStartTime = meetingStartTime;
+	}
+	
+	public String getMeetingCreateTime() {
+		return meetingCreateTime;
+	}
+
+	public void setMeetingCreateTime(String meetingCreateTime) {
+		this.meetingCreateTime = meetingCreateTime;
+	}
+	
+	public String getMeetingPredictFinishTime() {
+		return meetingPredictFinishTime;
+	}
+
+	public void setMeetingPredictFinishTime(String meetingPredictFinishTime) {
+		this.meetingPredictFinishTime = meetingPredictFinishTime;
+	}
+	
+	public String getMeetingFinishTime() {
+		return meetingFinishTime;
+	}
+	
+	public void setMeetingFinishTime(String meetingFinishTime) {
+		this.meetingFinishTime = meetingFinishTime;
+	}
+	
+	public String getMeetingDeleteTime() {
+		return meetingDeleteTime;
+	}
+	
+	public void setMeetingDeleteTime(String meetingDeleteTime) {
+		this.meetingDeleteTime = meetingDeleteTime;
+	}
+	
+	public int getMeetingState() {
+		return meetingState;
+	}
+	
+	public void setMeetingState(int meetingState) {
+		this.meetingState = meetingState;
+	}
+	
+	public int getMeetingFrequency() {
+		return meetingFrequency;
+	}
+	
+	public void setMeetingFrequency(int meetingFrequency) {
+		this.meetingFrequency = meetingFrequency;
+	}
 }

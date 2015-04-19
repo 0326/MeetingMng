@@ -9,7 +9,8 @@ import com.huiguanjia.service.DepartmentService;
 public class DepartmentTest {
 	
 	public static void main(String[] args) {
-		
+		DepartmentTest test =new DepartmentTest();
+		test.addTest();
 	}
 	
 	
@@ -21,7 +22,7 @@ public class DepartmentTest {
 		parentDepart.setDepartmentId(2);
 		
 //		Department parentDepart = null;
-		Department depart = new Department(ca,parentDepart,"财务1部",2);
+		Department depart = new Department(ca,parentDepart,"财务3部",2);
 		
 		DepartmentService departService = new DepartmentService();
 		if(false == departService.add(depart)){

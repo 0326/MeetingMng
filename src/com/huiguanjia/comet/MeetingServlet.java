@@ -39,7 +39,7 @@ import org.apache.catalina.websocket.WsOutbound;
  * @deprecated See {@link websocket.Meeting.MeetingAnnotation}
  */
 @Deprecated
-public class ChatWebSocketServlet extends WebSocketServlet {
+public class MeetingServlet extends WebSocketServlet {
 
     private static final long serialVersionUID = 1L;
 

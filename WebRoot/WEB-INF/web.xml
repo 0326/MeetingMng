@@ -10,7 +10,7 @@
   </welcome-file-list>
   <servlet>
         <servlet-name>wsChat</servlet-name>
-        <servlet-class>com.huiguanjia.comet.ChatWebSocketServlet</servlet-class>
+        <servlet-class>com.huiguanjia.comet.MeetingServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>wsChat</servlet-name>
