@@ -60,7 +60,7 @@ public class CompanyManagerTest {
 		
 	 */
 	
-	public static List<OrdinaryUser> getAllInfo(String username){
+	public static String getAllInfo(String username){
 		boolean flag = false;
 		CompanyManagerService cs = new CompanyManagerService();
 	

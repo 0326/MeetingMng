@@ -167,11 +167,6 @@ var mControllers = angular.module("mControllers", [])
 .controller("stufflistCtrl", function($scope, CompanyData, StuffService) {
   $scope.company = CompanyData.getAll();
 
-  // $scope.stuffs = [
-  //   {name: "Bob",depart:"技术部"},
-  //   {name: "Lili",depart:"市场部"},
-  //   {name: "Perl",depart:"技术部"},
-  //   {name: "Python",depart:"技术部"}];
   StuffService
   .getStuffs()
   .then(function(data){

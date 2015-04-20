@@ -167,12 +167,12 @@
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
-    	</action> 	
-    	<action name="companyManagerGetAllInfo" class="com.huiguanjia.action.CompanyManagerAction" method="findAllInfo">
+    	</action>
+    	<action name="companyManagerGetStuffs" class="com.huiguanjia.action.CompanyManagerAction" method="findStuffs">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
-    	</action> 
+    	</action> 	
     	<action name="companyManagerGetOrdinaryUserInfo" class="com.huiguanjia.action.CompanyManagerAction" method="findOrdinaryUserInfo">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>

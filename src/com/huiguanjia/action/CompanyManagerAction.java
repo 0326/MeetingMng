@@ -427,25 +427,20 @@ public class CompanyManagerAction extends ActionSupport{
 	}
 	
 	
-	/**
-	 * @info 公司管理员得到所有用户信息
-	 * @return
-	 */
-	public String findAllInfo(){
+	public String findStuffs(){
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		List<OrdinaryUser> u = companyManagerService.getAllInfo(username);
+		String u = companyManagerService.getAllInfo(username);
 		if(u == null){
 			jsonData.put("code", -10416); 
 		}
 		else{
 			jsonData.put("code", 0);
-			jsonData.put("stuffs", JSONArray.fromObject(u).toString());
-			
+			jsonData.put("stuffs", u);			
 		}
+		
 		return SUCCESS;
 	}
-	
 	/**
 	 * 公司管理员手动添加普通用户
 	 * @return

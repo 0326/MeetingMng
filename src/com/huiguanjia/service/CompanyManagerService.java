@@ -9,7 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import net.sf.json.JSONArray;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -22,9 +21,59 @@ import com.huiguanjia.dao.TempCompanyAndCompanyAdminDao;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
+import com.huiguanjia.util.JSONUtil;
 
 public class CompanyManagerService {
 
+	private class Stuff {
+		private String cellphone;
+		private String name;
+		private String job;
+		private String departName;
+		private String workNo;
+		
+		public Stuff(){
+			
+		}
+		public Stuff(String cellphone,String name,String job,
+				String departName,String workNo){
+			this.cellphone = cellphone;
+			this.name = name;
+			this.job = job;
+			this.departName = departName;
+			this.workNo = workNo;
+		}
+		public String getCellphone() {
+			return cellphone;
+		}
+		public void setCellphone(String cellphone) {
+			this.cellphone = cellphone;
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public String getJob() {
+			return job;
+		}
+		public void setJob(String job) {
+			this.job = job;
+		}
+		public String getDepartName() {
+			return departName;
+		}
+		public void setDepartName(String departName) {
+			this.departName = departName;
+		}
+		public String getWorkNo() {
+			return workNo;
+		}
+		public void setWorkNo(String workNo) {
+			this.workNo = workNo;
+		}
+	}
 	/**
 	 * @info 注册时验证用户名是否已存在
 	 * @param username
@@ -192,18 +241,35 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return
 	 */
-	public List<OrdinaryUser> getAllInfo(String username){	
+	public String getAllInfo(String username){	
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 
 		String hql = "select o from OrdinaryUser as o where o.companyAndCompanyAdmin.username = ?"; 
 		Object[] values = new Object[]{username};
-		List<OrdinaryUser> or = (List<OrdinaryUser>)b.findPagingObjectByHql(hql, 0, 10, values);
-		SessionDAO.closeSession();
-		if(null == or)
+		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 0, 10, values);
+		
+		if(null == or){
 			return null;
-		else 
-			return or;
+		}
+		
+		List<Stuff> res = new ArrayList<Stuff>();
+		for(int i=0;i<or.size();i++){
+			Stuff stuff = new Stuff();
+			stuff.setCellphone(or.get(i).getCellphone());
+			stuff.setName(or.get(i).getName());
+			stuff.setJob(or.get(i).getJob());
+			stuff.setWorkNo(or.get(i).getWorkNo());
+			stuff.setDepartName(or.get(i).getDepartment().getDepartmentName());
+			stuff.setDepartName("departName");
+			res.add(stuff);
+		}
+		String stres = JSONUtil.serialize(res);
+		System.out.println("json:"+stres);
+		
+		SessionDAO.closeSession();
+		
+		return stres;
 	}
 	
 	/**

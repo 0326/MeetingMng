@@ -190,11 +190,11 @@ function($http, $q, PostCfg, CompanyData){
       getStuffs: function(companyId){
         // if(_stuffs) return _stuffs;
         var d = $q.defer();
-        $http.get("/MeetingMng/api/v1/companyManagerGetAllInfo?username="+$cookieStore.get("username"))
+        $http.get("/MeetingMng/api/v1/companyManagerGetStuffs?username="+$cookieStore.get("username"))
         .success(function(data){
           if(data.code == 0){
-            // _stuffs = data.stuffs;
-            d.resolve(data.stuffs);
+            _stuffs = $.parseJSON(data.stuffs);
+            d.resolve(_stuffs);
           }
         });
         return d.promise;
