@@ -123,7 +123,46 @@ public class ActivateDao {
 		else if(0 == l.size())
 		{
 			username = null;
-		}		
+		}
+		
+		HibernateSessionFactory.closeSession();
+		
 		return username;
+	}
+	
+	/**
+	 * @info 手机验证码激活验证
+	 * @param cellphone
+	 * @param activateCode
+	 * @param activateTime
+	 * @return
+	 */
+	public boolean activatePhone(String cellphone,String activateCode,Date activateTime)
+	{
+		boolean res = false;
+		
+		String hqlQuery = "select a.sendTime from Activate as a where a.activateAddr = :b and " +
+				"a.activateInfo = :c";
+		
+		Session sess = HibernateSessionFactory.getSession();
+		List l = sess.createQuery(hqlQuery).setString("b", cellphone).setString("c", activateCode).list();
+		if(1 == l.size())
+		{
+			Date tmp = (Date)l.get(0);
+			long t1 = activateTime.getTime();
+			long t2 = tmp.getTime();
+			if(t2 + 60*1000 < t1)
+				res = false;
+			else
+				res = true;
+		}
+		else if(0 == l.size())
+		{
+			res = false;
+		}		
+		
+		HibernateSessionFactory.closeSession();
+		
+		return res;
 	}
 }

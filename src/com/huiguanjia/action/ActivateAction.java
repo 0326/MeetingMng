@@ -58,7 +58,22 @@ public class ActivateAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	
+	public String activatePhone()
+	{
+		ActivateService service = new ActivateService();
+		
+		Date d = new Date();
+		if(false == service.activatePhone(uid,aid,d))
+		{
+			jsonData.put("code", -1);
+		}
+		else 
+		{
+			jsonData.put("code", 0);
+		}
+		
+		return SUCCESS;
+	}
 	
 	//setter and getter
 	public String getUid() {

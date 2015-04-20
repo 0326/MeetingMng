@@ -34,4 +34,20 @@ public class ActivateTest {
 		}
 	}
 
+	public void activatePhone()
+	{
+        ActivateService service = new ActivateService();
+		
+		Date d = new Date();
+		if(false == service.activatePhone("15071345115","5501",d))
+		{
+			System.out.println("手机验证码激活失败");
+		}
+		else 
+		{
+			System.out.println("手机验证码激活成功");
+		}
+		
+	}
+	
 }

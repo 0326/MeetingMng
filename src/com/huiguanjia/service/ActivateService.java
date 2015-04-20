@@ -37,8 +37,22 @@ public class ActivateService {
 	 * 2: 该激活请求已过期，请重新发送激活请求
 	 * 第一种情况返回公司名称字符串，第二种情况返回空字符串
 	 */
-	public String activate(String userId, String activeCode, Date sendTime){
+	public String activate(String userId, String activeCode, Date activateTime){
 		ActivateDao acd = new ActivateDao();
-		return acd.activate(userId, activeCode, sendTime);
+		return acd.activate(userId, activeCode, activateTime);
+	}
+	
+	/**
+	 * @info 手机验证码激活验证
+	 * @param cellphone
+	 * @param activateCode
+	 * @param activateTime
+	 * @return true，激活成功
+	 *         false，验证码不存在、验证码错误或验证码过期
+	 */
+	public boolean activatePhone(String cellphone,String activateCode,Date activateTime)
+	{
+		ActivateDao acd = new ActivateDao();
+		return acd.activatePhone(cellphone,activateCode,activateTime);
 	}
 }

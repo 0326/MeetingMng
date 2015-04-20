@@ -42,4 +42,44 @@ public class OrdinaryUserTest {
 			System.out.println(companyList);
 		}
 	}
+	
+	public void registerTest()
+	{
+		OrdinaryUserService service = new OrdinaryUserService();
+		if(false == service.register("15071345115","1833559609@qq.com","王峤","123456"))
+		{
+			System.out.println("普通用户注册失败");
+		}
+		else
+		{
+			System.out.println("普通用户注册成功");
+		}
+		
+	}
+	
+	public void loginTest()
+	{
+		    OrdinaryUserService service = new OrdinaryUserService();
+			
+	        String cellphone = "wangqiao@hust.edu.cn";
+			
+	        int loginMode;
+			if(-1 == cellphone.indexOf("@"))
+				loginMode = 1;
+			else 
+				loginMode = 0;
+			
+			String res = service.login(cellphone, "123456",loginMode);
+			if(null == res)
+			{
+				System.out.println("登录失败");
+			}
+			else
+			{
+				System.out.println("登录成功");
+				System.out.println(res);
+			}
+	}
+	
+	
 }
