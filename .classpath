@@ -66,5 +66,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/tomcat-coyote.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/tomcat7-websocket.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/websocket-api.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/fastjson-1.1.1.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
