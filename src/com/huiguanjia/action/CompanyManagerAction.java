@@ -22,6 +22,8 @@ import com.huiguanjia.pojo.Department;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sf.json.JSONArray;
+
 @SuppressWarnings("serial")
 public class CompanyManagerAction extends ActionSupport{
 	private String email;
@@ -409,7 +411,7 @@ public class CompanyManagerAction extends ActionSupport{
 	 * @info 公司管理员取得公司管理员信息
 	 * @return
 	 */
-	public String getInfo(){
+	public String findInfo(){
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		CompanyAndCompanyAdmin u = companyManagerService.getInfo(username);
@@ -429,7 +431,7 @@ public class CompanyManagerAction extends ActionSupport{
 	 * @info 公司管理员得到所有用户信息
 	 * @return
 	 */
-	public String getAllInfo(){
+	public String findAllInfo(){
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		List<OrdinaryUser> u = companyManagerService.getAllInfo(username);
@@ -437,7 +439,8 @@ public class CompanyManagerAction extends ActionSupport{
 			jsonData.put("code", -10416); 
 		}
 		else{
-			jsonData.put("user", u);
+			jsonData.put("code", 0);
+			jsonData.put("stuffs", JSONArray.fromObject(u).toString());
 			
 		}
 		return SUCCESS;
@@ -447,7 +450,7 @@ public class CompanyManagerAction extends ActionSupport{
 	 * 公司管理员手动添加普通用户
 	 * @return
 	 */
-	public String addOriginUser(){
+	public String addOrdinaryUser(){
 		jsonData = new HashMap<String,Object>();
 		
 		CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
@@ -546,7 +549,7 @@ public class CompanyManagerAction extends ActionSupport{
 	 * 公司管理员取得单个用户信息
 	 * @return
 	 */
-	public String getOrdinaryUserInfo(){
+	public String findOrdinaryUserInfo(){
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		OrdinaryUser u = companyManagerService.getOrdinaryUserInfo(username,cellphone);

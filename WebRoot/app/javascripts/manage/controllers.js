@@ -11,9 +11,15 @@ var mControllers = angular.module("mControllers", [])
   });
 })
  
-.controller("homeCtrl", function($scope, $cookieStore, CompanyData) {
-   $scope.company = CompanyData.getAll();
-   window.MMComet.initialize($cookieStore.get('username'));
+.controller("homeCtrl", function($scope, $cookieStore, CompanyData, userService) {
+  userService
+  .getInfo($cookieStore.get('username'))
+  .then(function(data){
+    $("#loading").text("数据加载完成！");
+    CompanyData.setAll(data);
+    $scope.company = CompanyData.getAll();
+  });
+  window.MMComet.initialize($cookieStore.get('username'));
 })
 
 .controller("profileCtrl", function($scope, CompanyData, userService) {
@@ -158,22 +164,49 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("stufflistCtrl", function($scope, CompanyData) {
-  $scope.company = CompanyData;
+.controller("stufflistCtrl", function($scope, CompanyData, StuffService) {
+  $scope.company = CompanyData.getAll();
 
-  $scope.stuffs = [
-    {name: "Bob",depart:"技术部"},
-    {name: "Lili",depart:"市场部"},
-    {name: "Perl",depart:"技术部"},
-    {name: "Python",depart:"技术部"}];
-
-  $scope.getFormData = function(){
-    console.log($scope.user);
-  }
+  // $scope.stuffs = [
+  //   {name: "Bob",depart:"技术部"},
+  //   {name: "Lili",depart:"市场部"},
+  //   {name: "Perl",depart:"技术部"},
+  //   {name: "Python",depart:"技术部"}];
+  StuffService
+  .getStuffs()
+  .then(function(data){
+    $scope.stuffs = data;
+    console.log("stuffs:",$scope.stuffs);
+  });
 })
 
-.controller("stuffioCtrl", function($scope, CompanyData) {
-  $scope.company = CompanyData;
+.controller("stuffioCtrl", function($scope, CompanyData, departmentService, StuffService) {
+  $scope.company = CompanyData.getAll();
+  departmentService
+    .getDepartments()
+    .then(function(data){
+      $scope.departlist = departmentService.form2list(data);
+      console.log($scope.departlist);
+    });
+
+  $scope.stuff = {
+    username: $scope.company.username,
+    departmentId:null,
+    cellphone:null,
+    name: null,
+    email:null,
+    sex: 0,
+    officePhone:null,
+    job: null,
+    avatarUrl: 'app/images/headimg.jpg',
+    officeLocation: null,
+    workNo: null
+  };
+
+  $scope.submitAddForm = function(isValid){
+    StuffService.add($scope.stuff);
+  }
+
 
 })
 

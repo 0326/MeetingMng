@@ -160,6 +160,93 @@ function($http, $q, PostCfg, CompanyData){
   return service;
 }])
 
+.factory('StuffService',['$http', '$q', '$cookieStore', 'PostCfg',
+  function($http, $q, $cookieStore, PostCfg){
+    var _stuffs = null;
+    // (function _getStuffs(id){
+    //   var d = $q.defer();
+    //   $http.get("/MeetingMng/api/v1/companyManagerGetAllInfo?username="+companyId)
+    //   .success(function(data){
+    //     if(data.code == 0){
+    //       // _stuffs = data.stuffs;
+    //       d.resolve(data.stuffs);
+    //     }
+    //   });
+    //   return d.promise;
+    // })($cookieStore.get("username"));
+    var service = {
+      add: function(stuff){
+        $http.post("/MeetingMng/api/v1/companyManagerAddOrdinaryUser", stuff, PostCfg)
+        .success(function(data){
+          if(data.code == 0){
+            alert("添加成功");
+            $("#addModal").modal('hide');
+          }
+          else{
+            alert("添加失败");
+          }
+        });
+      },
+      getStuffs: function(companyId){
+        // if(_stuffs) return _stuffs;
+        var d = $q.defer();
+        $http.get("/MeetingMng/api/v1/companyManagerGetAllInfo?username="+$cookieStore.get("username"))
+        .success(function(data){
+          if(data.code == 0){
+            // _stuffs = data.stuffs;
+            d.resolve(data.stuffs);
+          }
+        });
+        return d.promise;
+      },
+      updateInfo: function(company){
+        var d = $q.defer();
+        $http.post("/MeetingMng/api/v1/companyManagerUpdateInfo",company, PostCfg)
+        .success(function(data){
+          if(data.code != '0'){
+            alert("修改失败");
+          }
+          else{
+            alert("修改成功！");
+            d.resolve(data);
+          }
+        });
+        return d.promise;
+      }
+    };//service end
+
+    return service;
+  }
+])
+
+.factory('CompanyData', function($cookieStore, userService){
+  var  _company = {
+    username: $cookieStore.get('username'),
+    avatarUrl: 'app/images/userimg.jpg'
+  };
+  var service = {};
+  
+  service = {
+    getAll: function(){return _company;},
+    getUsername: function(){return _company.username;},
+    setAvatarUrl: function(a){_company.avatarUrl = a;},
+    setCellphone: function(a){_company.cellphone = a;},
+    setEmail: function(a){_company.email = a;},
+    setName: function(a){_company.name = a;},
+    setOfficeLocation: function(a){_company.officeLocation = a;},
+    setOfficePhone: function(a){_company.officePhone = a;},
+    setSex: function(a){_company.sex = a;},
+    setAll: function(a){
+      _company = a;
+      if(_company.avatarUrl == null){
+        _company.avatarUrl = 'app/images/userimg.jpg';
+      }
+    }
+  };
+
+  return service;
+})
+
 .constant('PostCfg',{
   headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
   transformRequest: function(data) {

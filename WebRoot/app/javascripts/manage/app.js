@@ -2,36 +2,6 @@
 angular.module("appmanage", ["ngRoute", "ngAnimate", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
-.factory('CompanyData', function($cookieStore, userService){
-	var  _company = {
-		username: $cookieStore.get('username'),
-		avatarUrl: 'app/images/userimg.jpg'
-	};
-	var service = {};
-
-	userService.getInfo(_company.username)
-	.then(function(data){
-	  _company = data;
-	  if(_company.avatarUrl == null){
-	    _company.avatarUrl = 'app/images/userimg.jpg';
-	  }
-	});
-	
-	service = {
-		getAll: function(){return _company;},
-		getUsername: function(){return _company.username;},
-		setAvatarUrl: function(a){_company.avatarUrl = a;},
-		setCellphone: function(a){_company.cellphone = a;},
-		setEmail: function(a){_company.email = a;},
-		setName: function(a){_company.name = a;},
-		setOfficeLocation: function(a){_company.officeLocation = a;},
-		setOfficePhone: function(a){_company.officePhone = a;},
-		setSex: function(a){_company.sex = a;}
-	};
-
-	return service;
-})
-
 .config(function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: 'app/templates/manage/home.html',
