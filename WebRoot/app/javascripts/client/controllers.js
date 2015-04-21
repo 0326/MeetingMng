@@ -1,29 +1,16 @@
 // controllers.js
 var mControllers = angular.module("mControllers", [])
 
-.controller("homeCtrl", function($scope) {
-   $scope.meetinglist = [
-    {
-      title:'会管家周会',
-      date:'每周五 下午4:00',
-      addr:'软件学院502教室',
-      id:'345346546'
-    },
-    {
-      title:'会管家周会',
-      date:'每周五 下午4:00',
-      addr:'软件学院502教室',
-      id:'345346546'
-    },
-    {
-      title:'会管家周会',
-      date:'每周五 下午4:00',
-      addr:'软件学院502教室',
-      id:'345346546'
-    },
-
-   ];
-
+.controller("homeCtrl", function($scope, meetingService) {
+  $scope.meetinglist = [];
+   meetingService
+   .getAll()
+   .then(function(data){
+      if(data.code == 0){
+        $scope.meetinglist = $.parseJSON(data.meetings);
+      }
+      // console.log(data);
+   });
 })
 
 

@@ -204,5 +204,58 @@
     		</result>
     	</action>
  	 </package>
-
+	<!--普通用户api接口-会议操作-->
+	<package name="u-meeting-package" namespace="/api/v1/u/meeting" extends="json-default">
+    	<action name="create" class="com.huiguanjia.action.MeetingAction" method="create">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="delete" class="com.huiguanjia.action.MeetingAction" method="delete">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="update" class="com.huiguanjia.action.MeetingAction" method="update">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findByMeetingId" class="com.huiguanjia.action.MeetingAction" method="findByMeetingId">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findByUserId" class="com.huiguanjia.action.MeetingAction" method="findByUserId">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+ 	</package>
+ 	<!--普通用户api接口-联系人操作-->
+	<package name="u-contact-package" namespace="/api/v1/u/contact" extends="json-default">
+    	<action name="createindusty" class="com.huiguanjia.action.DevAction" method="createIndusty">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="createcity" class="com.huiguanjia.action.DevAction" method="createCity">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+ 	</package>
+ 	<!--普通用户api接口-话题操作-->
+	<package name="u-topic-package" namespace="/api/v1/u/topic" extends="json-default">
+    	<action name="createindusty" class="com.huiguanjia.action.DevAction" method="createIndusty">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="createcity" class="com.huiguanjia.action.DevAction" method="createCity">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+ 	</package>
 </struts>    

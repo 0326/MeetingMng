@@ -1,65 +1,61 @@
-// controllers.js
 var mControllers = angular.module("mControllers", [])
 
-.controller("sidemenuCtrl", function($scope, $cookieStore, userService, CompanyData) {
-  $scope.company = CompanyData.getAll();
-  //CompanyData监听事件，随时广播
-  $scope.$on('CompanyDataChange',function(event, company){
-    console.log('this is in sidemenuCtrl:', company);
+//layout是顶级父控制器，应用加载之前需要先初始化user个人数据
+.controller("layoutCtrl", function($scope, $cookieStore, userService) {
+  $scope.company = {};
+  
+  userService
+  .getInfo()
+  .then(function(data){
+    $scope.company = data;
+    $scope.$broadcast('userProfileBroadcast', $scope.company);
+    $("#loading").fadeOut("normal",function(){
+        $("#layout").fadeIn();
+    });
+  })
+
+  $scope.$on('userProfileChange',function(event, company){
+    // console.log('this is in sidemenuCtrl:', company);
     $scope.company = company;
-    $scope.$broadcast('CompanyDataBroadcast', company);
+    $scope.$broadcast('userProfileBroadcast', company);
   });
+  
 })
  
-.controller("homeCtrl", function($scope, $cookieStore, CompanyData, userService) {
-  userService
-  .getInfo($cookieStore.get('username'))
-  .then(function(data){
-    $("#loading").text("数据加载完成！");
-    CompanyData.setAll(data);
-    $scope.company = CompanyData.getAll();
+.controller("homeCtrl", function($scope, userService) {
+  $scope.$on("userProfileBroadcast",function(event, company){
+    $scope.company = company;
   });
-  window.MMComet.initialize($cookieStore.get('username'));
 })
 
-.controller("profileCtrl", function($scope, CompanyData, userService) {
-   $scope.company = CompanyData.getAll();
-   // console.log($scope.company);
-   $scope.userLogout = function(){
-    userService.logout({
-      username: $scope.company.username
-    });
-   }
+.controller("profileCtrl", function($scope, userService) {
+  $scope.company = userService.profiles;
 
-   $scope.updatePass = function(){
+  $scope.userLogout = function(){
+    userService.logout({username: $scope.company.username});
+  }
+
+  $scope.updatePass = function(){
     userService.updatePass($scope.company.username,$scope.company.password,$scope.company.newpassword);
-   }
+  }
 
-   $scope.updateInfo = function(){
+  $scope.updateInfo = function(){
     $scope.company.avatarUrl = $("#headimg100")[0].src;
-    // console.log($scope.company);
     userService.updateInfo($scope.company)
     .then(function(data){
-      CompanyData.setAvatarUrl($scope.company.avatarUrl);
-      CompanyData.setCellphone($scope.company.cellphone);
-      CompanyData.setEmail($scope.company.email);
-      CompanyData.setName($scope.company.name);
-      CompanyData.setOfficeLocation($scope.company.officeLocation);
-      CompanyData.setOfficePhone($scope.company.officePhone);
-      CompanyData.setSex($scope.company.sex);  
-
-      console.log('profileCtrl change data:', $scope.company);
-      $scope.$emit('CompanyDataChange',$scope.company);
-      // console.log(CompanyData);
+      if(data.code == 0){
+        console.log('profileCtrl change data:', $scope.company);
+        $scope.$emit('userProfileChange',$scope.company);
+      }
     });
-   }
+  }
 
 })
 
-.controller("departmanageCtrl", function($scope, departmentService, CompanyData) {
-  $scope.company = CompanyData.getAll(); //公司用户信息
+.controller("departmanageCtrl", function($scope, departmentService, userService) {
+  $scope.company = userService.profiles; //公司用户信息
   $scope.departlist = {}; //公司所有部门
-  $scope.selectlist = [{text:'hello',id:'this id '}]; // 添加/编辑部门下拉列表数据
+  $scope.selectlist = []; // 添加/编辑部门下拉列表数据
   $scope.newdepart = {username: $scope.company.username};//添加的新部门信息
   $scope.currdepart ={
     username: $scope.company.username,
@@ -153,19 +149,18 @@ var mControllers = angular.module("mControllers", [])
     });
   };
 
+})
+
+.controller("meetingcreateCtrl", function($scope) {
 
 })
 
-.controller("meetingcreateCtrl", function($scope, CompanyData) {
+.controller("meetinglistCtrl", function($scope) {
 
 })
 
-.controller("meetinglistCtrl", function($scope, CompanyData) {
-
-})
-
-.controller("stufflistCtrl", function($scope, CompanyData, StuffService) {
-  $scope.company = CompanyData.getAll();
+.controller("stufflistCtrl", function($scope, userService, StuffService) {
+  $scope.company = userService.profiles;
 
   StuffService
   .getStuffs()
@@ -175,8 +170,8 @@ var mControllers = angular.module("mControllers", [])
   });
 })
 
-.controller("stuffioCtrl", function($scope, CompanyData, departmentService, StuffService) {
-  $scope.company = CompanyData.getAll();
+.controller("stuffioCtrl", function($scope, userService, departmentService, StuffService) {
+  $scope.company = userService.profiles;
   departmentService
     .getDepartments()
     .then(function(data){
@@ -205,11 +200,11 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("statmeetingCtrl", function($scope, CompanyData) {
+.controller("statmeetingCtrl", function($scope) {
 
 })
 
-.controller("statstuffCtrl", function($scope, CompanyData) {
+.controller("statstuffCtrl", function($scope) {
 
 })
 

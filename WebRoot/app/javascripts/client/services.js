@@ -13,28 +13,40 @@ var mServices = angular.module("mServices", [])
 	};
 }])
 
-.factory('departmentService',['$http', 'PostCfg', function($http,PostCfg){
-  return {
-    add: function(department){
-      var flag = false;
-      $http.post('/MeetingMng/api/v1/manage/department/add', department, PostCfg)
-      .success(function(data){
-          console.log(data);
-          // refreshTree();
-          flag = true;
-      });
-      return flag;
-    },
-    delete: function(department){
-      var flag = false;
-      $http.post('/MeetingMng/api/v1/manage/department/delete',$scope.currdepart, PostCfg)
-      .success(function(data){
-        // refreshTree();
-        flag = true;
-      });
-      return flag;
-    }
-  };
+.factory('meetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+
+  service.add = function(){
+
+  }
+
+  service.delete = function(){
+
+  }
+
+  service.update = function(){
+
+  }
+
+  service.getAll = function(cellphone){
+    var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findByUserId?meetingCreatorId="+cellphone)
+    .success(function(data){
+      var obj;
+      if(data.code == 0){
+        obj = $.parseJSON(data.meetings);
+        // for(var i=0;i<obj.length;i++){
+        //   obj[i].meetingStartTime = new Date(obj[i].meetingStartTime);
+        // }
+      }
+      d.resolve(obj);
+    });
+    return d.promise;
+  }
+
+
+  return service;
 }])
 
 .constant('PostCfg',{
@@ -43,41 +55,3 @@ var mServices = angular.module("mServices", [])
       return $.param(data);
   }
 })
-
-.constant('departsData',[
-    {
-      text: "研发部",
-      icon: "glyphicon glyphicon-stop",
-      backColor: "#eee",
-      href: "#node",
-      nodes: [
-        {
-          text: "移动客户端开发",
-          nodes: [
-            {
-              text: "安卓组"
-            },
-            {
-              text: "IOS组"
-            }
-          ]
-        },
-        {
-          text: "后台开发"
-        }
-      ]
-    },
-    {
-      text: "财务部",
-      backColor: "#eee",
-      href: "#node",
-      nodes: [
-        {text: "财务组"}
-      ]
-    },
-    {
-      text: "运营部",
-      backColor: "#eee",
-      href: "#node"
-    },
-  ])

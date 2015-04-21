@@ -2,14 +2,27 @@
 angular.module("appmanage", ["ngRoute", "ngAnimate", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
+// .provider('userProvider', function($http, $q, $cookieStore){
+// 	var _provider = {};
+// 	_provider.getInfo = function(username){
+//     var d = $q.defer();
+//     $http.get("/MeetingMng/api/v1/companyManagerGetInfo?username="+$cookieStore.get('username'))
+//     .success(function(data, status){
+//       service.profiles = data.user;
+//       d.resolve(data.user);
+//     });
+//     return d.promise;
+//   }
+
+//   return _provider;
+// })
+
 .config(function($routeProvider) {
 	$routeProvider.when('/', {
 		templateUrl: 'app/templates/manage/home.html',
-		// resolve:{
-		// 	CompanyData:function(CompanyData){
-		// 		return CompanyData;
-		// 	}
-		// },
+		resolve:{
+
+		},
 		controller: 'homeCtrl'
 	})
 	

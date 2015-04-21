@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.alibaba.fastjson.JSONObject;
 import com.huiguanjia.service.ActivateService;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
@@ -358,17 +359,10 @@ public class CompanyManagerAction extends ActionSupport{
 		
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if( companyManagerService.updateInfo(username,email,name,sex,officePhone,avatarUrl,cellphone,officeLocation)){
-			jsonData.put("code", "0");
-			jsonData.put("username",username);
-			jsonData.put("email",email);
-			jsonData.put("sex", sex);
-			jsonData.put("officePhone", officePhone);
-			jsonData.put("avatarUrl", avatarUrl);
-			jsonData.put("cellphone",cellphone);
-			jsonData.put("officeLocation",officeLocation);
+			jsonData.put("code", 0);
 		}
 		else{
-			jsonData.put("code", "-1");
+			jsonData.put("code", -1);
 		}
 		return SUCCESS;
 	}
@@ -383,27 +377,11 @@ public class CompanyManagerAction extends ActionSupport{
 	 */
 	public String updatePass(){
 		jsonData = new HashMap<String,Object>();	
-		String apassword = (String) ActionContext.getContext().getSession().get("password");
-		/*
-		Industry aindustry = (Industry) ActionContext.getContext().getSession().get("industry");
-		ProvinceAndCity aprovinceAndCity = (ProvinceAndCity) ActionContext.getContext().getSession().get("provinceAndCity");
-		String ausername = (String) ActionContext.getContext().getSession().get("username");
-		*/
+
+		CompanyManagerService cms = new CompanyManagerService();
+		int code = cms.updatePass(username, password, newpassword);
+		jsonData.put("code", code);
 		
-		System.out.println("password:"+password);
-		System.out.println("newpassword:"+newpassword);
-		
-		CompanyManagerService companyManagerService = new CompanyManagerService();
-		//login to test if username is ture?
-		if(!apassword.equals(password)){
-			jsonData.put("code","-10411");
-		}
-		else if(companyManagerService.updatePass(username,newpassword)){
-			jsonData.put("code", "0");
-		}
-		else{
-			jsonData.put("code", "-10412");
-		}
 		return SUCCESS;
 	}
 	
@@ -414,14 +392,13 @@ public class CompanyManagerAction extends ActionSupport{
 	public String findInfo(){
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		CompanyAndCompanyAdmin u = companyManagerService.getInfo(username);
+		JSONObject u = companyManagerService.getInfo(username);
 		if(u == null){
-			jsonData.put("code", "-1"); 
+			jsonData.put("user", null); 
 		}
 		else{
 			jsonData.put("user", u);
 		}
-		//System.out.println(u);
 		
 		return SUCCESS;
 	}
@@ -494,7 +471,7 @@ public class CompanyManagerAction extends ActionSupport{
 			jsonData.put("code", -10417);
 		}
 		else{
-			jsonData.put("code", "0");
+			jsonData.put("code", 0);
 		}
 		
 		return SUCCESS;

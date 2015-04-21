@@ -4,15 +4,18 @@ import java.util.*;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.alibaba.fastjson.JSON;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.pojo.Meeting;
 import com.huiguanjia.pojo.OrdinaryUser;
+import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
 import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.service.MeetingBulletinService?
 
 public class MeetingAction  extends ActionSupport{
 
-	private Integer meetingId;                    //会议
+	private static final long serialVersionUID = 2782570898187961833L;
+	private Integer meetingId;                   //会议
 	private String meetingName;                  //会议名
 	private String meetingContent;               //会议内容
 	private String meetingLocation;              //会议地点
@@ -93,7 +96,7 @@ public class MeetingAction  extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	public String findByCompanyId(){
+	public String findByMeetingId(){
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
 		String departmentList = ms.findByMeetingId(meetingId);
@@ -108,7 +111,20 @@ public class MeetingAction  extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	public String findByUserName(){
+	public String findByUserId(){
+		jsonData = new HashMap<String,Object>();
+		MeetingService ms = new MeetingService();
+		String list = ms.findByUserId(meetingCreatorId);
+		if(null == list){
+			jsonData.put("code", -1);
+			jsonData.put("meetings", "");	 
+		}
+		else{
+			jsonData.put("code", 0);
+			jsonData.put("meetings", list);			
+			System.out.println(JSON.toJSONString(jsonData));
+		}
+		
 		return SUCCESS;
 	}
 	//setter and getter
@@ -222,5 +238,9 @@ public class MeetingAction  extends ActionSupport{
 	
 	public void setMeetingFrequency(int meetingFrequency) {
 		this.meetingFrequency = meetingFrequency;
+	}
+	
+	public Map<String,Object> getJsonData(){
+		return jsonData;
 	}
 }

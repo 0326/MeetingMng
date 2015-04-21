@@ -12,6 +12,7 @@ import net.sf.json.JSONArray;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.alibaba.fastjson.JSONObject;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.CompanyAndCompanyAdminDao;
 import com.huiguanjia.dao.IndustryDao;
@@ -22,6 +23,7 @@ import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
 import com.huiguanjia.util.JSONUtil;
+import com.huiguanjia.util.MD5Util;
 
 public class CompanyManagerService {
 
@@ -151,6 +153,7 @@ public class CompanyManagerService {
 	public int register(String username,String password,String type,
 			String companyName,String location)
 	{
+		String md5pass = MD5Util.MD5Code(password);
 		CompanyAndCompanyAdminDao aCompanyAndCompanyAdminDao = new CompanyAndCompanyAdminDao();
 		IndustryDao aIndustryDao = new IndustryDao();
 		ProvinceAndCityDao aProvinceAndCityDao = new ProvinceAndCityDao();
@@ -163,7 +166,7 @@ public class CompanyManagerService {
 			return 3;
 		else if(false == aProvinceAndCityDao.cityCodeValid(location))
 			return 4;
-		else if(true == aTempCompanyAndCompanyAdminDao.add(username, password, type, companyName, location))
+		else if(true == aTempCompanyAndCompanyAdminDao.add(username, md5pass, type, companyName, location))
 			return 6;
 		else 
 			return 5;
@@ -206,13 +209,13 @@ public class CompanyManagerService {
 	public boolean login(String username,String password){
 		
 		BaseDAO b = new BaseDAO();
-		
+		String md5pass = MD5Util.MD5Code(password);
 		Session sess = SessionDAO.getSession();
 		CompanyAndCompanyAdmin ca = (CompanyAndCompanyAdmin)b.findObjectById(CompanyAndCompanyAdmin.class, username);
 		SessionDAO.closeSession();
 		if(null == ca)
 			return false;
-		else if(true == password.equals(ca.getPassword()))
+		else if(true == md5pass.equals(ca.getPassword()))
 			return true;
 		else 
 			return false;
@@ -224,16 +227,27 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return
 	 */
-	public CompanyAndCompanyAdmin getInfo(String username){	
+	public JSONObject getInfo(String username){	
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
-		CompanyAndCompanyAdmin admin = new CompanyAndCompanyAdmin();
 		CompanyAndCompanyAdmin ca = (CompanyAndCompanyAdmin)b.findObjectById(CompanyAndCompanyAdmin.class, username);
-		SessionDAO.closeSession();
-		if(null == ca)
-			return null;
-		else 
-			return ca;
+		
+		if(null == ca) return null;
+		
+		JSONObject obj = new JSONObject();
+		obj.put("companyName", ca.getCompanyName());
+		obj.put("industry", ca.getIndustry());
+		obj.put("provinceAndCity", ca.getProvinceAndCity());
+		obj.put("username", ca.getUsername());
+		obj.put("avatarUrl", ca.getAvatarUrl());
+		obj.put("name", ca.getName());
+		obj.put("sex", ca.getSex());
+		obj.put("email", ca.getEmail());
+		obj.put("cellphone", ca.getCellphone());
+		obj.put("officePhone", ca.getOfficePhone());
+		obj.put("officeLocation", ca.getOfficeLocation());
+//		SessionDAO.closeSession();
+		return obj;
 	}
 	
 	/**
@@ -311,24 +325,32 @@ public class CompanyManagerService {
 	 * @param newpass String 新密码
 	 * @return
 	 */
-	public boolean updatePass(String username,String password){
-		boolean res;
-
+	public int updatePass(String username,String password,String newpass){
+		int res;
+		
 		BaseDAO b = new BaseDAO();
 		Session sess = SessionDAO.getSession();
 		Transaction ts = sess.beginTransaction();
 		try
 		{
-			String hql = "update CompanyAndCompanyAdmin u set u.password=? where u.username=?";
-			Object[] values = new Object[]{password,username};
-			b.updateObjectByHql(hql,values);
-			ts.commit();
-			res = true;
+			CompanyAndCompanyAdmin ca = (CompanyAndCompanyAdmin)b.findObjectById(CompanyAndCompanyAdmin.class, username);
+			if(ca.getPassword().equals(MD5Util.MD5Code(password)) == false){
+				res = -1;
+			}
+			else{
+				String md5pass = MD5Util.MD5Code(newpass);
+				String hql = "update CompanyAndCompanyAdmin u set u.password=? where u.username=?";
+				Object[] values = new Object[]{md5pass,username};
+				b.updateObjectByHql(hql,values);
+				ts.commit();
+				res = 0;
+			}
+			
 		}
 		catch(Exception e)
 		{
 			ts.rollback();
-			res = false;
+			res = -100;
 			System.out.println(e);
 		}
 		

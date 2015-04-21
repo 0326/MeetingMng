@@ -17,9 +17,9 @@
 	  </thead>
 	  <tbody>
 	    <tr ng-repeat="m in meetinglist">
-	      <td>{{m.title}}</td>
-	      <td>{{m.date}}</td>
-	      <td>{{m.addr}}</td>
+	      <td>{{m.meetingName}}</td>
+	      <td>{{m.meetingStartTime}}</td>
+	      <td>{{m.meetingLocation}}</td>
 	      <td><a href="#/meeting-detail?mid={{m.id}}" class="button tiny">详细</a></td>
 	    </tr>
 	  </tbody>

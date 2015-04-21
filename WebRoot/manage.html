@@ -25,7 +25,11 @@
     <script src="app/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body ng-app="appmanage">
-<div id="layout" ng-controller="sidemenuCtrl">
+<div id="loading">
+    <p class="bunce1"></p><p class="bunce2"></p><p class="bunce3"></p>
+    <i class="text">努力加载中...</i>
+</div>
+<div id="layout" ng-controller="layoutCtrl">
     <!-- Menu toggle -->
     <a href="#menu" id="menuLink" class="menu-link">
         <!-- Hamburger icon -->

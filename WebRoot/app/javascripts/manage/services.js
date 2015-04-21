@@ -11,11 +11,22 @@ var mServices = angular.module("mServices", [])
           window.location.href = "/MeetingMng";
         });
       },
-      getInfo: function(username){
+      getInfo: function(){
         var d = $q.defer();
-        $http.get("/MeetingMng/api/v1/companyManagerGetInfo?username="+username)
+        $http
+        .get("/MeetingMng/api/v1/companyManagerGetInfo?username="+$cookieStore.get("username"))
         .success(function(data, status){
-          d.resolve(data.user);
+          service.profiles = data.user;
+          if(service.profiles.avatarUrl == null){
+            service.profiles.avatarUrl = "app/images/logo.png";
+          }
+          if(service.profiles.sex == false){
+            service.profiles.sex = 0;
+          }
+          else{
+            service.profiles.sex = 1;
+          }
+          d.resolve(service.profiles);
         });
         return d.promise;
       },
@@ -26,12 +37,12 @@ var mServices = angular.module("mServices", [])
           username:username
         }, PostCfg)
         .success(function(data){
-          if(data.code != '0'){
-            alert("修改密码失败");
-          }
-          else{
+          if(data.code == 0){
             alert("修改成功！");
             $("#passModal").modal('hide');
+          }
+          else{
+            alert("修改密码失败");
           }
         });
       },
@@ -39,24 +50,25 @@ var mServices = angular.module("mServices", [])
         var d = $q.defer();
         $http.post("/MeetingMng/api/v1/companyManagerUpdateInfo",company, PostCfg)
         .success(function(data){
-          if(data.code != '0'){
-            alert("修改失败");
+          if(data.code == 0){
+            alert("修改成功！");
           }
           else{
-            alert("修改成功！");
-            d.resolve(data);
+            alert("修改失败");
           }
+          d.resolve(data);
         });
         return d.promise;
       }
   	};//service end
+    service.profiles = {};
 
     return service;
   }
 ])
 
-.factory('departmentService',['$http', '$q', 'PostCfg', 'CompanyData', 
-function($http, $q, PostCfg, CompanyData){
+.factory('departmentService',['$http', '$q', 'PostCfg', 'userService', 
+function($http, $q, PostCfg, userService){
   var service = {};
   var _departments = {};
 
@@ -101,7 +113,7 @@ function($http, $q, PostCfg, CompanyData){
 
   service.getDepartments = function(){
     var d = $q.defer();
-    $http.get("/MeetingMng/api/v1/manage/department/findByCompanyId?companyId="+CompanyData.getUsername())
+    $http.get("/MeetingMng/api/v1/manage/department/findByCompanyId?companyId="+userService.profiles.username)
     .success(function(data){
       _departments = data.departments;
       d.resolve(_departments);
@@ -160,20 +172,10 @@ function($http, $q, PostCfg, CompanyData){
   return service;
 }])
 
-.factory('StuffService',['$http', '$q', '$cookieStore', 'PostCfg',
-  function($http, $q, $cookieStore, PostCfg){
+.factory('StuffService',['$http', '$q', 'userService', 'PostCfg',
+  function($http, $q, userService, PostCfg){
     var _stuffs = null;
-    // (function _getStuffs(id){
-    //   var d = $q.defer();
-    //   $http.get("/MeetingMng/api/v1/companyManagerGetAllInfo?username="+companyId)
-    //   .success(function(data){
-    //     if(data.code == 0){
-    //       // _stuffs = data.stuffs;
-    //       d.resolve(data.stuffs);
-    //     }
-    //   });
-    //   return d.promise;
-    // })($cookieStore.get("username"));
+
     var service = {
       add: function(stuff){
         $http.post("/MeetingMng/api/v1/companyManagerAddOrdinaryUser", stuff, PostCfg)
@@ -190,7 +192,7 @@ function($http, $q, PostCfg, CompanyData){
       getStuffs: function(companyId){
         // if(_stuffs) return _stuffs;
         var d = $q.defer();
-        $http.get("/MeetingMng/api/v1/companyManagerGetStuffs?username="+$cookieStore.get("username"))
+        $http.get("/MeetingMng/api/v1/companyManagerGetStuffs?username="+userService.profiles.username)
         .success(function(data){
           if(data.code == 0){
             _stuffs = $.parseJSON(data.stuffs);
@@ -218,34 +220,6 @@ function($http, $q, PostCfg, CompanyData){
     return service;
   }
 ])
-
-.factory('CompanyData', function($cookieStore, userService){
-  var  _company = {
-    username: $cookieStore.get('username'),
-    avatarUrl: 'app/images/userimg.jpg'
-  };
-  var service = {};
-  
-  service = {
-    getAll: function(){return _company;},
-    getUsername: function(){return _company.username;},
-    setAvatarUrl: function(a){_company.avatarUrl = a;},
-    setCellphone: function(a){_company.cellphone = a;},
-    setEmail: function(a){_company.email = a;},
-    setName: function(a){_company.name = a;},
-    setOfficeLocation: function(a){_company.officeLocation = a;},
-    setOfficePhone: function(a){_company.officePhone = a;},
-    setSex: function(a){_company.sex = a;},
-    setAll: function(a){
-      _company = a;
-      if(_company.avatarUrl == null){
-        _company.avatarUrl = 'app/images/userimg.jpg';
-      }
-    }
-  };
-
-  return service;
-})
 
 .constant('PostCfg',{
   headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},

@@ -3,6 +3,7 @@ package com.huiguanjia.action;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.huiguanjia.comet.MeetingMsgInbound;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.service.DepartmentService;
@@ -107,7 +108,7 @@ public class DepartmentAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		DepartmentService ds = new DepartmentService();
 		String departmentList = ds.findByCompanyId(companyId);
-		
+		MeetingMsgInbound.pushSigle("from action", companyId);
 		if(null == departmentList){
 			jsonData.put("departments", "");
 		}

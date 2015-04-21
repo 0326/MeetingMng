@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.apache.catalina.websocket.MessageInbound;
 import org.apache.catalina.websocket.WsOutbound;
@@ -15,8 +13,7 @@ public class MeetingMsgInbound extends MessageInbound {
 
     private final String userid;
     private final int wsid;
-    private final Set<MeetingMsgInbound> connections =
-            new CopyOnWriteArraySet<MeetingMsgInbound>();
+
     public MeetingMsgInbound(String userid,int wsid) {
         this.userid = userid;
         this.wsid = wsid;
@@ -24,14 +21,14 @@ public class MeetingMsgInbound extends MessageInbound {
 
     @Override
     protected void onOpen(WsOutbound outbound) {
-        connections.add(this);
+        MeetingServlet.connections.add(this);
         String message = String.format("*****%s %s",userid, wsid);
         broadcast(message);
     }
 
     @Override
     protected void onClose(int status) {
-        connections.remove(this);
+    	MeetingServlet.connections.remove(this);
         String message = String.format("* %s %s",
                 userid, "has disconnected.");
         broadcast(message);
@@ -52,8 +49,8 @@ public class MeetingMsgInbound extends MessageInbound {
     }
     
     //给所有上线用户发送广播
-    private void broadcast(String message) {
-        for (MeetingMsgInbound connection : connections) {
+    public static void broadcast(String message) {
+        for (MeetingMsgInbound connection : MeetingServlet.connections) {
             try {
                 CharBuffer buffer = CharBuffer.wrap(message);
                 connection.getWsOutbound().writeTextMessage(buffer);
@@ -63,9 +60,10 @@ public class MeetingMsgInbound extends MessageInbound {
         }
     }
     //给指定单个用户发送广播
-    private void pushSigle(String msg, String userid){
-    	for(MeetingMsgInbound connection : connections){
-    		if(connection.userid.equals(userid)){
+    public static void pushSigle(String msg, String userid){
+//    	System.out.println(MeetingServlet.connections);
+    	for(MeetingMsgInbound connection : MeetingServlet.connections){
+    		if(connection.userid.equals("username="+userid)){
     			try {
                     CharBuffer buffer = CharBuffer.wrap(msg);
                     connection.getWsOutbound().writeTextMessage(buffer);
@@ -77,8 +75,8 @@ public class MeetingMsgInbound extends MessageInbound {
     	}
     }
     //给指定用户列表发送广播
-    private void pushMulti(String msg, HashSet userset){
-    	for(MeetingMsgInbound connection : connections){
+    public static void pushMulti(String msg, HashSet userset){
+    	for(MeetingMsgInbound connection : MeetingServlet.connections){
     		if(userset.contains(connection.userid)){
     			try {
                     CharBuffer buffer = CharBuffer.wrap(msg);

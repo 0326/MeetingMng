@@ -1,13 +1,19 @@
 package com.huiguanjia.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import net.sf.json.JSONArray;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.alibaba.fastjson.JSON;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.Meeting;
+import com.huiguanjia.util.JSONUtil;
 
 public class MeetingService {
 	
@@ -103,10 +109,23 @@ public class MeetingService {
 		return res;
 	}
 	
-	public boolean findByUserId(String id){
-		boolean res = false;
+	public String findByUserId(String userid){
+		String res = null;
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ?"; 
+		Object[] values = new Object[]{userid};
+		List<Meeting> list = (ArrayList<Meeting>)b.findPagingObjectByHql(hql, 0, 10, values);
 		
-		return res;
+		if(null == list){
+			return null;
+		}
+
+		String stres = JSONUtil.serialize(list);
+		SessionDAO.closeSession();
+		
+		return stres;
 	}
 	
 	public boolean findByName(String id){
