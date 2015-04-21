@@ -1,5 +1,6 @@
 package com.huiguanjia.action;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
@@ -7,8 +8,12 @@ import java.util.regex.*;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.huiguanjia.service.ActivateService;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.OrdinaryUserService;
+import com.huiguanjia.service.OrdinaryUserService.User;
+import com.huiguanjia.util.MD5Util;
+import com.huiguanjia.util.MailSendUtil;
 
 @SuppressWarnings("serial")
 public class OrdinaryUserAction extends ActionSupport{
@@ -19,6 +24,19 @@ public class OrdinaryUserAction extends ActionSupport{
 	private String password;
 	private String companyName;
 	private String companyId;
+	
+	private boolean isCellphoneHide;
+//	private String name;
+//	private String email;
+	private boolean isBindEmail;
+	private boolean sex;
+	private String officePhone;
+	private String job;
+	private String avatarUrl;
+	private String officeLocation;
+	
+	private String newpassword;
+	
 	private Map<String,Object> jsonData;
 	
 	public Map<String,Object> getJsonData() {
@@ -73,7 +91,61 @@ public class OrdinaryUserAction extends ActionSupport{
 		this.companyId = companyId;
 	}
 
+	public boolean getIsCellphoneHide() {
+		return isCellphoneHide;
+	}
+
+	public void set(boolean isCellphoneHide) {
+		this.isCellphoneHide = isCellphoneHide;
+	}
+
+	public boolean getSex() {
+		return sex;
+	}
+
+	public void setSex(boolean sex) {
+		this.sex = sex;
+	}
 	
+	public String getOfficeLocation() {
+		return officeLocation;
+	}
+
+	public void setOfficeLocation(String officeLocation) {
+		this.officeLocation = officeLocation;
+	}
+	
+	public String getJob() {
+		return job;
+	}
+
+	public void setJob(String job) {
+		this.job = job;
+	}
+	
+	public String getAvatarUrl() {
+		return avatarUrl;
+	}
+
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+	
+	public String getOfficePhone() {
+		return officePhone;
+	}
+
+	public void setOfficePhone(String officePhone) {
+		this.officePhone = officePhone;
+	}
+	
+	public String getNewpassword() {
+		return newpassword;
+	}
+
+	public void setNewpassword(String newpassword) {
+		this.newpassword = newpassword;
+	}
 	
 	public String execute() throws Exception {
 		return "json";
@@ -171,6 +243,122 @@ public class OrdinaryUserAction extends ActionSupport{
 		else
 		{
 			jsonData.put("code", 0);
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 修改个人信息
+	 * @return
+	 */
+	public String updateInfo(){
+		jsonData = new HashMap<String,Object>();
+		OrdinaryUserService or = new OrdinaryUserService();
+
+		if( or.updateInfo(cellphone,isCellphoneHide,name,email,sex,officePhone,job,avatarUrl,officeLocation)){
+			jsonData.put("code", 0);
+		}
+		else{
+			jsonData.put("code", -1);
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 修改密码
+	 * @return
+	 */
+	public String updatePass(){
+		jsonData = new HashMap<String,Object>();	
+		String apassword = (String) ActionContext.getContext().getSession().get("password");
+		System.out.println("password:"+password);
+		System.out.println("newpassword:"+newpassword);
+		
+		OrdinaryUserService ordinaryUserService = new OrdinaryUserService();
+		if(!apassword.equals(password)){
+			jsonData.put("code",-1);
+		}
+		else if(ordinaryUserService.updatePass(cellphone,newpassword)){
+			jsonData.put("code", 0);
+		}
+		else{
+			jsonData.put("code", -1);
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 绑定邮箱，发送激活链接
+	 * @return
+	 */
+	public String bindingEmail(){
+		if(email == null){
+			jsonData.put("code", -1);
+		}
+		String userId = MD5Util.MD5Code(email);
+//		System.out.println(userId);
+		Date sendTime = new Date();
+		String activateCode;
+		boolean mode = false;
+		activateCode = MD5Util.MD5Code(sendTime.toString());
+		String activatelink= "http://localhost:8080/MeetingMng"+ 
+				"/#/activition?uid="+userId+"&aid="+activateCode;
+//		System.out.print(MailSendUtil.send(email, activatelink));
+		if(MailSendUtil.send(email, activatelink)){
+			ActivateService activateService = new ActivateService();	
+			activateService.save(userId, activateCode, sendTime, mode,email);
+			jsonData.put("code", 0);
+		}
+		else{
+			jsonData.put("code",-10408);
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 激活邮箱
+	 * @return
+	 */
+	public String activate(){
+		Date activateTime = new Date();
+		String activateCode;
+		activateCode = MD5Util.MD5Code(activateTime.toString());
+		String userId = MD5Util.MD5Code(email);
+		ActivateService activateService = new ActivateService();
+		if(activateService.activate(userId, activateCode, activateTime) == null){
+			jsonData.put("code",-1); 
+		}		
+		else{
+//			String aUsername = activateService.activate(userId, activateCode, activateTime);
+			OrdinaryUserService ordinaryUserService = new OrdinaryUserService();
+			if(ordinaryUserService.updateIsBindEmail(cellphone)){
+				jsonData.put("code",0);
+			}
+			else{
+				jsonData.put("code",-1);
+			}
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 根据手机号查找用户，获取用户基本信息
+	 * @return User
+	 */
+	public String findUserByCellphone(){
+		jsonData = new HashMap<String,Object>();
+		
+		OrdinaryUserService service = new OrdinaryUserService();
+		User userInfo = service.findUserByCellphone(cellphone);
+		if(null == userInfo)
+		{
+			jsonData.put("code", -1);	
+		}
+		else
+		{
+			jsonData.put("code", 0);
+			jsonData.put("userInfo", userInfo);
 		}
 		
 		return SUCCESS;

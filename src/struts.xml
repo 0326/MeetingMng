@@ -67,7 +67,7 @@
     		</result>
     	</action>
  	</package>
-	<!-- 用户个人操作接-登录/注册/修改/查询个人信息 -->
+	<!-- 普通用户个人操作接-登录/注册/修改/查询个人信息 -->
 	<package name="user-package" namespace="/api/v1" extends="json-default">
     	<action name="companyManagerLogin" class="com.huiguanjia.action.CompanyManagerAction" method="login">
     		<result type="json" name="success">
@@ -110,34 +110,7 @@
     		</result>
     	</action>
     	
-    	<action name="ordinaryUserLogin" class="com.huiguanjia.action.OrdinaryUserAction" method="login">
-    		<result type="json" name="success">
-    			<param name="root">jsonData</param>
-    		</result>
-    	</action>
-    	
-    	<action name="ordinaryUserRegister" class="com.huiguanjia.action.OrdinaryUserAction" method="register">
-    		<result type="json" name="success">
-    			<param name="root">jsonData</param>
-    		</result>
-    	</action>
-    	<action name="ordinaryUserLogout" class="com.huiguanjia.action.OrdinaryUserAction" method="logout">
-    		<result type="json" name="success">
-    			<param name="root">jsonData</param>
-    		</result>
-    	</action>
-    	<action name="phoneRepeat" class="com.huiguanjia.action.OrdinaryUserAction" method="findUserByPhone">
-    		<result type="json" name="success">
-    			<param name="root">jsonData</param>
-    		</result>
-    	</action>
-    	
-    	<action name="activemail" class="com.huiguanjia.action.ActivateAction" method="emailActivate">
-    		<result type="json" name="success">
-    			<param name="root">jsonData</param>
-    		</result>
-    	</action>
-    	<!-- 公司管理后台-个人信息修改 -->
+ 		<!-- 公司管理后台-个人信息修改 -->
     	<action name="companyManagerUpdateInfo" class="com.huiguanjia.action.CompanyManagerAction" method="updateInfo">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
@@ -184,6 +157,48 @@
     		</result>
     	</action>
     	<action name="companyManagerSearch" class="com.huiguanjia.action.CompanyManagerAction" method="search">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	
+    	<!-- 普通用户 -->
+    	<action name="ordinaryUserLogin" class="com.huiguanjia.action.OrdinaryUserAction" method="login">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="ordinaryUserRegister" class="com.huiguanjia.action.OrdinaryUserAction" method="register">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="ordinaryUserLogout" class="com.huiguanjia.action.OrdinaryUserAction" method="logout">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="OrdinaryUserUpdateInfo" class="com.huiguanjia.action.OrdinaryUserAction" method="updateInfo">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>  	
+    	<action name="OrdinaryUserUpdatePass" class="com.huiguanjia.action.OrdinaryUserAction" method="updatePass">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="OrdinaryUserBindingEmail" class="com.huiguanjia.action.OrdinaryUserAction" method="bindingEmail">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    		<action name="OrdinaryUserActivate" class="com.huiguanjia.action.OrdinaryUserAction" method="activate">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    		<action name="findUserByCellphone" class="com.huiguanjia.action.OrdinaryUserAction" method="findUserByCellphone">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
