@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-17 16:06:25
+Date: 2015-04-21 11:40:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -196,6 +196,61 @@ CREATE TABLE `meeting` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for meeting_organizer
+-- ----------------------------
+DROP TABLE IF EXISTS `meeting_organizer`;
+CREATE TABLE `meeting_organizer` (
+  `organizerCellphone` varchar(15) NOT NULL,
+  `meetingId` int(11) NOT NULL,
+  `state` int(11) NOT NULL COMMENT '0,未发送；1，已发送；2，已同意；3，待定。',
+  `isCreator` tinyint(1) NOT NULL DEFAULT '0',
+  `feedback` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`organizerCellphone`,`meetingId`),
+  KEY `FK_organizer_meeting_id` (`meetingId`),
+  CONSTRAINT `FK_organizer_meeting_id` FOREIGN KEY (`meetingId`) REFERENCES `meeting` (`meetingId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of meeting_organizer
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for meeting_participator
+-- ----------------------------
+DROP TABLE IF EXISTS `meeting_participator`;
+CREATE TABLE `meeting_participator` (
+  `participatorCellphone` varchar(15) NOT NULL,
+  `meetingId` int(11) NOT NULL,
+  `state` int(11) NOT NULL COMMENT '0,未发送；1，已发送；2，已同意；3，待定;4,已签到。',
+  `feedback` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`participatorCellphone`,`meetingId`),
+  KEY `FK_participator_meeting_id` (`meetingId`),
+  CONSTRAINT `FK_participator_meeting_id` FOREIGN KEY (`meetingId`) REFERENCES `meeting` (`meetingId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of meeting_participator
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for message
+-- ----------------------------
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `msgId` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(80) NOT NULL,
+  `msgContent` varchar(500) NOT NULL,
+  `isPush` tinyint(1) NOT NULL,
+  `isChecked` tinyint(1) NOT NULL,
+  `createTime` char(13) NOT NULL,
+  PRIMARY KEY (`msgId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for ordinary_user
 -- ----------------------------
 DROP TABLE IF EXISTS `ordinary_user`;
@@ -226,7 +281,7 @@ CREATE TABLE `ordinary_user` (
 -- ----------------------------
 -- Records of ordinary_user
 -- ----------------------------
-INSERT INTO `ordinary_user` VALUES ('15071345115', '1', '王峤', '1833559609@qq.com', '6', '123456', '0', null, null, '0', '0', null, null, 'www.huiguanjia.com', null, null);
+INSERT INTO `ordinary_user` VALUES ('15071345115', '1', '王峤', '1833559609@qq.com', '6', '123456', '1', null, 'wangqiao@hust.edu.cn', '1', '0', null, null, 'www.huiguanjia.com', null, null);
 
 -- ----------------------------
 -- Table structure for province_and_city
@@ -711,6 +766,25 @@ CREATE TABLE `temp_company_and_company_admin` (
 -- ----------------------------
 -- Records of temp_company_and_company_admin
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for temp_ordinary_user
+-- ----------------------------
+DROP TABLE IF EXISTS `temp_ordinary_user`;
+CREATE TABLE `temp_ordinary_user` (
+  `cellphone` varchar(15) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `companyId` varchar(80) NOT NULL,
+  `password` varchar(15) NOT NULL,
+  PRIMARY KEY (`cellphone`),
+  KEY `FK_temp_ordinary_company_companyId` (`companyId`),
+  CONSTRAINT `FK_temp_ordinary_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of temp_ordinary_user
+-- ----------------------------
+INSERT INTO `temp_ordinary_user` VALUES ('15070345115', '王峤', '1833559609@qq.com', '123456');
 
 -- ----------------------------
 -- View structure for active_meeting_view
