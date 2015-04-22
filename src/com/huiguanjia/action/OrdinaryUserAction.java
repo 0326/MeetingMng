@@ -350,7 +350,7 @@ public class OrdinaryUserAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		
 		OrdinaryUserService service = new OrdinaryUserService();
-		User userInfo = service.findUserByCellphone(cellphone);
+		String userInfo = service.findUserByCellphone(cellphone);
 		if(null == userInfo)
 		{
 			jsonData.put("code", -1);	

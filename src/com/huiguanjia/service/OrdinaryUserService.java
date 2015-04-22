@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.alibaba.fastjson.JSONObject;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
@@ -419,35 +420,25 @@ public class OrdinaryUserService {
 	 * @param cellphone
 	 * @return class User
 	 */
-	public User findUserByCellphone(String cellphone) {
+	public String findUserByCellphone(String cellphone) {
 		BaseDAO b = new BaseDAO();
 		Session sess = SessionDAO.getSession();
 
 		String hql = "select o from OrdinaryUser as o where o.cellphone=?";
 		Object[] values = new Object[] { cellphone };
-		OrdinaryUser or = (OrdinaryUser) b
-				.findSingletonResultByHql(hql, values);
+		OrdinaryUser or = (OrdinaryUser) b.findSingletonResultByHql(hql, values);
 		if (null == or) {
 			return null;
 		}
 
-		User user = new User();
-		user.setCellphone(or.getCellphone());
-		user.setCompanyName(or.getCompanyAndCompanyAdmin().getCompanyName());
-		user.setCompanyName(or.getDepartment().getDepartmentName());
-		user.setWorkNo(or.getWorkNo());
-		user.setIsCellphoneHide(or.getIsCellphoneHide());
-		user.setName(or.getName());
-		user.setEmail(or.getEmail());
-		user.setIsBindEmail(or.getIsBindEmail());
-		user.setSex(or.getSex());
-		user.setOfficePhone(or.getOfficePhone());
-		user.setJob(or.getJob());
-		user.setAvatarUrl(or.getAvatarUrl());
-		user.setOfficeLocation(or.getOfficeLocation());
-
-		// String userJson = JSONUtil.serialize(user);
+		JSONObject obj = new JSONObject();
+		obj.put("cellphone", or.getCellphone());
+		obj.put("companyName",or.getCompanyAndCompanyAdmin().getCompanyName());
+		obj.put("name", or.getName());
+		obj.put("departmentName", or.getDepartment().getDepartmentName());
+		obj.put("username",or.getCompanyAndCompanyAdmin().getUsername()); //companyId
+		String objs = JSONUtil.serialize(obj);	
 		SessionDAO.closeSession();
-		return user;
+		return objs;
 	}
 }
