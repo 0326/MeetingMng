@@ -18,13 +18,19 @@
             <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>普通用户注册</label>
             <fieldset>
                 <div class="pure-control-group">
-                    <label for="foo">所在公司</label>
-                    <input id="foo" ng-model="user.companyName" type="text" placeholder="请输入您的所属公司名称" class="i-validater validater-company-user" required>
+                    <label for="cellphone">手机号(该手机号将作为登录账号)</label>
+                    <input id="cellphone" class="i-validater validater-user-cellphone" ng-model="user.cellphone" type="text" placeholder="" class="i-validater validater-phone" required>
                     <p class="validater-helper"></p>
                 </div>
                 <div class="pure-control-group">
-                    <label for="foo">用户姓名</label>
-                    <input id="foo" ng-model="user.username" type="text" placeholder="请输入您的真实姓名" class="i-validater validater-username" required>
+                    <label for="companyName">所在公司</label>
+                    <input  ng-model="user.companyId" type="hidden">
+                    <input id="companyName" ng-model="user.companyName" type="text" placeholder="请输入您的所属公司名称" class="i-validater validater-user-company" required>
+                    <p class="validater-helper"></p>
+                </div>
+                <div class="pure-control-group">
+                    <label for="ordinaryUsername">用户姓名</label>
+                    <input id="ordinaryUsername" ng-model="user.name" class="i-validater validater-notempty" type="text" placeholder="请输入您的真实姓名" required>
                     <p class="validater-helper"></p>
                 </div>
                 <div class="pure-control-group">
@@ -45,11 +51,6 @@
         </form>
         <form class="pure-form pure-form-aligned" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
         	<fieldset>
-                <div class="pure-control-group">
-                    <label for="cellphone">手机号(该手机号将作为登录账号)</label>
-                    <input id="cellphone" ng-model="user.cellphone" type="text" placeholder="" class="i-validater validater-phone" required>
-                    <p class="validater-helper"></p>
-                </div>
                  <div class="pure-control-group">
                     <label for="phonecode">验证码</label>
                     <input class="pure-input-3-5" id="phonecode" type="text" placeholder="请输入手机收到的验证码,测试请输入1234">

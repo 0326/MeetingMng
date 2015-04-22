@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="app/bower_components/font-awesome/css/font-awesome.css">
 
     <link rel="stylesheet" href="app/stylesheets/client/styles.css">
+    <link rel="stylesheet" href="app/stylesheets/base.css">
 
     <script src="app/bower_components/jquery/jquery.min.js"></script>
     <script src="app/bower_components/foundation-5.5.1/js/vendor/modernizr.js"></script>
@@ -23,8 +24,12 @@
     <script src="app/bower_components/foundation-5.5.1/js/foundation.min.js"></script>
 </head>
 <body ng-app="appclient">
-	<div class="off-canvas-wrap" data-offcanvas>
-	  <div class="inner-wrap">
+	<div id="loading">
+	    <p class="bunce1"></p><p class="bunce2"></p><p class="bunce3"></p>
+	    <i class="text">努力加载中...</i>
+	</div>
+	<div class="off-canvas-wrap"  id="layout" data-offcanvas>
+	  <div class="inner-wrap" ng-controller="layoutCtrl">
 	    <nav class="tab-bar">
 	      <section class="left-small">
 	        <a class="left-off-canvas-toggle menu-icon"><span></span></a>
@@ -63,9 +68,9 @@
 	        	<img src="app/images/userimg.jpg">
 	        	<label>李全蛋</label>
 	        </li>
-	        <li><a href="#">个人资料</a></li>
-	        <li><a href="#">系统设置</a></li>
-	        <li><a href="#" class"button">退出</a></li>
+	        <li><a href="#/profile">个人资料</a></li>
+	        <li><a href="#/settings">系统设置</a></li>
+	        <li><a ng-click="logout();" class"button">退出</a></li>
 	      </ul>
 	    </aside>
 			<div class="main-section" ng-view></div>

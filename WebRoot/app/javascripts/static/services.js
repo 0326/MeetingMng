@@ -21,12 +21,14 @@ angular.module("mServices", [])
 			    });
 			}
 			else{
-			    $http.post('/MeetingMng/api/v1/oridinaryUserLogin',user,PostCfg)
+			    $http.post('/MeetingMng/api/v1/ordinaryUserLogin',{
+                    'cellphone': user.username,
+                    'password' : user.password
+                },PostCfg)
 			    .success(function(data){
 			        if(data.code == 0){
-			            $cookieStore.put("username",user.username);
-                        // window.MMComet.initialize(user.username);
-                        window.location.href="/MeetingMng/manage";
+			            $cookieStore.put("cellphone",user.username);
+                        window.location.href="/MeetingMng/u";
 			        }
 			        else{
 			            alert("用户名或密码错误");
@@ -39,27 +41,42 @@ angular.module("mServices", [])
 }])
 //管理员，普通用户注册服务
 .factory('registerService',['$http', 'PostCfg', function($http,PostCfg){
-	return {
-		register: function(userdata){
-			$http
-			.post('/MeetingMng/api/v1/companyManagerRegister', userdata, PostCfg)
-			.success(function(data){
-			    switch(data.code){
-			        case -10401:
-			            alert("用户名或者公司名已被注册");
-			            break;
-			        case -10408:
-			            alert("邮件发送失败。。。");
-			            break;
-			        case 0:
-			            window.location.href= "#/callemail";
-			            break;
-			        default:
-			            alert("参数错误");
-			    }
-			});
-		}
-	};
+	var service = {};
+    var _step = 1;
+    service.register = function(userdata){
+        $http
+        .post('/MeetingMng/api/v1/companyManagerRegister', userdata, PostCfg)
+        .success(function(data){
+            switch(data.code){
+                case -10401:
+                    alert("用户名或者公司名已被注册");
+                    break;
+                case -10408:
+                    alert("邮件发送失败。。。");
+                    break;
+                case 0:
+                    window.location.href= "#/callemail";
+                    break;
+                default:
+                    alert("参数错误");
+            }
+        });
+    }
+    
+    service.userStep2 = function(data){
+        $http
+        .post('/MeetingMng/api/v1/ordinaryUserRegister', data, PostCfg)
+        .success(function(data){
+            if(data.code == 0){
+
+            }
+            else{
+                alert("参数错误");
+            }
+        });  
+    }
+
+    return service;
 }])
 //发送激活请求
 .factory('activateService',['$http', 'PostCfg', function($http,PostCfg){

@@ -44,7 +44,7 @@ public class MeetingAction  extends ActionSupport{
 		user.setCellphone(meetingCreatorId);
 		Meeting meeting = new Meeting(user, meetingName,
 				meetingContent, meetingLocation,
-				meetingRemark, meetingQrcode, 1,
+				"meetingRemark", meetingQrcode, 1,
 				meetingFrequency, meetingStartTime,
 				meetingPredictFinishTime, meetingCreateTime,
 				null, null);

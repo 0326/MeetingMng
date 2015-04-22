@@ -1,5 +1,5 @@
 
-angular.module("appmanage", ["ngRoute", "ngAnimate", "ngCookies",
+angular.module("appmanage", ["ngRoute", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
 // .provider('userProvider', function($http, $q, $cookieStore){

@@ -1,5 +1,29 @@
-// controllers.js
+// client controllers.js
 var mControllers = angular.module("mControllers", [])
+
+.controller("layoutCtrl", function($scope, userService) {
+  $scope.client = {};
+  
+  userService
+  .getInfo()
+  .then(function(data){
+    $scope.client = data;
+    $scope.$broadcast('userProfileBroadcast', $scope.client);
+    $("#loading").fadeOut("normal",function(){
+        $("#layout").fadeIn();
+    });
+  })
+
+  $scope.$on('userProfileChange',function(event, client){
+    // console.log('this is in sidemenuCtrl:', client);
+    $scope.client = client;
+    $scope.$broadcast('userProfileBroadcast', client);
+  });
+  
+  $scope.logout = function(){
+    userService.logout(userService.profiles);
+  }
+})
 
 .controller("homeCtrl", function($scope, meetingService) {
   $scope.meetinglist = [];
@@ -14,11 +38,16 @@ var mControllers = angular.module("mControllers", [])
 })
 
 
-.controller("meetingnewCtrl", function($scope, CompanyData) {
-
+.controller("meetingnewCtrl", function($scope, meetingService, userService) {
+  $scope.meeting = {
+    meetingCreatorId: userService.profiles.cellphone
+  };
+  $scope.submitAddForm = function(isValid){
+    meetingService.add($scope.meeting);
+  }
 })
 
-.controller("meetingeditCtrl", function($scope, CompanyData) {
+.controller("meetingeditCtrl", function($scope) {
 
 })
 
@@ -31,25 +60,21 @@ var mControllers = angular.module("mControllers", [])
     };
 })
 
-.controller("meetingcontactCtrl", function($scope, CompanyData) {
+.controller("meetingcontactCtrl", function($scope) {
 
 })
 
-.controller("meetingdiscussCtrl", function($scope, CompanyData) {
+.controller("meetingdiscussCtrl", function($scope) {
 
 })
 
-.controller("meetinghistoryCtrl", function($scope, CompanyData) {
+.controller("meetinghistoryCtrl", function($scope) {
 
 })
 
-.controller("profileCtrl", function($scope, CompanyData, userService) {
-   $scope.company = CompanyData;
-   $scope.userLogout = function(){
-    userService.logout({
-      username: $scope.company.username
-    });
-   }
+.controller("profileCtrl", function($scope, userService) {
+   $scope.client =userService.profiles;
+   
 })
 
 

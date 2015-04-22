@@ -4,9 +4,9 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("homeCtrl", function($scope, loginService) {
   $scope.user = {
-    username: "1833559609@qq.com",
-    password: "111111",
-    usertype: "1"
+    username: "13026310448",
+    password: "123456",
+    usertype: "0"
   }
   $scope.submitLoginForm = function(isValid){
     loginService.login($scope.user);
@@ -24,13 +24,6 @@ var mControllers = angular.module("mControllers", [])
   $scope.$watch('vm.province', function(province) {
     vm.city = null;
   });
-
-  $scope.showError = function(str){
-    if(str === 'username'){
-
-    }
-    return true;
-  }
 
   $scope.submitCompanyForm = function(isValid){
     if(!vcode.verify($scope.inputcode)){
@@ -51,10 +44,25 @@ var mControllers = angular.module("mControllers", [])
         });
     }
   };
+  //发送短信验证码
+  $scope.submitUserForm1 = function(idValid){
+    registerService.userStep1({
+      'cellphone':user.username
+    });
+  }
+  //提交注册信息
+  $scope.submitUserForm2 = function(isValid){
+    registerService.userStep2({
+      'cellphone': user.cellphone,
+      'companyId': user.companyId,
+      'name': user.name,
+      'password': user.password
+    });
+  }
 })
 
 .controller("callemailCtrl", function($scope) {
-    
+
 })
 
 .controller("activitionCtrl", function($scope, $route, activateService) {

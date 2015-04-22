@@ -1,7 +1,7 @@
 var mControllers = angular.module("mControllers", [])
 
 //layout是顶级父控制器，应用加载之前需要先初始化user个人数据
-.controller("layoutCtrl", function($scope, $cookieStore, userService) {
+.controller("layoutCtrl", function($scope, userService) {
   $scope.company = {};
   
   userService
