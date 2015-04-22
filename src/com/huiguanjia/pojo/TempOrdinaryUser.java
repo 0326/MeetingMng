@@ -69,7 +69,7 @@ public class TempOrdinaryUser implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "password", nullable = false, length = 15)
+	@Column(name = "password", nullable = false, length = 50)
 	public String getPassword() {
 		return this.password;
 	}

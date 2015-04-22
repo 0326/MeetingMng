@@ -15,7 +15,7 @@ public class DeleteMeetingView implements java.io.Serializable {
 
 	// Fields
 
-	private Integer meetingId;
+	private String meetingId;
 	private String meetingName;
 	private String meetingContent;
 	private String meetingLocation;
@@ -71,13 +71,12 @@ public class DeleteMeetingView implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@GeneratedValue
-	@Column(name = "meetingId", nullable = false)
-	public Integer getMeetingId() {
+	@Column(name = "meetingId", nullable = false,length = 32)
+	public String getMeetingId() {
 		return this.meetingId;
 	}
 
-	public void setMeetingId(Integer meetingId) {
+	public void setMeetingId(String meetingId) {
 		this.meetingId = meetingId;
 	}
 

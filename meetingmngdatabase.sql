@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-21 11:40:09
+Date: 2015-04-22 17:23:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS `company_and_company_admin`;
 CREATE TABLE `company_and_company_admin` (
   `companyName` varchar(50) NOT NULL,
   `username` varchar(80) NOT NULL,
-  `password` varchar(15) NOT NULL,
+  `password` varchar(50) NOT NULL,
   `registerTime` datetime NOT NULL,
   `location` char(9) NOT NULL,
   `type` char(6) NOT NULL,
@@ -172,7 +172,7 @@ INSERT INTO `industry` VALUES ('90005', '运输/铁路/航空', '贸易物流行
 -- ----------------------------
 DROP TABLE IF EXISTS `meeting`;
 CREATE TABLE `meeting` (
-  `meetingId` int(11) NOT NULL AUTO_INCREMENT,
+  `meetingId` char(32) NOT NULL,
   `meetingName` varchar(100) NOT NULL,
   `meetingContent` text NOT NULL,
   `meetingLocation` varchar(100) NOT NULL,
@@ -201,7 +201,7 @@ CREATE TABLE `meeting` (
 DROP TABLE IF EXISTS `meeting_organizer`;
 CREATE TABLE `meeting_organizer` (
   `organizerCellphone` varchar(15) NOT NULL,
-  `meetingId` int(11) NOT NULL,
+  `meetingId` char(32) NOT NULL,
   `state` int(11) NOT NULL COMMENT '0,未发送；1，已发送；2，已同意；3，待定。',
   `isCreator` tinyint(1) NOT NULL DEFAULT '0',
   `feedback` varchar(100) DEFAULT NULL,
@@ -220,7 +220,7 @@ CREATE TABLE `meeting_organizer` (
 DROP TABLE IF EXISTS `meeting_participator`;
 CREATE TABLE `meeting_participator` (
   `participatorCellphone` varchar(15) NOT NULL,
-  `meetingId` int(11) NOT NULL,
+  `meetingId` char(32) NOT NULL,
   `state` int(11) NOT NULL COMMENT '0,未发送；1，已发送；2，已同意；3，待定;4,已签到。',
   `feedback` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`participatorCellphone`,`meetingId`),
@@ -260,7 +260,7 @@ CREATE TABLE `ordinary_user` (
   `name` varchar(20) NOT NULL,
   `companyId` varchar(80) NOT NULL,
   `departmentId` int(11) NOT NULL,
-  `password` varchar(15) NOT NULL,
+  `password` varchar(50) NOT NULL,
   `isRegister` tinyint(1) NOT NULL,
   `registerTime` datetime DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
@@ -753,7 +753,7 @@ DROP TABLE IF EXISTS `temp_company_and_company_admin`;
 CREATE TABLE `temp_company_and_company_admin` (
   `companyName` varchar(50) NOT NULL,
   `username` varchar(80) NOT NULL,
-  `password` varchar(15) NOT NULL,
+  `password` varchar(50) NOT NULL,
   `location` char(9) NOT NULL,
   `type` char(6) NOT NULL,
   PRIMARY KEY (`username`),
@@ -775,7 +775,7 @@ CREATE TABLE `temp_ordinary_user` (
   `cellphone` varchar(15) NOT NULL,
   `name` varchar(20) NOT NULL,
   `companyId` varchar(80) NOT NULL,
-  `password` varchar(15) NOT NULL,
+  `password` varchar(50) NOT NULL,
   PRIMARY KEY (`cellphone`),
   KEY `FK_temp_ordinary_company_companyId` (`companyId`),
   CONSTRAINT `FK_temp_ordinary_company_companyId` FOREIGN KEY (`companyId`) REFERENCES `company_and_company_admin` (`username`) ON DELETE CASCADE ON UPDATE CASCADE

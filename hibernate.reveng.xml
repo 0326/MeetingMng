@@ -35,16 +35,19 @@
 	</table>
 	<table name="active_meeting_view" catalog="meetingmngdatabase">
 		<primary-key>
+		    <generator class="assigned"></generator>
 			<key-column name="meetingId" />
 		</primary-key>
 	</table>
 	<table name="delete_meeting_view" catalog="meetingmngdatabase">
 		<primary-key>
+		    <generator class="assigned"></generator>
 			<key-column name="meetingId" />
 		</primary-key>
 	</table>
 <table name="finish_meeting_view" catalog="meetingmngdatabase">
 	<primary-key>
+	    <generator class="assigned"></generator>
 		<key-column name="meetingId" />
 	</primary-key>
 </table>

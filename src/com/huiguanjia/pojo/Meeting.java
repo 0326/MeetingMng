@@ -18,7 +18,7 @@ public class Meeting implements java.io.Serializable {
 
 	// Fields
 
-	private Integer meetingId;
+	private String meetingId;
 	private OrdinaryUser ordinaryUser;
 	private String meetingName;
 	private String meetingContent;
@@ -79,13 +79,12 @@ public class Meeting implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@GeneratedValue
-	@Column(name = "meetingId", unique = true, nullable = false)
-	public Integer getMeetingId() {
+	@Column(name = "meetingId", unique = true, nullable = false,length = 32)
+	public String getMeetingId() {
 		return this.meetingId;
 	}
 
-	public void setMeetingId(Integer meetingId) {
+	public void setMeetingId(String meetingId) {
 		this.meetingId = meetingId;
 	}
 

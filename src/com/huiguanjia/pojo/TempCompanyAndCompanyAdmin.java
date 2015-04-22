@@ -61,7 +61,7 @@ public class TempCompanyAndCompanyAdmin implements java.io.Serializable {
 
 	
 
-	@Column(name = "password", nullable = false, length = 15)
+	@Column(name = "password", nullable = false, length = 50)
 	public String getPassword() {
 		return this.password;
 	}

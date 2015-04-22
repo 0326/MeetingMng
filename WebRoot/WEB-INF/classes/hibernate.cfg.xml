@@ -36,6 +36,7 @@
 		<mapping class="com.huiguanjia.pojo.FinishMeetingView" />
 		<mapping class="com.huiguanjia.pojo.TempOrdinaryUser" />
 		<mapping class="com.huiguanjia.pojo.Message" />
+		<mapping class="com.huiguanjia.pojo.MeetingOrganizer" />
 	</session-factory>
 
 </hibernate-configuration>

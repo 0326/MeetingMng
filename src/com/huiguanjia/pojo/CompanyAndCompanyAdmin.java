@@ -146,7 +146,7 @@ public class CompanyAndCompanyAdmin implements java.io.Serializable {
 		this.companyName = companyName;
 	}
 	
-	@Column(name = "password", nullable = false, length = 15)
+	@Column(name = "password", nullable = false, length = 50)
 	public String getPassword() {
 		return this.password;
 	}
