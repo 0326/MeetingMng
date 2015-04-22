@@ -2,18 +2,6 @@
 angular.module("appclient", ["ngRoute", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
-.factory('CompanyData', function($cookieStore){
-	// console.log($cookieStore.get("username"));
-	if($cookieStore.get("username") == undefined){
-		// window.location.href="/MeetingMng";
-	}
-	var company = {};
-  company.companyName = "会管家科技责任有限公司";
-  company.username = $cookieStore.get("username") || "test@mm.com";
-  company.avatarUrl = "app/images/userimg.jpg";
-  // console.log(company);
-  return company;
-})
 
 .config(function($routeProvider) {
 	$routeProvider

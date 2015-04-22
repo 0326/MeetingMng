@@ -28,6 +28,7 @@ public class MeetingService {
 			Date createtime = new Date();
 			meeting.setMeetingCreateTime(Long.toString(createtime.getTime()));
 			meeting.setMeetingQrcode("www.call-qrcode-api.com");
+//			meeting.setMeetingId();
 			aDAO.saveObject(meeting);
 			ts.commit();
 			res = true;

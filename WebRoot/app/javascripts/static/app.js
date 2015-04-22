@@ -1,4 +1,4 @@
-angular.module("appstatic", ["ngRoute", "ngAnimate", "ngCookies",
+angular.module("appstatic", ["ngRoute", "ngCookies",
 	"mControllers", "mDirectives", "mFilters", "mRoutes", "mServices"])
 
 .config(function($routeProvider) {

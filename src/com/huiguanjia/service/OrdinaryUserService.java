@@ -437,8 +437,46 @@ public class OrdinaryUserService {
 		obj.put("name", or.getName());
 		obj.put("departmentName", or.getDepartment().getDepartmentName());
 		obj.put("username",or.getCompanyAndCompanyAdmin().getUsername()); //companyId
+		
+		
+		
 		String objs = JSONUtil.serialize(obj);	
 		SessionDAO.closeSession();
 		return objs;
 	}
+	
+	//获取用户所有个人信息
+	public String findUserInfo(String cellphone) {
+		BaseDAO b = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from OrdinaryUser as o where o.cellphone=?";
+		Object[] values = new Object[] { cellphone };
+		OrdinaryUser or = (OrdinaryUser) b.findSingletonResultByHql(hql, values);
+		if (null == or) {
+			return null;
+		}
+
+		JSONObject obj = new JSONObject();
+		obj.put("cellphone", or.getCellphone());
+		obj.put("isCellphoneHide",or.getIsCellphoneHide());
+		obj.put("companyName",or.getCompanyAndCompanyAdmin().getCompanyName());
+		obj.put("name", or.getName());
+		obj.put("departmentName", or.getDepartment().getDepartmentName());
+//		obj.put("username",or.getCompanyAndCompanyAdmin().getUsername()); //companyId
+		obj.put("registerTime", or.getRegisterTime());
+		obj.put("email",or.getEmail());
+		obj.put("isBindEmail", or.getIsBindEmail());
+		obj.put("sex", or.getSex());
+		obj.put("officePhone", or.getOfficePhone());
+		obj.put("officeLocation", or.getOfficeLocation());
+		obj.put("avatarUrl", or.getAvatarUrl());
+		obj.put("workNo", or.getWorkNo());
+		
+		String objs = JSONUtil.serialize(obj);	
+		SessionDAO.closeSession();
+		
+		return objs;
+	}
+	
 }

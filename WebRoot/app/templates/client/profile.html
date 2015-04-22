@@ -1,0 +1,107 @@
+<div class="page-head">
+	<h2>个人资料</h2>
+</div>
+<div class="page-content" id="meetingnew">
+	<div class="panel">
+	  <h5>{{client.name}} 工号{{client.workNo}}</h5>
+	  <h5>{{client.companyName}} {{client.departmentName}}</h5>
+	  <p>手机号 {{client.cellphone}}<span>隐藏{{client.isCellphoneHide}}</span></p>
+	  <p>邮箱 {{client.email}}<span>未绑定{{client.isBindEmail}}</span></p>
+	</div>
+	<form>
+		<div class="large-6 row">
+      <div class="row prefix-round">
+        <div class="small-3 columns"><p class="button prefix">个人头像</p></div>
+        <div class="small-9 columns">
+          <img alt="100x100" src="{{client.avatarUrl}}" id="headimg100" class="headimg headimg-100">
+          <img alt="50x50" src="{{client.avatarUrl}}" id="headimg50" class="headimg headimg-50">
+          <span id="qiniu_upload_container">
+          	<button id="qiniu_upload_pickfiles">上传新头像</button>
+          </span>
+          <small class="error">Invalid entry</small>
+        </div>
+      </div>
+    </div>
+    <div class="large-6 row">
+      <div class="row prefix-round">
+        <div class="small-3 columns"><p class="button prefix">姓名</p></div>
+        <div class="small-6 columns">
+          <input type="text" placeholder="Value" ng-model="client.name">
+          <small class="error">Invalid entry</small>
+        </div>
+        <div class="small-3 columns">
+          <select ng-model="client.sex">
+           <option value="0">先生</option>
+           <option value="1">女士</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="large-6 row">
+      <div class="row prefix-round">
+        <div class="small-3 columns"><p class="button prefix">邮箱</p></div>
+        <div class="small-9 columns">
+          <input type="text" placeholder="Value" ng-model="client.email">
+          <small class="error">Invalid entry</small>
+        </div>
+      </div>
+    </div>
+    <div class="large-6 row">
+      <div class="row prefix-round">
+        <div class="small-3 columns"><p class="button prefix">办公地点</p></div>
+        <div class="small-9 columns">
+          <input type="text" placeholder="Value" ng-model="client.officeLocation">
+          <small class="error">Invalid entry</small>
+        </div>
+      </div>
+    </div>
+    <div class="large-6 row">
+      <div class="row prefix-round">
+        <div class="small-3 columns"><p class="button prefix">办公电话</p></div>
+        <div class="small-9 columns">
+          <input type="text" placeholder="Value" ng-model="client.officePhone">
+          <small class="error">Invalid entry</small>
+        </div>
+      </div>
+    </div>
+<!--     <div class="large-6 row">
+      <div class="row prefix-round">
+        <div class="small-3 columns"><p class="button prefix">会议内容</p></div>
+        <div class="small-9 columns">
+           <textarea placeholder="small-12.columns"></textarea>
+          <small class="error">Invalid entry</small>
+        </div>
+      </div> -->
+    </div>
+    <div class="large-6 row">
+      <div class="row prefix-round">
+        <div class="small-9 small-offset-3 columns">
+          <button class="button success button-sm">修改</button>
+        </div>
+      </div>
+    </div>
+	</form>
+</div>
+<!-- 引入七牛SDK -->
+<script src="app/bower_components/qiniu/moxie.js"></script>
+<script src="app/bower_components/qiniu/plupload.dev.js"></script>
+<script src="app/bower_components/qiniu/qiniu.js"></script>
+<script src="app/bower_components/qiniu/upload.js"></script>
+<script type="text/javascript">
+  //init qiniu uploader
+  var uploader = QiniuUploaderFactoray({
+    'UploadProgress': function(up, file) {
+    	$("#qiniu_upload_pickfiles").text("正在上传中...");
+    	//console.log("UploadProgress");
+    },
+    'FileUploaded': function(up, file, info) {
+      var domain = up.getOption('domain');
+      var res = $.parseJSON(info);
+      var url = domain + res.key; 
+      $("#headimg100")[0].src= url+"-head100";
+      $("#headimg50")[0].src= url+"-head50"; 
+      $("#qiniu_upload_pickfiles").text("上传成功")
+    }
+	});
+
+</script>

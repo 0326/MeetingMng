@@ -363,4 +363,26 @@ public class OrdinaryUserAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * @info 根据手机号查找用户，获取用户所有信息
+	 * @return 
+	 */
+	public String findUserInfo(){
+		jsonData = new HashMap<String,Object>();
+		
+		OrdinaryUserService service = new OrdinaryUserService();
+		String userInfo = service.findUserInfo(cellphone);
+		if(null == userInfo)
+		{
+			jsonData.put("code", -1);	
+		}
+		else
+		{
+			jsonData.put("code", 0);
+			jsonData.put("userInfo", userInfo);
+		}
+		
+		return SUCCESS;
+	}
 }
