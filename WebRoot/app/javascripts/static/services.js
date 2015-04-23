@@ -12,7 +12,7 @@ angular.module("mServices", [])
 			            $cookieStore.put("username",user.username);
                         //建立websocket长连接接收推送消息，
                         //生产环境不能直接传username，应该传服务器端sessionid作为验证条件
-                        // window.MMComet.initialize(user.username);
+                        window.MMComet.initialize(user.username);
                         window.location.href="/MeetingMng/manage";
 			        }
 			        else{
@@ -69,6 +69,20 @@ angular.module("mServices", [])
         .success(function(data){
             if(data.code == 0){
 
+            }
+            else{
+                alert("参数错误");
+            }
+        });  
+    }
+
+    service.findCompanyByName = function(name){
+        $http
+        .get('/MeetingMng/api/v1/findCompanyByName?companyName='+name)
+        .success(function(data){
+            if(data.code == 0){
+                var list = $.parseJSON(data.company);
+                console.log(list);
             }
             else{
                 alert("参数错误");

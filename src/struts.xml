@@ -67,7 +67,15 @@
     		</result>
     	</action>
  	</package>
-	<!-- 普通用户个人操作接-登录/注册/修改/查询个人信息 -->
+ 	<!-- 用户激活接口 -->
+ 	<package name="activation-package" namespace="/api/v1" extends="json-default">
+    	<action name="activemail" class="com.huiguanjia.action.ActivateAction" method="emailActivate">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+ 	</package>
+	<!-- 用户个人操作接-登录/注册/修改/查询个人信息 -->
 	<package name="user-package" namespace="/api/v1" extends="json-default">
     	<action name="companyManagerLogin" class="com.huiguanjia.action.CompanyManagerAction" method="login">
     		<result type="json" name="success">
@@ -198,12 +206,20 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
+    	<!-- 获取用户简要信息-->
     	<action name="findUserByCellphone" class="com.huiguanjia.action.OrdinaryUserAction" method="findUserByCellphone">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
     	</action>
+    	<!-- 获取用户所有信息 -->
     	<action name="findUserInfo" class="com.huiguanjia.action.OrdinaryUserAction" method="findUserInfo">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<!-- 注册时模糊查询公司 -->
+    	<action name="findCompanyByName" class="com.huiguanjia.action.OrdinaryUserAction" method="findCompanyByName">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>

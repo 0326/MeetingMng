@@ -45,7 +45,7 @@
                     <p class="validater-helper"></p>
                 </div>
                 <div class="pure-control-group">
-                    <button class="pure-button pure-button-primary" id="submitForm1">下一步</button>
+                    <button class="pure-button pure-button-primary" id="submitForm1" ng-disabled="userForm1.$invalid">下一步</button>
                 </div>
             </fieldset>
         </form>
@@ -126,9 +126,15 @@
     </div>
   </div>
 </div>
+<link href="app/bower_components/auto-complete/jquery.autocomplete.min.css">
+<script src="app/bower_components/auto-complete/jquery.autocomplete.min.js"></script>
 <script src="app/javascripts/vCode.js"></script>
 <script src="app/javascripts/validater.js"></script>
 <script type="text/javascript">
+    $('#companyName').AutoComplete({
+        'data': ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve']
+    });
+        
 	// 选择注册方式
     $(".click-reload").on("click", function(){
         window.location.reload();
@@ -168,15 +174,15 @@
         },1000);
     });
 
-    $("#submitForm1").on('click', function(){
+    /*$("#submitForm1").on('click', function(){
         $("#submitForm1,#phonecodeBtn").slideUp();
         $(".regist-forms form[name='userForm2']").slideDown();
-    })
+    })*/
 
-    $("#submitForm2").on('click', function(){
+  /*  $("#submitForm2").on('click', function(){
         if($("#phonecode").val() != "1234"){
             alert("验证码错误");
             return;
         }
-    })
+    })*/
 </script>

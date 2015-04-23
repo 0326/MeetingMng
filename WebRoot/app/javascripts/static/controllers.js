@@ -4,9 +4,9 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("homeCtrl", function($scope, loginService) {
   $scope.user = {
-    username: "13026310448",
+    username: "2577839872@qq.com",
     password: "123456",
-    usertype: "0"
+    usertype: "1"
   }
   $scope.submitLoginForm = function(isValid){
     loginService.login($scope.user);
@@ -46,9 +46,8 @@ var mControllers = angular.module("mControllers", [])
   };
   //发送短信验证码
   $scope.submitUserForm1 = function(idValid){
-    registerService.userStep1({
-      'cellphone':user.username
-    });
+    $("#submitForm1,#phonecodeBtn").slideUp();
+    $(".regist-forms form[name='userForm2']").slideDown();
   }
   //提交注册信息
   $scope.submitUserForm2 = function(isValid){

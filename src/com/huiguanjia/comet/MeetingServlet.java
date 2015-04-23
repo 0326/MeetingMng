@@ -16,6 +16,8 @@ import org.apache.catalina.websocket.StreamInbound;
 import org.apache.catalina.websocket.WebSocketServlet;
 import org.apache.catalina.websocket.WsOutbound;
 
+import com.opensymphony.xwork2.ActionContext;
+
 
 /**
  * Example web socket servlet for Meeting.
@@ -33,11 +35,18 @@ public class MeetingServlet extends WebSocketServlet {
     @Override
     protected StreamInbound createWebSocketInbound(String subProtocol,
             HttpServletRequest request) {
-    	//创建ws时先验证用户信息
-//    	System.out.println(request.getRequestURI());
-//    	System.out.println(request.getQueryString());
-        return new MeetingMsgInbound(request.getQueryString(),
-        		connectionIds.incrementAndGet());
+    	
+    	//创建ws连接时先验证用户是否已登录
+    	String suser = (String) ActionContext.getContext().getSession().get("username");
+    	String ruser = request.getQueryString();
+    	
+    	if(ruser.equals("username="+suser)){
+    		return new MeetingMsgInbound(suser,connectionIds.incrementAndGet());
+    	}
+    	else{
+    		return null;
+    	}
+       
     }
 
     
