@@ -68,7 +68,8 @@ angular.module("mServices", [])
         .post('/MeetingMng/api/v1/ordinaryUserRegister', data, PostCfg)
         .success(function(data){
             if(data.code == 0){
-
+                alert("注册成功！请直接登录");
+                window.location.href="/MeetingMng/";
             }
             else{
                 alert("参数错误");

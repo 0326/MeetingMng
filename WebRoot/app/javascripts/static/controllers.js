@@ -44,11 +44,13 @@ var mControllers = angular.module("mControllers", [])
         });
     }
   };
+  
   //发送短信验证码
   $scope.submitUserForm1 = function(idValid){
     $("#submitForm1,#phonecodeBtn").slideUp();
     $(".regist-forms form[name='userForm2']").slideDown();
   }
+
   //提交注册信息
   $scope.submitUserForm2 = function(isValid){
     registerService.userStep2({

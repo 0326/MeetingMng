@@ -46,9 +46,9 @@ var mServices = angular.module("mServices", [])
           }
         });
       },
-      updateInfo: function(company){
+      updateInfo: function(user){
         var d = $q.defer();
-        $http.post("/MeetingMng/api/v1/OrdinaryUserUpdateInfo",company, PostCfg)
+        $http.post("/MeetingMng/api/v1/OrdinaryUserUpdateInfo",user, PostCfg)
         .success(function(data){
           if(data.code == 0){
             alert("修改成功！");
