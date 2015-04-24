@@ -1,5 +1,7 @@
 package com.huiguanjia.util;
 
+import java.util.List;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
@@ -18,4 +20,8 @@ public class JSONUtil {
             return JSON.parseObject(string, clz);
         }
         
+        public static <T> List<T> deserializeToList(String string,Class<T> clz)
+        {
+        	return JSON.parseArray(string, clz);
+        }
 }
