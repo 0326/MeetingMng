@@ -121,12 +121,13 @@ author: Ling
 				'cellphone', $(this).val(),
 				function(data, status){
 					if(data.code == 0){
-						console.log(data.userInfo);
-						$("label[for='companyName']").text("所在公司："+data.userInfo.companyName);
+						var user = $.parseJSON(data.userInfo);
+						console.log(user);
+						$("label[for='companyName']").text("所在公司："+user.companyName);
 						$("#companyName").hide();
-						$("label[for='ordinaryUsername']").text("用户姓名："+data.userInfo.name)
+						$("label[for='ordinaryUsername']").text("用户姓名："+user.name)
 						$("#ordinaryUsername").hide();
-						$("#companyId").val(data.userInfo.companyId);
+						$("#companyId").val(user.companyId);
 						// hideError('validater-user-cellphone');
 						showError('validater-user-cellphone', '您的信息已被贵公司管理员录入系统，请直接注册');
 					}

@@ -15,7 +15,7 @@ import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.servic
 public class MeetingAction  extends ActionSupport{
 
 	private static final long serialVersionUID = 2782570898187961833L;
-	private Integer meetingId;                   //会议
+	private String meetingId;                   //会议
 	private String meetingName;                  //会议名
 	private String meetingContent;               //会议内容
 	private String meetingLocation;              //会议地点
@@ -53,7 +53,7 @@ public class MeetingAction  extends ActionSupport{
 			jsonData.put("code", -1);
 		}
 		else{
-			jsonData.put("code", -1);
+			jsonData.put("code", 1);
 		}
 		return SUCCESS;
 	}
@@ -128,11 +128,11 @@ public class MeetingAction  extends ActionSupport{
 		return SUCCESS;
 	}
 	//setter and getter
-	public int getMeetingId() {
+	public String getMeetingId() {
 		return meetingId;
 	}
 
-	public void setMeetingId(int meetingId) {
+	public void setMeetingId(String meetingId) {
 		this.meetingId = meetingId;
 	}
 	

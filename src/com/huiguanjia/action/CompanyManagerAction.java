@@ -251,22 +251,20 @@ public class CompanyManagerAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		//System.out.println(companyName);
-		//return 1,2,3,4,5,6... refer to jsonData.put("code","num")
 		switch(companyManagerService.register(username,password,type,companyName,location))
 		{
 			case 1:jsonData.put("code",-10400); break; //username
-			case 2:jsonData.put("code",-10400); break; //companyName
-			case 3:jsonData.put("code",-10400); break; //industy(type)
-			case 4:jsonData.put("code",-10400); break; //location
-			case 5:jsonData.put("code",-10400); break; //sql failed								
+			case 2:jsonData.put("code",-10401); break; //companyName
+			case 3:jsonData.put("code",-10402); break; //industy(type)
+			case 4:jsonData.put("code",-10403); break; //location
+			case 5:jsonData.put("code",-10404); break; //sql failed								
 			case 6:
 			{
-				//瀵硅处鍙疯繘琛宮d5鍔犲瘑浣滀负activeAddr(UserId)
 				String userId = MD5Util.MD5Code(username);
 				System.out.println(userId);
 				Date sendTime = new Date();
 				String activateCode;
-				boolean mode = false;//閭婵�椿
+				boolean mode = false;
 				activateCode = MD5Util.MD5Code(sendTime.toString());
 				String activatelink= "http://localhost:8080/MeetingMng"+ 
 						"/#/activition?uid="+userId+"&aid="+activateCode;
@@ -296,7 +294,7 @@ public class CompanyManagerAction extends ActionSupport{
 		String userId = MD5Util.MD5Code(username);
 		ActivateService activateService = new ActivateService();
 		if(activateService.activate(userId, activateCode, activateTime) == null){
-			jsonData.put("code",-10409);  //can not activate,code = 10
+			jsonData.put("code",-10409);  
 		}		
 		else{
 			String aUsername = activateService.activate(userId, activateCode, activateTime);
@@ -370,10 +368,6 @@ public class CompanyManagerAction extends ActionSupport{
 	/**
 	 * @info 公司管理员修改密码
 	 * @return
-	 * String companyName, Industry industry,
-			ProvinceAndCity provinceAndCity, String username,
-			String password, Date registerTime, boolean isLogin, String name,
-			boolean sex, String avatarUrl
 	 */
 	public String updatePass(){
 		jsonData = new HashMap<String,Object>();	
@@ -418,6 +412,7 @@ public class CompanyManagerAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
+	
 	/**
 	 * 公司管理员手动添加普通用户
 	 * @return
@@ -540,9 +535,9 @@ public class CompanyManagerAction extends ActionSupport{
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		String line = keyword;
 	    String pattern1 = "[0-9]*";
-	    // 创建 Pattern 对象
+
 	    Pattern r1 = Pattern.compile(pattern1);
-	    // 现在创建 matcher 对象
+
 	    Matcher m1 = r1.matcher(line);
 	    if(m1.find()){
 	    	List<OrdinaryUser> u1 = companyManagerService.searchWorkNo(username,keyword);
@@ -553,11 +548,6 @@ public class CompanyManagerAction extends ActionSupport{
 			else{
 				u1.removeAll(u2);
 				u1.addAll(u2);
-				/*
-				List<OrdinaryUser> u = new ArrayList<OrdinaryUser>();
-				u.addAll(u1);
-				u.addAll(u2);
-				*/
 				jsonData.put("user", u1);				
 			}
 	    }

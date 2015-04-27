@@ -20,7 +20,7 @@ public class ActivateAction extends ActionSupport{
 		Date d = new Date();
 		ActivateService ac = new ActivateService();
 		String username = ac.activate(uid, aid, d);
-		System.out.print(username+":"+uid);
+//		System.out.print(username+":"+uid);
 		if( username == null){
 			jsonData.put("code", -1);
 		}
@@ -28,7 +28,6 @@ public class ActivateAction extends ActionSupport{
 			jsonData.put("code", 0);
 			CompanyManagerService cms = new CompanyManagerService();
 			cms.registerAfterActivate(username);
-//			jsonData.put("username",username);
 		}
 		
 		return SUCCESS;
@@ -75,7 +74,6 @@ public class ActivateAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	//setter and getter
 	public String getUid() {
 		return uid;
 	}

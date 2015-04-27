@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.catalina.websocket.MessageInbound;
 import org.apache.catalina.websocket.WsOutbound;
+
+import com.huiguanjia.pojo.Message;
+import com.huiguanjia.service.MessageService;
+import com.huiguanjia.util.JSONUtil;
 
 
 public class MeetingMsgInbound extends MessageInbound {
@@ -21,17 +26,19 @@ public class MeetingMsgInbound extends MessageInbound {
 
     @Override
     protected void onOpen(WsOutbound outbound) {
-        MeetingServlet.connections.add(this);
-        String message = String.format("*****%s %s",userid, wsid);
-        broadcast(message);
+        
+    	MeetingServlet.connections.add(this);
+    	//查询数据库表Message，若用户不在线时有漏接推送，登录时应及时推送给用户
+        MessageService msgService = new MessageService();
+        List<Message> msglist = msgService.findMsg(this.userid, false);
+        if(msglist !=null){
+        	this.pushSigle(msglist, userid);
+        }  
     }
 
     @Override
     protected void onClose(int status) {
     	MeetingServlet.connections.remove(this);
-        String message = String.format("* %s %s",
-                userid, "has disconnected.");
-        broadcast(message);
     }
 
     @Override
@@ -42,31 +49,43 @@ public class MeetingMsgInbound extends MessageInbound {
 
     @Override
     protected void onTextMessage(CharBuffer message) throws IOException {
-        // Never trust the client
         String filteredMessage = String.format("%s: %s",
                 userid, HTMLFilter.filter(message.toString()));
-        broadcast(filteredMessage);
     }
     
-    //给所有上线用户发送广播
-    public static void broadcast(String message) {
+    /**
+     * 给所有上线用户发送广播，一次只能发一条
+     * @param msg
+     */
+    public static void broadcast(Message msg) {
         for (MeetingMsgInbound connection : MeetingServlet.connections) {
             try {
-                CharBuffer buffer = CharBuffer.wrap(message);
+                CharBuffer buffer = CharBuffer.wrap(msg.getMsgContent());
                 connection.getWsOutbound().writeTextMessage(buffer);
             } catch (IOException ignore) {
                 // Ignore
             }
         }
     }
-    //给指定单个用户发送广播
-    public static void pushSigle(String msg, String userid){
-//    	System.out.println(MeetingServlet.connections);
+    /**
+     * 给指定用户发送推送
+     * 可以同时发送多条消息，但多条将压缩为同一条推送，由前端解析
+     * @param msglist
+     * @param userid
+     */
+    public static void pushSigle(List<Message> msglist, String userid){
+
     	for(MeetingMsgInbound connection : MeetingServlet.connections){
-    		if(connection.userid.equals("username="+userid)){
+    		if(connection.userid.equals(userid)){
     			try {
+    				MessageService msgService = new MessageService();
+    				List<String> ctxlist = msgService.getMsgContentList(msglist);
+    				String msg = JSONUtil.serialize(ctxlist);
                     CharBuffer buffer = CharBuffer.wrap(msg);
                     connection.getWsOutbound().writeTextMessage(buffer);
+                    //更新推送记录状态
+                    msgService.makePushed(msglist);
+                    
                 } catch (IOException ignore) {
                     // Ignore
                 }
@@ -74,12 +93,17 @@ public class MeetingMsgInbound extends MessageInbound {
     		}
     	}
     }
-    //给指定用户列表发送广播
-    public static void pushMulti(String msg, HashSet userset){
+
+    /**
+     * 给指定用户列表发送广播
+     * @param msglist
+     * @param userset
+     */
+    public static void pushMulti(Message msg, HashSet userset){
     	for(MeetingMsgInbound connection : MeetingServlet.connections){
     		if(userset.contains(connection.userid)){
     			try {
-                    CharBuffer buffer = CharBuffer.wrap(msg);
+                    CharBuffer buffer = CharBuffer.wrap(msg.getMsgContent());
                     connection.getWsOutbound().writeTextMessage(buffer);
                 } catch (IOException ignore) {
                     // Ignore

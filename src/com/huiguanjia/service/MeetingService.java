@@ -44,7 +44,7 @@ public class MeetingService {
 		return res;
 	}
 	
-	public boolean delete(int id){
+	public boolean delete(String id){
 		boolean res = false;
 		
 		BaseDAO aBaseDao = new BaseDAO();
@@ -104,7 +104,7 @@ public class MeetingService {
 		return res;
 	}
 	
-	public String findByMeetingId(int id){
+	public String findByMeetingId(String id){
 		String res = null;
 		
 		return res;
@@ -117,7 +117,7 @@ public class MeetingService {
 
 		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ?"; 
 		Object[] values = new Object[]{userid};
-		List<Meeting> list = (ArrayList<Meeting>)b.findPagingObjectByHql(hql, 0, 10, values);
+		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
 		
 		if(null == list){
 			return null;

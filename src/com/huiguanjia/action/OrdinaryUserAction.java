@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.regex.*;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -211,13 +213,16 @@ public class OrdinaryUserAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	public String findCompanyByName()
+	public String findCompanyByName() throws UnsupportedEncodingException
 	{
 		jsonData = new HashMap<String,Object>();
 		
 		CompanyManagerService service = new CompanyManagerService();
-		String companyList = service.searchCompanyByName(companyName);
-		
+		//中文字符需要解码
+		String param = URLDecoder.decode(companyName,"utf-8");
+		String companyList = service.searchCompanyByName(param);
+//		System.out.println(companyName);
+//		System.out.println(param);
 		if(null == companyList)
 		{
 			jsonData.put("code", -1);
@@ -236,7 +241,7 @@ public class OrdinaryUserAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		
 		OrdinaryUserService service = new OrdinaryUserService();
-		if(false == service.register(cellphone,companyId,password,name))
+		if(false == service.register(cellphone,companyId,name,password))
 		{
 			jsonData.put("code", -1);
 		}

@@ -25,12 +25,13 @@
                 <div class="pure-control-group">
                     <label for="companyName">所在公司</label>
                     <input  ng-model="user.companyId" type="hidden">
-                    <input id="companyName" ng-model="user.companyName" type="text" placeholder="请输入您的所属公司名称" class="i-validater validater-user-company" required>
+                    <input id="companyName" ng-model="user.companyName" type="text" placeholder="请输入您的所属公司名称" class="i-validater validater-user-company">
                     <p class="validater-helper"></p>
                 </div>
                 <div class="pure-control-group">
                     <label for="ordinaryUsername">用户姓名</label>
-                    <input id="ordinaryUsername" ng-model="user.name" class="i-validater validater-notempty" type="text" placeholder="请输入您的真实姓名" required>
+                    <input  ng-model="user.name" type="hidden">
+                    <input id="ordinaryUsername" ng-model="user.name" class="i-validater validater-notempty" type="text" placeholder="请输入您的真实姓名">
                     <p class="validater-helper"></p>
                 </div>
                 <div class="pure-control-group">
@@ -45,7 +46,7 @@
                     <p class="validater-helper"></p>
                 </div>
                 <div class="pure-control-group">
-                    <button class="pure-button pure-button-primary" id="submitForm1">下一步</button>
+                    <button class="pure-button pure-button-primary" id="submitForm1" ng-disabled="userForm1.$invalid">下一步</button>
                 </div>
             </fieldset>
         </form>
@@ -126,9 +127,65 @@
     </div>
   </div>
 </div>
+<link rel="stylesheet" href="app/bower_components/auto-complete/jquery.autocomplete.css">
+<script src="app/bower_components/auto-complete/jquery.autocomplete.min.js"></script>
+<!-- <script src="app/javascripts/autocomplete.js"></script> -->
 <script src="app/javascripts/vCode.js"></script>
 <script src="app/javascripts/validater.js"></script>
 <script type="text/javascript">
+/*    var companydata = [];
+    var lastName = null;
+    var timer = function(thisname){
+        setInterval(function(){
+            var cname = encodeURI($("#companyName").val());
+            var acurl = encodeURI('/MeetingMng/api/v1/findCompanyByName?companyName='+cname);
+            $.ajax({
+                url:acurl,
+                type:"GET",
+                success:function(data){
+                    var acdata = [];
+                    if(data.code == 0){
+                        companydata = $.parseJSON(data.company);
+                        console.log(acdata);
+                        for(var i=0;i<companydata.length;i++){
+                            acdata.push(companydata[i].name);
+                        }
+                        $('#companyName').AutoComplete({
+                            'data': acdata,
+                            'width': 540,
+                            'matchHandler': function(key, data){
+                                console.log(key);
+                                console.log(data);
+                            },
+                            'afterSelectedHandler': function(data) {
+                                console.log(data);
+                            },
+                            'onerror': function(msg) {
+                                alert(msg);
+                            }
+                        });
+                    }
+                    else{
+
+                    }
+                }
+            });
+        },2000);
+    }
+    $("#companyName").change(function(){
+        if(lastName == null){
+            lastName = $("#companyName").val();
+        }
+        else{
+            console.log(lastName);
+            console.log($("#companyName").val())
+        }
+        // timer();
+    });
+    $("#companyName").blur(function(){
+        clearInterval(timer);
+    });*/
+
 	// 选择注册方式
     $(".click-reload").on("click", function(){
         window.location.reload();
@@ -168,15 +225,15 @@
         },1000);
     });
 
-    $("#submitForm1").on('click', function(){
+    /*$("#submitForm1").on('click', function(){
         $("#submitForm1,#phonecodeBtn").slideUp();
         $(".regist-forms form[name='userForm2']").slideDown();
-    })
+    })*/
 
-    $("#submitForm2").on('click', function(){
+  /*  $("#submitForm2").on('click', function(){
         if($("#phonecode").val() != "1234"){
             alert("验证码错误");
             return;
         }
-    })
+    })*/
 </script>

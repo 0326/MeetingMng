@@ -52,12 +52,7 @@ var mControllers = angular.module("mControllers", [])
 })
 
 .controller("meetingdetailCtrl", function($scope, meeting) {
-  $scope.meeting = {
-      title:'会管家周会',
-      date:'每周五 下午4:00',
-      addr:'软件学院502教室',
-      id:'345346546'
-    };
+
 })
 
 .controller("meetingcontactCtrl", function($scope) {
@@ -74,7 +69,13 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("profileCtrl", function($scope, userService) {
    $scope.client =userService.profiles;
-   
+
+   $scope.modifyInfo = function(){
+      // console.log($scope.client.avatarUrl);
+      $scope.client.avatarUrl = $("#avatarUrl").val()
+      userService.updateInfo($scope.client);
+      $scope.$emit('userProfileChange',$scope.client);
+   }
 })
 
 
