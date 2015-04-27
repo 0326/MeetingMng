@@ -77,8 +77,8 @@ public class MeetingTest {
 	
 	
 	public void update(){
-		OrdinaryUser user = new OrdinaryUser();
-		user.setCellphone("15071345115");
+//		OrdinaryUser user = new OrdinaryUser();
+//		user.setCellphone("15071345115");
 //		Meeting meeting = new Meeting("100", user,"会议名update",
 //				"会议内容2", "会议地点",
 //				"会议备注", "www.qrcode.com/101", 1,
@@ -86,8 +86,8 @@ public class MeetingTest {
 //				"1429409768014", "1429409668014",
 //				"1429409769014", "1429409668014");
 		Meeting meeting = new Meeting();
-		meeting.setMeetingId("21");
-		meeting.setMeetingName("update");
+		meeting.setMeetingId("0074878c12114bd39af5b917e8491e8b");
+		meeting.setMeetingName("额回忆");
 		meeting.setMeetingContent("update");
 		meeting.setMeetingLocation("update");
 		meeting.setMeetingRemark("update");
@@ -138,12 +138,12 @@ public class MeetingTest {
 	
 	public void findByMeetingName2(){
 		MeetingService ms= new MeetingService();
-		if(null ==ms.findByMeetingName2("议","1833559609@qq.com")){
+		if(null ==ms.findByMeetingName2("回","1833559609@qq.com")){
 			System.out.println("失败");
 		}
 		else{
 			System.out.println("成功");
-			System.out.println(ms.findByMeetingName2("议","1833559609@qq.com"));
+			System.out.println(ms.findByMeetingName2("回","1833559609@qq.com"));
 		}
 	}
 	
@@ -161,7 +161,8 @@ public class MeetingTest {
 	
 	public static void main(String[] args){
 		MeetingTest meetingTest = new MeetingTest();
-		meetingTest.create();
+		meetingTest.update();
+		meetingTest.findByMeetingName2();
 	}
 }
 	

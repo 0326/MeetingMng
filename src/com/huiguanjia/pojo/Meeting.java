@@ -106,7 +106,6 @@ public class Meeting implements java.io.Serializable {
 
 	// Property accessors
 	@Id
-	@GeneratedValue
 	@Column(name = "meetingId", unique = true, nullable = false)
 	public String getMeetingId() {
 		return this.meetingId;

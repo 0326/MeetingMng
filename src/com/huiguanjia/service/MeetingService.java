@@ -121,9 +121,7 @@ public class MeetingService {
 		try
 		{
 			String hql = "update Meeting meeting set meeting.meetingName=?,"+
-			        "meeting.meetingContent=?,meeting.meetingLocation=?,meeting.meetingRemark=?"+
-					",meeting.meetingStartTime=?,meeting.meetingPredictFinishTime=?+" +
-					",meeting.meetingFrequency=? where meeting.meetingId=?";
+			        "meeting.meetingContent=?,meeting.meetingLocation=?,meeting.meetingRemark=?,meeting.meetingStartTime=?,meeting.meetingPredictFinishTime=?,meeting.meetingFrequency=? where meeting.meetingId=?";
 			Object[] values = new Object[]{meeting.getMeetingName(),
 					meeting.getMeetingContent(),meeting.getMeetingLocation(),
 					meeting.getMeetingRemark(),meeting.getMeetingStartTime(),
