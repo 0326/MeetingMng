@@ -6,7 +6,7 @@ import com.huiguanjia.pojo.Meeting;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.service.MeetingService;
 import com.huiguanjia.util.MatrixToImageWriter;
-import com.huiguanjia.util.QiniuyunQRcodeUtil;
+//import com.huiguanjia.util.QiniuyunQRcodeUtil;
 import com.huiguanjia.util.QiniuyunUtil;
 import com.huiguanjia.util.RandomUtil;
 import com.qiniu.api.auth.AuthException;
@@ -23,7 +23,7 @@ import com.qiniu.api.auth.AuthException;
 public class MeetingTest {
 	public void create(){
 		OrdinaryUser user = new OrdinaryUser();
-		user.setCellphone("15071345115");
+		user.setCellphone("13026310448");
 		String meetingId = RandomUtil.UUID();
 		Meeting meeting = new Meeting(meetingId, user,"会议名100",
 				"会议内容2", "会议地点",
@@ -161,8 +161,9 @@ public class MeetingTest {
 	
 	public static void main(String[] args){
 		MeetingTest meetingTest = new MeetingTest();
-		meetingTest.update();
-		meetingTest.findByMeetingName2();
+//		meetingTest.update();
+		meetingTest.create();
+//		meetingTest.findByMeetingName2();
 	}
 }
 	

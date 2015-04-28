@@ -43,6 +43,9 @@ var mControllers = angular.module("mControllers", [])
     meetingCreatorId: userService.profiles.cellphone
   };
   $scope.submitAddForm = function(isValid){
+    $scope.meeting.meetingStartTime = $("#starttime").val();
+    $scope.meeting.meetingPredictFinishTime = $("#endtime").val();
+    console.log("$scope.meeting")
     meetingService.add($scope.meeting);
   }
 })

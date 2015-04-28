@@ -11,7 +11,7 @@ import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
 import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.service.MeetingBulletinService?
-import com.huiguanjia.util.QiniuyunQRcodeUtil;
+//import com.huiguanjia.util.QiniuyunQRcodeUtil;
 import com.huiguanjia.util.RandomUtil;
 
 public class MeetingAction  extends ActionSupport{
@@ -61,14 +61,15 @@ public class MeetingAction  extends ActionSupport{
 //		QiniuyunQRcodeUtil qiniuyunQRcodeUtil = new QiniuyunQRcodeUtil();
 		
 		if(false ==ms.create(meeting)){
-		jsonData.put("code", -1);
+			jsonData.put("code", -1);
 		}
 		else{
 			// 创建会议成功，生成二维码图片到本地指定路径里面
-		try{
-			ms.putMeetingQrcode(meetingQrcode,path);
-			}
-		catch(Exception e){
+			jsonData.put("code", 1);
+			try{
+				ms.putMeetingQrcode(meetingQrcode,path);
+				}
+			catch(Exception e){
 			
 			}
 		}

@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 
+
 /**
  * Configures and provides access to Hibernate sessions, tied to the
  * current thread of execution.  Follows the Thread Local Session
@@ -53,7 +54,7 @@ public class HibernateSessionFactory {
 			if (sessionFactory == null) {
 				rebuildSessionFactory();
 			}
-			session = (sessionFactory != null) ? sessionFactory.openSession()
+			session = (sessionFactory != null) ? sessionFactory.openSession(new CometInterceptor())
 					: null;
 			threadLocal.set(session);
 		}

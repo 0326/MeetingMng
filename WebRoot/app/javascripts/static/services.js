@@ -1,7 +1,7 @@
 // services.js
 angular.module("mServices", [])
 //管理员，普通用户登录服务
-.factory('loginService',['$http', '$cookieStore', 'PostCfg', function($http, $cookieStore, PostCfg){
+.factory('loginService',['$http', '$cookieStore','$window', 'PostCfg', function($http, $cookieStore, $window, PostCfg){
 	return {
 		login: function(user){
             var flag = false;
@@ -12,8 +12,7 @@ angular.module("mServices", [])
 			            $cookieStore.put("username",user.username);
                         //建立websocket长连接接收推送消息，
                         //生产环境不能直接传username，应该传服务器端sessionid作为验证条件
-                        window.MMComet.initialize(user.username);
-                        window.location.href="/MeetingMng/manage";
+                        $window.location.href="/MeetingMng/manage";
 			        }
 			        else{
 			            alert("用户名或密码错误");
@@ -28,7 +27,7 @@ angular.module("mServices", [])
 			    .success(function(data){
 			        if(data.code == 0){
 			            $cookieStore.put("cellphone",user.username);
-                        window.location.href="/MeetingMng/u";
+                        $window.location.href="/MeetingMng/u";
 			        }
 			        else{
 			            alert("用户名或密码错误");

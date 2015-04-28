@@ -30,13 +30,12 @@
 		<mapping class="com.huiguanjia.pojo.TempCompanyAndCompanyAdmin" />
 		<mapping class="com.huiguanjia.pojo.Department" />
 		<mapping class="com.huiguanjia.pojo.OrdinaryUser" />
-		<mapping class="com.huiguanjia.pojo.Meeting" />
 		<mapping class="com.huiguanjia.pojo.ActiveMeetingView" />
 		<mapping class="com.huiguanjia.pojo.DeleteMeetingView" />
 		<mapping class="com.huiguanjia.pojo.FinishMeetingView" />
 		<mapping class="com.huiguanjia.pojo.TempOrdinaryUser" />
 		<mapping class="com.huiguanjia.pojo.Message" />
 		<mapping class="com.huiguanjia.pojo.MeetingOrganizer" />
+		<mapping class="com.huiguanjia.pojo.Meeting" />
 	</session-factory>
-
 </hibernate-configuration>
