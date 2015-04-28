@@ -36,6 +36,12 @@
 		<mapping class="com.huiguanjia.pojo.TempOrdinaryUser" />
 		<mapping class="com.huiguanjia.pojo.Message" />
 		<mapping class="com.huiguanjia.pojo.MeetingOrganizer" />
+<<<<<<< HEAD
 		<mapping class="com.huiguanjia.pojo.Meeting" />
+=======
+		<mapping class="com.huiguanjia.pojo.MeetingParticipator" />
+		<mapping class="com.huiguanjia.pojo.Topic" />
+		<mapping class="com.huiguanjia.pojo.Comment" />
+>>>>>>> cff5c31a52efcb38868d83dc3705ff232117b349
 	</session-factory>
 </hibernate-configuration>

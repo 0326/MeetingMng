@@ -108,7 +108,7 @@ public class DepartmentAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		DepartmentService ds = new DepartmentService();
 		String departmentList = ds.findByCompanyId(companyId);
-		MeetingMsgInbound.pushSigle("from action", companyId);
+//		MeetingMsgInbound.pushSigle("from action", companyId);
 		if(null == departmentList){
 			jsonData.put("departments", "");
 		}
