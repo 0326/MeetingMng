@@ -193,12 +193,17 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    		<action name="OrdinaryUserActivate" class="com.huiguanjia.action.OrdinaryUserAction" method="activate">
+    	<action name="OrdinaryUserActivate" class="com.huiguanjia.action.OrdinaryUserAction" method="activate">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    		<action name="findUserByCellphone" class="com.huiguanjia.action.OrdinaryUserAction" method="findUserByCellphone">
+    	<action name="findUserByCellphone" class="com.huiguanjia.action.OrdinaryUserAction" method="findUserByCellphone">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findUserInfo" class="com.huiguanjia.action.OrdinaryUserAction" method="findUserInfo">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>

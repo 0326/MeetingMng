@@ -12,6 +12,8 @@ var mControllers = angular.module("mControllers", [])
     $("#loading").fadeOut("normal",function(){
         $("#layout").fadeIn();
     });
+    $window.MMComet.initialize($scope.company.username);
+    console.log("init ok")
   })
 
   $scope.$on('userProfileChange',function(event, company){

@@ -12,8 +12,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.huiguanjia.service.ActivateService;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
+import com.huiguanjia.comet.MeetingMsgInbound;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Industry;
+import com.huiguanjia.pojo.Message;
 import com.huiguanjia.pojo.ProvinceAndCity;
 import com.huiguanjia.util.MD5Util;
 import com.huiguanjia.util.MailSendUtil;
@@ -399,6 +401,13 @@ public class CompanyManagerAction extends ActionSupport{
 	
 	
 	public String findStuffs(){
+		
+		List<Message> mlist = new ArrayList<Message>();
+		Message m = new Message();
+		m.setMsgContent("findStuffs");
+		mlist.add(m);
+		MeetingMsgInbound.pushSigle(mlist, (String)ActionContext.getContext().getSession().get("username"));
+		
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		String u = companyManagerService.getAllInfo(username);
@@ -446,6 +455,7 @@ public class CompanyManagerAction extends ActionSupport{
 		
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		if(companyManagerService.addOrdinaryUser(u)){
+			
 			jsonData.put("code", 0);
 		}
 		else {

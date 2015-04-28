@@ -14,15 +14,11 @@ MMComet.connect = (function(host) {
 
     MMComet.socket.onopen = function () {
         console.log('Info: WebSocket connection opened.');
-        document.getElementById('MMComet').onkeydown = function(event) {
-            if (event.keyCode == 13) {
-                MMComet.sendMessage();
-            }
-        };
+        
     };
 
     MMComet.socket.onclose = function () {
-        document.getElementById('MMComet').onkeydown = null;
+        
         console.log('Info: WebSocket closed.');
     };
 

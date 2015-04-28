@@ -35,20 +35,25 @@
 	</table>
 	<table name="active_meeting_view" catalog="meetingmngdatabase">
 		<primary-key>
-		    <generator class="assigned"></generator>
+			<generator class="assigned"></generator>
 			<key-column name="meetingId" />
 		</primary-key>
 	</table>
 	<table name="delete_meeting_view" catalog="meetingmngdatabase">
 		<primary-key>
-		    <generator class="assigned"></generator>
+			<generator class="assigned"></generator>
 			<key-column name="meetingId" />
 		</primary-key>
 	</table>
-<table name="finish_meeting_view" catalog="meetingmngdatabase">
+	<table name="finish_meeting_view" catalog="meetingmngdatabase">
+		<primary-key>
+			<generator class="assigned"></generator>
+			<key-column name="meetingId" />
+		</primary-key>
+	</table>
+<table name="meeting" catalog="meetingmngdatabase">
 	<primary-key>
-	    <generator class="assigned"></generator>
-		<key-column name="meetingId" />
+		<generator class="uuid.string"></generator>
 	</primary-key>
 </table>
 </hibernate-reverse-engineering>

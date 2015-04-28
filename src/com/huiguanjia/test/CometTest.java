@@ -6,6 +6,6 @@ public class CometTest {
 
 	
 	public static void main(String[] args){
-		MeetingMsgInbound.pushSigle("msg from CometTest", "1833559609@qq.com");
+//		MeetingMsgInbound.pushSigle("msg from CometTest", "1833559609@qq.com");
 	}
 }
