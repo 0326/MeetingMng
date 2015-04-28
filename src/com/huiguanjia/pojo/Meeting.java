@@ -18,6 +18,10 @@ public class Meeting implements java.io.Serializable {
 
 	// Fields
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String meetingId;
 	private OrdinaryUser ordinaryUser;
 	private String meetingName;
@@ -40,10 +44,11 @@ public class Meeting implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Meeting(String meetingName, String meetingContent,
+	public Meeting(String meetingId,String meetingName, String meetingContent,
 			String meetingLocation, String meetingQrcode, Integer meetingState,
 			Integer meetingFrequency, String meetingStartTime,
 			String meetingPredictFinishTime, String meetingCreateTime) {
+		this.meetingId = meetingId;
 		this.meetingName = meetingName;
 		this.meetingContent = meetingContent;
 		this.meetingLocation = meetingLocation;
@@ -56,12 +61,13 @@ public class Meeting implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public Meeting(OrdinaryUser ordinaryUser, String meetingName,
+	public Meeting(String meetingId,OrdinaryUser ordinaryUser, String meetingName,
 			String meetingContent, String meetingLocation,
 			String meetingRemark, String meetingQrcode, Integer meetingState,
 			Integer meetingFrequency, String meetingStartTime,
 			String meetingPredictFinishTime, String meetingCreateTime,
 			String meetingFinishTime, String meetingDeleteTime) {
+		this.meetingId = meetingId;
 		this.ordinaryUser = ordinaryUser;
 		this.meetingName = meetingName;
 		this.meetingContent = meetingContent;
@@ -76,16 +82,37 @@ public class Meeting implements java.io.Serializable {
 		this.meetingFinishTime = meetingFinishTime;
 		this.meetingDeleteTime = meetingDeleteTime;
 	}
+	
+//	public Meeting(String meetingId, String meetingName,
+//			String meetingContent, String meetingLocation,
+//			String meetingRemark, String meetingQrcode, Integer meetingState,
+//			Integer meetingFrequency, String meetingStartTime,
+//			String meetingPredictFinishTime, String meetingCreateTime,
+//			String meetingFinishTime, String meetingDeleteTime) {
+//		this.meetingId = meetingId;
+//		this.meetingName = meetingName;
+//		this.meetingContent = meetingContent;
+//		this.meetingLocation = meetingLocation;
+//		this.meetingRemark = meetingRemark;
+//		this.meetingQrcode = meetingQrcode;
+//		this.meetingState = meetingState;
+//		this.meetingFrequency = meetingFrequency;
+//		this.meetingStartTime = meetingStartTime;
+//		this.meetingPredictFinishTime = meetingPredictFinishTime;
+//		this.meetingCreateTime = meetingCreateTime;
+//		this.meetingFinishTime = meetingFinishTime;
+//		this.meetingDeleteTime = meetingDeleteTime;
+//	}
 
 	// Property accessors
 	@Id
-	@Column(name = "meetingId", unique = true, nullable = false,length = 32)
+	@Column(name = "meetingId", unique = true, nullable = false)
 	public String getMeetingId() {
 		return this.meetingId;
 	}
 
-	public void setMeetingId(String meetingId) {
-		this.meetingId = meetingId;
+	public void setMeetingId(String meetingId2) {
+		this.meetingId = meetingId2;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

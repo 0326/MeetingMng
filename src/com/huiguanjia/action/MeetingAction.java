@@ -11,6 +11,8 @@ import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
 import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.service.MeetingBulletinService?
+import com.huiguanjia.util.QiniuyunQRcodeUtil;
+import com.huiguanjia.util.RandomUtil;
 
 public class MeetingAction  extends ActionSupport{
 
@@ -21,7 +23,7 @@ public class MeetingAction  extends ActionSupport{
 	private String meetingLocation;              //会议地点
 	private String meetingCreatorId;             //创建者id(cellphone)，null=true?
 	private String meetingRemark;                //会议备注null=true
-	private String meetingQrcode;                //会议二维码
+//	private String meetingQrcode;                //会议二维码
 	private Integer meetingState;				 //会议状态：1未开始2已开始3已结束4已删除
 	private Integer meetingFrequency;            //频率：1单次2每天3每周4每月
 	private String meetingStartTime;             //会议开始时间
@@ -30,6 +32,10 @@ public class MeetingAction  extends ActionSupport{
 	private String meetingFinishTime;            //会议实际完成时间
 	private String meetingDeleteTime;            //会议删除时间
 	
+	private String cellphone;					//普通用户主键
+	private String username;					//公司管理员主键
+	private String path;						//存放二维码路径
+	
 	private Map<String,Object> jsonData;
 	
 	public String execute() throws Exception{
@@ -37,25 +43,57 @@ public class MeetingAction  extends ActionSupport{
 
 	}
 	
-	public String create() {
+	public String create() throws Exception {
 		jsonData = new HashMap<String,Object>();
-		
+		// 生成meetingId
+		String meetingId = RandomUtil.UUID();
 		OrdinaryUser user = new OrdinaryUser();
 		user.setCellphone(meetingCreatorId);
-		Meeting meeting = new Meeting(user, meetingName,
+		// 二维码的url
+		String meetingQrcode = (String)"https://www.huiguanjia.com/api/v1/u/meeting"+meetingId;
+		Meeting meeting = new Meeting(meetingId,user, meetingName,
 				meetingContent, meetingLocation,
-				"meetingRemark", meetingQrcode, 1,
+				meetingRemark, meetingQrcode, 1,
 				meetingFrequency, meetingStartTime,
 				meetingPredictFinishTime, meetingCreateTime,
 				null, null);
 		MeetingService ms= new MeetingService();
+//		QiniuyunQRcodeUtil qiniuyunQRcodeUtil = new QiniuyunQRcodeUtil();
+		
 		if(false ==ms.create(meeting)){
-			jsonData.put("code", -1);
+		jsonData.put("code", -1);
 		}
 		else{
-			jsonData.put("code", 1);
+			// 创建会议成功，生成二维码图片到本地指定路径里面
+		try{
+			ms.putMeetingQrcode(meetingQrcode,path);
+			}
+		catch(Exception e){
+			
+			}
 		}
 		return SUCCESS;
+
+//		if(false ==ms.create(meeting)){
+//			jsonData.put("code", -1);
+//		}
+//		else{
+//			// 创建会议成功，生成二维码图片到本地指定路径里面
+//			try{
+//				ms.putMeetingQrcode(meetingQrcode,path);
+//				}
+//			catch(Exception e){
+//				
+//			}
+//			// 调用七牛云接口,将指定路径的二维码图片传输到七牛云服务端上面，并返回一个七牛云服务上生成的URL。可根据该URL查看二维码图片
+//			String url = qiniuyunQRcodeUtil.upTokenImg(path);
+//			if(url != null){
+//				jsonData.put("code", 0);
+//				jsonData.put("url", url);
+//			}
+//
+//		}
+		
 	}
 	
 	public String delete(){
@@ -96,11 +134,15 @@ public class MeetingAction  extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * @info 根据会议ID搜索会议
+	 * @return
+	 */
 	public String findByMeetingId(){
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
-		String departmentList = ms.findByMeetingId(meetingId);
-		
+		Meeting departmentList = ms.findByMeetingId(meetingId);
+	
 		if(null == departmentList){
 			jsonData.put("departments", "");
 		}
@@ -111,10 +153,33 @@ public class MeetingAction  extends ActionSupport{
 		return SUCCESS;
 	}
 	
+	/**
+	 * @info 根据用户ID搜索会议
+	 * @return
+	 */
 	public String findByUserId(){
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
-		String list = ms.findByUserId(meetingCreatorId);
+		String departmentList = ms.findByUserId(cellphone);
+	
+		if(null == departmentList){
+			jsonData.put("departments", "");
+		}
+		else{
+			jsonData.put("departments", departmentList);
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 普通用户根据会议名称搜索会议
+	 * @return
+	 */
+	public String findByMeetingName1(){
+		jsonData = new HashMap<String,Object>();
+		MeetingService ms = new MeetingService();
+		String list = ms.findByMeetingName1(meetingName,cellphone);
 		if(null == list){
 			jsonData.put("code", -1);
 			jsonData.put("meetings", "");	 
@@ -127,6 +192,74 @@ public class MeetingAction  extends ActionSupport{
 		
 		return SUCCESS;
 	}
+		
+	/**
+	 * @info 公司管理员会议名称搜索会议
+	 * @return
+	 */
+	public String findByMeetingName2(){
+		jsonData = new HashMap<String,Object>();
+		MeetingService ms = new MeetingService();
+		String list = ms.findByMeetingName2(meetingName,username);
+		if(null == list){
+			jsonData.put("code", -1);
+			jsonData.put("meetings", "");	 
+		}
+		else{
+			jsonData.put("code", 0);
+			jsonData.put("meetings", list);			
+			System.out.println(JSON.toJSONString(jsonData));
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 系统管理员通过会议名称搜索会议
+	 * @return
+	 */
+	public String findByMeetingName3(){
+		jsonData = new HashMap<String,Object>();
+		MeetingService ms = new MeetingService();
+		String list = ms.findByMeetingName3(meetingName);
+		if(null == list){
+			jsonData.put("code", -1);
+			jsonData.put("meetings", "");	 
+		}
+		else{
+			jsonData.put("code", 0);
+			jsonData.put("meetings", list);			
+			System.out.println(JSON.toJSONString(jsonData));
+		}
+		
+		return SUCCESS;
+	}
+	
+//	
+//	/**
+//	 * @info 根据公司管理员名字来搜索会议
+//	 * @return
+//	 */
+//	public String findByCompanyManagerName(){
+//		jsonData = new HashMap<String,Object>();
+//		MeetingService ms = new MeetingService();
+//		String list = ms.findByUserId(meetingCreatorId);
+//		if(null == list){
+//			jsonData.put("code", -1);
+//			jsonData.put("meetings", "");	 
+//		}
+//		else{
+//			jsonData.put("code", 0);
+//			jsonData.put("meetings", list);			
+//			System.out.println(JSON.toJSONString(jsonData));
+//		}
+//		
+//		return SUCCESS;
+//	}
+//	
+	
+	
+	
 	//setter and getter
 	public String getMeetingId() {
 		return meetingId;
@@ -176,13 +309,13 @@ public class MeetingAction  extends ActionSupport{
 		this.meetingCreatorId = meetingCreatorId;
 	}
 
-	public String getMeetingQrcode() {
-		return meetingQrcode;
-	}
-
-	public void setMeetingQrcode(String meetingQrcode) {
-		this.meetingQrcode = meetingQrcode;
-	}
+//	public String getMeetingQrcode() {
+//		return meetingQrcode;
+//	}
+//
+//	public void setMeetingQrcode(String meetingQrcode) {
+//		this.meetingQrcode = meetingQrcode;
+//	}
 
 	public String getMeetingStartTime() {
 		return meetingStartTime;
@@ -238,6 +371,30 @@ public class MeetingAction  extends ActionSupport{
 	
 	public void setMeetingFrequency(int meetingFrequency) {
 		this.meetingFrequency = meetingFrequency;
+	}
+	
+	public String getCellphone() {
+		return cellphone;
+	}
+	
+	public void setCellphone(String cellphone) {
+		this.cellphone = cellphone;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public String getPath(){
+		return path;
+	}
+	
+	public void setPath(String path){
+		this.path = path;
 	}
 	
 	public Map<String,Object> getJsonData(){
