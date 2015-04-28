@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-04-22 17:23:05
+Date: 2015-04-28 09:45:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,6 +32,25 @@ CREATE TABLE `activate` (
 -- Records of activate
 -- ----------------------------
 INSERT INTO `activate` VALUES ('15071345115', '1', '5501', '2015-04-16 00:00:00', null);
+
+-- ----------------------------
+-- Table structure for comment
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `commentTime` char(13) NOT NULL,
+  `commentorId` varchar(15) NOT NULL,
+  `topicId` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_comment_topic_topicId` (`topicId`),
+  CONSTRAINT `FK_comment_topic_topicId` FOREIGN KEY (`topicId`) REFERENCES `topic` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of comment
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for company_and_company_admin
@@ -86,7 +105,9 @@ CREATE TABLE `department` (
 -- ----------------------------
 INSERT INTO `department` VALUES ('1', '1833559609@qq.com', '总裁办公室', null, '1');
 INSERT INTO `department` VALUES ('2', '1833559609@qq.com', '财务部', null, '1');
+INSERT INTO `department` VALUES ('3', '1833559609@qq.com', '秘书部', '4', '3');
 INSERT INTO `department` VALUES ('4', '1833559609@qq.com', '管家部', '1', '2');
+INSERT INTO `department` VALUES ('5', '1833559609@qq.com', '财务2部', '2', '2');
 INSERT INTO `department` VALUES ('6', '1833559609@qq.com', '财务1部', '2', '2');
 
 -- ----------------------------
@@ -194,6 +215,7 @@ CREATE TABLE `meeting` (
 -- ----------------------------
 -- Records of meeting
 -- ----------------------------
+INSERT INTO `meeting` VALUES ('550E8400E29B11D4A716446655440000', '财务部周例会', '一周总结，下周计划', '财务部办公室', '15071345115', '暂无', 'www.huiguanjia.com', '0', '1', '1504241111111', '1504242222222', '1504241111111', null, null);
 
 -- ----------------------------
 -- Table structure for meeting_organizer
@@ -213,6 +235,9 @@ CREATE TABLE `meeting_organizer` (
 -- ----------------------------
 -- Records of meeting_organizer
 -- ----------------------------
+INSERT INTO `meeting_organizer` VALUES ('13026310448', '550E8400E29B11D4A716446655440000', '0', '0', null);
+INSERT INTO `meeting_organizer` VALUES ('15071345115', '550E8400E29B11D4A716446655440000', '2', '1', null);
+INSERT INTO `meeting_organizer` VALUES ('15629066899', '550E8400E29B11D4A716446655440000', '0', '0', null);
 
 -- ----------------------------
 -- Table structure for meeting_participator
@@ -281,7 +306,9 @@ CREATE TABLE `ordinary_user` (
 -- ----------------------------
 -- Records of ordinary_user
 -- ----------------------------
-INSERT INTO `ordinary_user` VALUES ('15071345115', '1', '王峤', '1833559609@qq.com', '6', '123456', '1', null, 'wangqiao@hust.edu.cn', '1', '0', null, null, 'www.huiguanjia.com', null, null);
+INSERT INTO `ordinary_user` VALUES ('13026310448', '1', '李全锋', '1833559609@qq.com', '3', '123456', '1', null, '1833559609@qq.com', '0', '1', null, null, 'www.huiguanjia.com', null, null);
+INSERT INTO `ordinary_user` VALUES ('15071345115', '1', '王峤', '1833559609@qq.com', '2', '123456', '1', null, 'wangqiao@hust.edu.cn', '1', '0', null, null, 'www.huiguanjia.com', null, null);
+INSERT INTO `ordinary_user` VALUES ('15629066899', '1', '叶玉腾', '1833559609@qq.com', '4', '123456', '1', null, 'yyt19932002@163.com', '0', '1', null, null, 'www.huiguanjia.com', null, null);
 
 -- ----------------------------
 -- Table structure for province_and_city
@@ -785,6 +812,26 @@ CREATE TABLE `temp_ordinary_user` (
 -- Records of temp_ordinary_user
 -- ----------------------------
 INSERT INTO `temp_ordinary_user` VALUES ('15070345115', '王峤', '1833559609@qq.com', '123456');
+
+-- ----------------------------
+-- Table structure for topic
+-- ----------------------------
+DROP TABLE IF EXISTS `topic`;
+CREATE TABLE `topic` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(500) NOT NULL,
+  `content` text NOT NULL,
+  `creatorId` varchar(15) NOT NULL,
+  `createTime` char(13) NOT NULL,
+  `meetingId` char(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_topic_meeting_meetingId` (`meetingId`),
+  CONSTRAINT `FK_topic_meeting_meetingId` FOREIGN KEY (`meetingId`) REFERENCES `meeting` (`meetingId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of topic
+-- ----------------------------
 
 -- ----------------------------
 -- View structure for active_meeting_view

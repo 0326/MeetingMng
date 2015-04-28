@@ -79,5 +79,27 @@ public class MeetingOrganizerAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
-	
+
+	/**
+	 * @info 查找办会人员列表
+	 * @return
+	 */
+	public String findOrganizer()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingOrganizerService service = new MeetingOrganizerService();
+		String res = service.findOrganizer(cellphone,meetingId);
+		if(res == null)
+		{
+			jsonData.put("code", -1);
+		}
+		else
+		{
+			jsonData.put("code", 0);
+			jsonData.put("organizers", res);
+		}
+		
+		return SUCCESS;
+	}
 }

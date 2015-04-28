@@ -5,7 +5,7 @@ import com.huiguanjia.service.MeetingOrganizerService;
 public class MeetingOrganizerTest {
 
 	public static void main(String[] args) {
-		
+	
 	}
 	
 	public void addOrganizerTest()
@@ -30,4 +30,20 @@ public class MeetingOrganizerTest {
 				System.out.println("数据库操作失败");
 			}
 	}
+	
+	public void findOrganizerTest()
+	{
+		MeetingOrganizerService service = new MeetingOrganizerService();
+		String res = service.findOrganizer("15071345115","550E8400E29B11D4A716446655440000");
+		if(res == null)
+		{
+			System.out.println("查找办会人员列表失败或办会人员列表为空");
+		}
+		else
+		{
+			System.out.println("查找办会人员列表成功");
+			System.out.println(res);
+		}
+	}
+	
 }
