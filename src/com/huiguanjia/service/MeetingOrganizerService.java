@@ -8,12 +8,12 @@ import java.util.Stack;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.huiguanjia.authorityvalidate.MeetingOrganizerValidate;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.pojo.MeetingOrganizer;
 import com.huiguanjia.pojo.MeetingOrganizerId;
-import com.huiguanjia.util.AuthorityValidate;
 import com.huiguanjia.util.JSONUtil;
 
 public class MeetingOrganizerService {
@@ -92,7 +92,7 @@ public class MeetingOrganizerService {
 		int res;
 		
 		//判断操作者有无操作权限
-		AuthorityValidate aValid = new AuthorityValidate();
+		MeetingOrganizerValidate aValid = new MeetingOrganizerValidate();
 		if(false == aValid.addOrganizerValidate(cellphone, meetingId))
 		{
 			return -1;
@@ -172,7 +172,7 @@ public class MeetingOrganizerService {
     	BaseDAO aBaseDao = new BaseDAO();
     	
     	//判断查找办会人员列表的是办会者还是参会者,还是什么都不是
-    	AuthorityValidate aValid = new AuthorityValidate();
+    	MeetingOrganizerValidate aValid = new MeetingOrganizerValidate();
     	int operatorType = aValid.findOrganizerValidate(cellphone, meetingId);
     	if(-1 == operatorType)
     		return null;
@@ -266,4 +266,21 @@ public class MeetingOrganizerService {
     	return res;
     }
     
+    /**
+     * @info 删除办会人员
+     * @param cellphone
+     * @param meetingId
+     * @param users
+     * @return
+     */
+    public int deleteOrganizer(String cellphone,String meetingId,String users)
+    {
+    	int res;
+    	
+    	List<String> userList = JSONUtil.deserializeToList(users, String.class);
+    	
+    	//验证执行删除操作的操作者是否具有权限以及要被删除的办会人员信息是否有效
+    	MeetingOrganizerValidate aValidate = new MeetingOrganizerValidate();
+    	boolean validateRes = aValidate.deleteOrganizerValidate(cellphone,meetingId,userList);
+    }
 }

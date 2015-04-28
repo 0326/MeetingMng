@@ -102,4 +102,31 @@ public class MeetingOrganizerAction extends ActionSupport{
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * @info 删除办会人员
+	 * @return
+	 */
+	public String deleteOrganizer()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingOrganizerService service = new MeetingOrganizerService();
+		
+		int res = service.deleteOrganizer(cellphone,meetingId,users);
+		if(0 == res)
+		{
+			jsonData.put("code", 0);
+		}
+		else if(-1 == res)
+		{
+			jsonData.put("code", -1);
+		}
+		else if(-2 == res)
+		{
+			jsonData.put("code", -2);
+		}
+		
+		return SUCCESS;
+	}
 }
