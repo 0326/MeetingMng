@@ -306,5 +306,44 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
+    	<action name="create" class="com.huiguanjia.action.MeetingTopicAction" method="create">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="delete" class="com.huiguanjia.action.MeetingTopicAction" method="delete">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="update" class="com.huiguanjia.action.MeetingTopicAction" method="update">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findTopicById" class="com.huiguanjia.action.MeetingTopicAction" method="findTopicById">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findTopicByMeetingId" class="com.huiguanjia.action.MeetingTopicAction" method="findTopicByMeetingId">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="comment" class="com.huiguanjia.action.MeetingTopicAction" method="comment">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findCommentByTopicId" class="com.huiguanjia.action.MeetingTopicAction" method="findCommentByTopicId">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>    	
+    	
  	</package>
+ 	
+ 	
+ 	
 </struts>    
