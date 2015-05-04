@@ -185,13 +185,51 @@ public class MeetingService {
 //		return objs;
 	}
 	
-	public String findByUserId(String userid){
+	public String findByUserId1(String userid){
 		String res = null;
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 
-		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ?"; 
-		Object[] values = new Object[]{userid};
+		String hql = "select o from MeetingOrganizer as o where o.id.organizerCellphone = ? and o.state = ?"; 
+		Object[] values = new Object[]{userid,0};
+		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
+		
+		if(null == list){
+			return null;
+		}
+
+		String stres = JSONUtil.serialize(list);
+		SessionDAO.closeSession();
+		
+		return stres;
+	}
+	
+	public String findByUserId2(String userid){
+		String res = null;
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from MeetingParticipator as o where o.id.participatorCellphone = ? and o.state = ?"; 
+		Object[] values = new Object[]{userid,0};
+		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
+		
+		if(null == list){
+			return null;
+		}
+
+		String stres = JSONUtil.serialize(list);
+		SessionDAO.closeSession();
+		
+		return stres;
+	}
+	
+	public String findByUserId3(String userid){
+		String res = null;
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ? and o.meetingState = ?"; 
+		Object[] values = new Object[]{userid,0};
 		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
 		
 		if(null == list){

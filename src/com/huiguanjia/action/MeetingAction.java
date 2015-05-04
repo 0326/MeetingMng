@@ -160,8 +160,10 @@ public class MeetingAction  extends ActionSupport{
 	public String findByUserId(){
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
-		String meetinglist = ms.findByUserId(cellphone);
-	
+		String meetinglist1 = ms.findByUserId1(cellphone);
+		String meetinglist2 = ms.findByUserId2(cellphone);
+		String meetinglist3 = ms.findByUserId3(cellphone);
+		String meetinglist = (String) (meetinglist1+meetinglist2+meetinglist3);
 		if(null == meetinglist){
 			jsonData.put("code", -1);
 			jsonData.put("meetinglist", "");

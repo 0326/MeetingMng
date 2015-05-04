@@ -114,14 +114,36 @@ public class MeetingTest {
 		}
 	}
 	
-	public void findByUserId(){
+	public void findByUserId1(){
 		MeetingService ms= new MeetingService();
-		if(null ==ms.findByUserId("15071345115")){
+		if(null ==ms.findByUserId1("15071345115")){
 			System.out.println("失败");
 		}
 		else{
 			System.out.println("成功");
-			System.out.print(ms.findByUserId("15071345115"));
+			System.out.print(ms.findByUserId1("15071345115"));
+		}
+	}
+	
+	public void findByUserId2(){
+		MeetingService ms= new MeetingService();
+		if(null ==ms.findByUserId2("123")){
+			System.out.println("失败");
+		}
+		else{
+			System.out.println("成功");
+			System.out.print(ms.findByUserId2("123"));
+		}
+	}
+	
+	public void findByUserId3(){
+		MeetingService ms= new MeetingService();
+		if(null ==ms.findByUserId3("15071345115")){
+			System.out.println("失败");
+		}
+		else{
+			System.out.println("成功");
+			System.out.print(ms.findByUserId3("15071345115"));
 		}
 	}
 	
@@ -162,7 +184,7 @@ public class MeetingTest {
 	public static void main(String[] args){
 		MeetingTest meetingTest = new MeetingTest();
 //		meetingTest.update();
-		meetingTest.create();
+		meetingTest.findByUserId2();
 //		meetingTest.findByMeetingName2();
 	}
 }
