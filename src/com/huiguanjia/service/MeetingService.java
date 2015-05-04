@@ -223,24 +223,24 @@ public class MeetingService {
 		return stres;
 	}
 	
-	public String findByUserId3(String userid){
-		String res = null;
-		BaseDAO b = new BaseDAO();	
-		Session sess = SessionDAO.getSession();
-
-		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ? and o.meetingState = ?"; 
-		Object[] values = new Object[]{userid,0};
-		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
-		
-		if(null == list){
-			return null;
-		}
-
-		String stres = JSONUtil.serialize(list);
-		SessionDAO.closeSession();
-		
-		return stres;
-	}
+//	public String findByUserId3(String userid){
+//		String res = null;
+//		BaseDAO b = new BaseDAO();	
+//		Session sess = SessionDAO.getSession();
+//
+//		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ? and o.meetingState = ?"; 
+//		Object[] values = new Object[]{userid,0};
+//		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
+//		
+//		if(null == list){
+//			return null;
+//		}
+//
+//		String stres = JSONUtil.serialize(list);
+//		SessionDAO.closeSession();
+//		
+//		return stres;
+//	}
 	
 
 	/**

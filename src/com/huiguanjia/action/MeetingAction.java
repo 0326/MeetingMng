@@ -162,11 +162,11 @@ public class MeetingAction  extends ActionSupport{
 		MeetingService ms = new MeetingService();
 		String meetinglist1 = ms.findByUserId1(cellphone);
 		String meetinglist2 = ms.findByUserId2(cellphone);
-		String meetinglist3 = ms.findByUserId3(cellphone);
-		String meetinglist = (String) (meetinglist1+meetinglist2+meetinglist3);
+//		String meetinglist3 = ms.findByUserId3(cellphone);
+		String meetinglist = (String) (meetinglist1+meetinglist2);
 		if(null == meetinglist){
 			jsonData.put("code", -1);
-			jsonData.put("meetinglist", "");
+//			jsonData.put("meetinglist", "");
 		}
 		else{
 			jsonData.put("code", 0);

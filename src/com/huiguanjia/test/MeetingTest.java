@@ -136,16 +136,16 @@ public class MeetingTest {
 		}
 	}
 	
-	public void findByUserId3(){
-		MeetingService ms= new MeetingService();
-		if(null ==ms.findByUserId3("15071345115")){
-			System.out.println("失败");
-		}
-		else{
-			System.out.println("成功");
-			System.out.print(ms.findByUserId3("15071345115"));
-		}
-	}
+//	public void findByUserId3(){
+//		MeetingService ms= new MeetingService();
+//		if(null ==ms.findByUserId3("15071345115")){
+//			System.out.println("失败");
+//		}
+//		else{
+//			System.out.println("成功");
+//			System.out.print(ms.findByUserId3("15071345115"));
+//		}
+//	}
 	
 	public void findByMeetingName1(){
 		MeetingService ms= new MeetingService();
