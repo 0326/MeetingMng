@@ -1,7 +1,7 @@
 var mControllers = angular.module("mControllers", [])
 
 //layout是顶级父控制器，应用加载之前需要先初始化user个人数据
-.controller("layoutCtrl", function($scope, userService) {
+.controller("layoutCtrl", function($scope, $window, userService) {
   $scope.company = {};
   
   userService
@@ -12,8 +12,8 @@ var mControllers = angular.module("mControllers", [])
     $("#loading").fadeOut("normal",function(){
         $("#layout").fadeIn();
     });
-    $window.MMComet.initialize($scope.company.username);
-    console.log("init ok")
+    // $window.MMComet.initialize($scope.company.username);
+    console.log("websocket init ok")
   })
 
   $scope.$on('userProfileChange',function(event, company){
@@ -157,23 +157,74 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("meetinglistCtrl", function($scope) {
+.controller("meetinglistCtrl", function($scope, userService, StuffService) {
+  $scope.company = userService.profiles;
+  var initFunc = function(pageIndex){  
+    StuffService
+    .getStuffs(pageIndex)
+    .then(function(data){
+      $scope.stuffs = data.list;
+      $scope.paginationConf.totalItems = data.total;
+      // console.log("stuffs:",data);
+    });
+  }
+  initFunc(1);
 
+  $scope.paginationConf = {
+      currentPage: 1,
+      // totalItems: 16,
+      itemsPerPage: 10,
+      pagesLength: 15,
+      perPageOptions: [10, 20, 30, 40, 50],
+      rememberPerPage: 'perPageItems',
+      onChange: function(){
+        initFunc(this.currentPage);
+      }
+  };
+
+  //用户直接刷新网页的话需要重新获得user数据
+  $scope.$on("userProfileBroadcast",function(event, company){
+    $scope.company = company;
+    // console.log("second:",$scope.company.username);
+    initFunc(1);
+  });
 })
-
 .controller("stufflistCtrl", function($scope, userService, StuffService) {
   $scope.company = userService.profiles;
+  var initFunc = function(pageIndex){  
+    StuffService
+    .getStuffs(pageIndex)
+    .then(function(data){
+      $scope.stuffs = data.list;
+      $scope.paginationConf.totalItems = data.total;
+      // console.log("stuffs:",data);
+    });
+  }
+  initFunc(1);
 
-  StuffService
-  .getStuffs()
-  .then(function(data){
-    $scope.stuffs = data;
-    console.log("stuffs:",$scope.stuffs);
+  $scope.paginationConf = {
+      currentPage: 1,
+      // totalItems: 16,
+      itemsPerPage: 10,
+      pagesLength: 15,
+      perPageOptions: [10, 20, 30, 40, 50],
+      rememberPerPage: 'perPageItems',
+      onChange: function(){
+        initFunc(this.currentPage);
+      }
+  };
+
+  //用户直接刷新网页的话需要重新获得user数据
+  $scope.$on("userProfileBroadcast",function(event, company){
+    $scope.company = company;
+    // console.log("second:",$scope.company.username);
+    initFunc(1);
   });
 })
 
 .controller("stuffioCtrl", function($scope, userService, departmentService, StuffService) {
   $scope.company = userService.profiles;
+
   departmentService
     .getDepartments()
     .then(function(data){

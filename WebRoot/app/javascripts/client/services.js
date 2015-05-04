@@ -76,6 +76,7 @@ var mServices = angular.module("mServices", [])
     .success(function(data){
       if(data.code == 0){
         alert("创建成功！");
+        window.location.href="/MeetingMng/u";
       }
       else{
         alert("创建失败");
@@ -94,22 +95,88 @@ var mServices = angular.module("mServices", [])
   }
 
   service.getAll = function(cellphone){
-    var cellphone = "15071345115";
+    // var cellphone = "15071345115";
     var d = $q.defer();
-    $http.get("/MeetingMng/api/v1/u/meeting/findByUserId?meetingCreatorId="+cellphone)
+    $http.get("/MeetingMng/api/v1/u/meeting/findByUserId?cellphone="+cellphone)
     .success(function(data){
-      var obj;
-      if(data.code == 0){
-        obj = $.parseJSON(data.meetings);
-        // for(var i=0;i<obj.length;i++){
-        //   obj[i].meetingStartTime = new Date(obj[i].meetingStartTime);
-        // }
-      }
-      d.resolve(obj);
+      // var obj;
+      // if(data.code == 0){
+      //   obj = $.parseJSON(data.meetinglist);
+      //   // for(var i=0;i<obj.length;i++){
+      //   //   obj[i].meetingStartTime = new Date(obj[i].meetingStartTime);
+      //   // }
+      // }
+      d.resolve(data);
     });
     return d.promise;
   }
 
+  service.findByMeetingId = function(meetingId){
+    // var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  return service;
+}])
+
+.factory('meetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+
+  service.add = function(meeting){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/create",meeting, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("创建成功！");
+        window.location.href="/MeetingMng/u";
+      }
+      else{
+        alert("创建失败");
+      }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  service.delete = function(){
+
+  }
+
+  service.update = function(){
+
+  }
+
+  service.getAll = function(cellphone){
+    // var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findByUserId?cellphone="+cellphone)
+    .success(function(data){
+      // var obj;
+      // if(data.code == 0){
+      //   obj = $.parseJSON(data.meetinglist);
+      //   // for(var i=0;i<obj.length;i++){
+      //   //   obj[i].meetingStartTime = new Date(obj[i].meetingStartTime);
+      //   // }
+      // }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  service.findByMeetingId = function(meetingId){
+    // var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
 
   return service;
 }])

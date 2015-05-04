@@ -255,14 +255,15 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return
 	 */
-	public String getAllInfo(String username){	
+	public String getInfos(String username,int pageIndex){	
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
-
+		
 		String hql = "select o from OrdinaryUser as o where o.companyAndCompanyAdmin.username = ?"; 
 		Object[] values = new Object[]{username};
-		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 0, 10, values);
-		
+		//List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)obj.get("list");
 		if(null == or){
 			return null;
 		}
@@ -278,7 +279,11 @@ public class CompanyManagerService {
 			stuff.setDepartName("departName");
 			res.add(stuff);
 		}
-		String stres = JSONUtil.serialize(res);
+		
+		JSONObject result = new JSONObject();
+		result.put("list", res);
+		result.put("total", obj.get("total"));
+		String stres = JSONUtil.serialize(result);
 		System.out.println("json:"+stres);
 		
 		SessionDAO.closeSession();

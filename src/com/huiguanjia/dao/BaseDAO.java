@@ -7,6 +7,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import com.alibaba.fastjson.JSONObject;
+
 
 public class BaseDAO{
 
@@ -139,8 +141,25 @@ public class BaseDAO{
 				query.setParameter(i, values[i]);
 			}
 		}
+		System.out.println(query.list().size());
 		query.setFirstResult(offset);
 		query.setMaxResults(pageSize);
 		return query.list();
+	}
+	
+	public JSONObject findPagingObjectByHqlPro(String hql, int offset,int pageSize,Object[] values){
+		Query query = SessionDAO.getSession().createQuery(hql);
+		if (values != null) {
+			int j = values.length;
+			for (int i = 0; i < j; i++) {
+				query.setParameter(i, values[i]);
+			}
+		}
+		JSONObject obj = new JSONObject();
+		obj.put("total", query.list().size());
+		query.setFirstResult(offset);
+		query.setMaxResults(pageSize);
+		obj.put("list", query.list());
+		return obj;
 	}
 }

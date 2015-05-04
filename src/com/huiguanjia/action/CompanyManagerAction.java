@@ -48,7 +48,7 @@ public class CompanyManagerAction extends ActionSupport{
 	private String officeLocation;
 	private String workNo;
 	private int departmentId;
-	
+	private int pageIndex;
 	private String keyword;
 	
 	private Map<String,Object> jsonData;
@@ -410,7 +410,7 @@ public class CompanyManagerAction extends ActionSupport{
 		
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		String u = companyManagerService.getAllInfo(username);
+		String u = companyManagerService.getInfos(username,pageIndex);
 		if(u == null){
 			jsonData.put("code", -10416); 
 		}
@@ -572,6 +572,19 @@ public class CompanyManagerAction extends ActionSupport{
 	    }
 	    
 		return SUCCESS;
+	}
+
+	public int getPageIndex() {
+		return pageIndex;
+	}
+
+	public void setPageIndex(int pageIndex) {
+		if(pageIndex <1){
+			this.pageIndex = 1;
+		}
+		else{
+			this.pageIndex = pageIndex;
+		}
 	}
 	
 }

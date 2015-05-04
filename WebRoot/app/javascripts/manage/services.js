@@ -189,10 +189,10 @@ function($http, $q, PostCfg, userService){
           }
         });
       },
-      getStuffs: function(companyId){
+      getStuffs: function(pageIndex){
         // if(_stuffs) return _stuffs;
         var d = $q.defer();
-        $http.get("/MeetingMng/api/v1/companyManagerGetStuffs?username="+userService.profiles.username)
+        $http.get("/MeetingMng/api/v1/companyManagerGetStuffs?pageIndex="+pageIndex+"&username="+userService.profiles.username)
         .success(function(data){
           if(data.code == 0){
             _stuffs = $.parseJSON(data.stuffs);

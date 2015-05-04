@@ -4,9 +4,9 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("homeCtrl", function($scope, loginService) {
   $scope.user = {
-    username: "13026310448",
+    username: "2577839872@qq.com",
     password: "123456",
-    usertype: "0"
+    usertype: "1"
   }
   $scope.submitLoginForm = function(isValid){
     loginService.login($scope.user);
