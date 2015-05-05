@@ -241,6 +241,46 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
+    	<action name="addOrganizer" class="com.huiguanjia.action.MeetingOrganizerAction" method="addOrganizer">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findOrganizer" class="com.huiguanjia.action.MeetingOrganizerAction" method="findOrganizer">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="deleteOrganizer" class="com.huiguanjia.action.MeetingOrganizerAction" method="deleteOrganizer">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="updateOrganizer" class="com.huiguanjia.action.MeetingOrganizerAction" method="updateOrganizer">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="addParticipator" class="com.huiguanjia.action.MeetingParticipatorAction" method="addParticipator">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="findParticipator" class="com.huiguanjia.action.MeetingParticipatorAction" method="findParticipator">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="deleteParticipator" class="com.huiguanjia.action.MeetingParticipatorAction" method="deleteParticipator">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
+    	<action name="updateParticipator" class="com.huiguanjia.action.MeetingParticipatorAction" method="updateParticipator">
+    		<result type="json" name="success">
+    			<param name="root">jsonData</param>
+    		</result>
+    	</action>
  	</package>
  	
  	<!-- 公司管理员api接口-会议操作 -->
