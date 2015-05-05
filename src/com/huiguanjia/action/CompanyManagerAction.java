@@ -48,7 +48,7 @@ public class CompanyManagerAction extends ActionSupport{
 	private String officeLocation;
 	private String workNo;
 	private int departmentId;
-	
+	private int pageIndex;
 	private String keyword;
 	
 	private Map<String,Object> jsonData;
@@ -410,7 +410,7 @@ public class CompanyManagerAction extends ActionSupport{
 		
 		jsonData = new HashMap<String,Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
-		String u = companyManagerService.getAllInfo(username);
+		String u = companyManagerService.getInfos(username,pageIndex);
 		if(u == null){
 			jsonData.put("code", -10416); 
 		}
@@ -550,19 +550,26 @@ public class CompanyManagerAction extends ActionSupport{
 
 	    Matcher m1 = r1.matcher(line);
 	    if(m1.find()){
-	    	List<OrdinaryUser> u1 = companyManagerService.searchWorkNo(username,keyword);
-	    	List<OrdinaryUser> u2 = companyManagerService.searchCellphone(username,keyword);	    	
-	    	if(u1 == null && u2 == null){
+//	    	String u1 = companyManagerService.searchWorkNo(username,keyword, pageIndex);
+//	    	String u2 = companyManagerService.searchCellphone(username,keyword, pageIndex);	 
+//	    	
+//	    	if(u1 == null && u2 == null){
+//				jsonData.put("code", -10420); 
+//			}
+//			else{
+//				String u = u1 + u2;
+//				jsonData.put("user", u);	
+	    	String u1 = companyManagerService.searchNumber(username,keyword, pageIndex);	
+	    	if(u1 == null){
 				jsonData.put("code", -10420); 
 			}
 			else{
-				u1.removeAll(u2);
-				u1.addAll(u2);
-				jsonData.put("user", u1);				
+				jsonData.put("user", u1);			
+			
 			}
 	    }
 	    else{
-	    	List<OrdinaryUser> u3 = companyManagerService.searchName(username,keyword);	
+	    	String u3 = companyManagerService.searchName(username,keyword, pageIndex);	
 	    	if(u3 == null){
 				jsonData.put("code", -10420); 
 			}
@@ -572,6 +579,19 @@ public class CompanyManagerAction extends ActionSupport{
 	    }
 	    
 		return SUCCESS;
+	}
+
+	public int getPageIndex() {
+		return pageIndex;
+	}
+
+	public void setPageIndex(int pageIndex) {
+		if(pageIndex <1){
+			this.pageIndex = 1;
+		}
+		else{
+			this.pageIndex = pageIndex;
+		}
 	}
 	
 }

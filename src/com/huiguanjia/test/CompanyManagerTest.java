@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.huiguanjia.action.CompanyManagerAction;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Department;
@@ -121,68 +122,93 @@ public class CompanyManagerTest {
 		return flag;
 	}
 	
-	public static List<OrdinaryUser> searchHan(String username,String name){
+//	public static List<OrdinaryUser> searchHan(String username,String name){
+//		boolean flag = false;
+//		CompanyManagerService cs = new CompanyManagerService();
+//	
+//		if(cs.search(username,name) != null){
+//			flag = true;
+//			System.out.println("succeed");
+//			System.out.println(name);
+//			System.out.println(cs.search(username,name));
+//			}
+//		else{
+//			System.out.println("failed");
+//		}
+//		
+//		return cs.search(username,name);
+//	}
+	
+	public static JSONObject searchTest(){
+		String username = "1833559609@qq.com";
+		String keyword = "1";
+		int pageIndex = 1;
 		boolean flag = false;
 		CompanyManagerService cs = new CompanyManagerService();
 	
-		if(cs.search(username,name) != null){
-			flag = true;
-			System.out.println("succeed");
-			System.out.println(name);
-			System.out.println(cs.search(username,name));
-			}
-		else{
-			System.out.println("failed");
-		}
-		
-		return cs.search(username,name);
-	}
-	
-	public static List<OrdinaryUser> searchTest(String username,String keyword){
-		boolean flag = false;
-		CompanyManagerService cs = new CompanyManagerService();
-	
-		if(cs.search(username,keyword) != null){
-			flag = true;
-			System.out.println("succeed");
-			System.out.println(keyword);
-			System.out.println(cs.search(username,keyword));
-			}
-		else{
-			System.out.println("failed");
-		}
-		
-		return cs.search(username,keyword);
-	}
-	
-	public static List<OrdinaryUser> searchTest1(String username,String keyword){
-		boolean flag = false;
-		
-		CompanyManagerService cs = new CompanyManagerService();
-	
-		if(cs.searchName(username,keyword) != null){
+		if(cs.searchWorkNo(username,keyword,pageIndex) != null){
 			flag = true;
 			System.out.println("succeed");
 			System.out.println(keyword);
-			System.out.println(cs.searchName(username,keyword));
+			System.out.println(cs.searchWorkNo(username,keyword,pageIndex));
 			}
 		else{
 			System.out.println("failed");
 		}
 		
-		return cs.searchName(username,keyword);
+		return cs.searchWorkNo(username,keyword,pageIndex);
 	}
+	
+	public static String searchNumberTest(){
+		String username = "1833559609@qq.com";
+		String keyword = "13";
+		int pageIndex = 1;
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+	
+		if(cs.searchNumber(username,keyword,pageIndex) != null){
+			flag = true;
+			System.out.println("succeed");
+			System.out.println(keyword);
+			System.out.println(cs.searchNumber(username,keyword,pageIndex));
+			}
+		else{
+			System.out.println("failed");
+		}
+		
+		return cs.searchNumber(username,keyword,pageIndex);
+	}
+	
+	public static JSONObject getInfo(){
+		boolean flag = false;
+		CompanyManagerService cs = new CompanyManagerService();
+		
+		String username1 = "1833559609@qq.com";
+		if(cs.getInfo(username1) != null){
+			flag = true;
+			System.out.println("succeed");
+			System.out.println(cs.getInfo(username1));
+			}
+		else{
+			System.out.println("failed");
+		}
+		
+		return cs.getInfo(username1);
+	}
+	
 	
 	
 	public static void main(String[] args){
-		List<String> listA = new ArrayList<String>();
-        System.out.println(listA);
-        List<String> listB = new ArrayList<String>();
-        listB.add("B");
-        List<String> listFinal = new ArrayList<String>();
-        listA.removeAll(listB);
-        listA.addAll(listB);
-        System.out.println(listA);
+//		String a = ""total":3,"list":[{"cellphone":"13026310448","departName":"秘书部","job":"job1","name":"李全锋","workNo":"12"},{"cellphone":"15071345115","departName":"财务部","job":"jbo2","name":"王峤","workNo":"13"},{"cellphone":"15629066899","departName":"管家部","job":"job3","name":"叶玉腾","workNo":"14"}]";
+//		List<String> listA = new ArrayList<String>();
+//        System.out.println(listA);
+//        List<String> listB = new ArrayList<String>();
+//        listB.add("B");
+//        List<String> listFinal = new ArrayList<String>();
+//        listA.removeAll(listB);
+//        listA.addAll(listB);
+//        System.out.println(listA);
 
+		CompanyManagerTest.searchNumberTest();
 	}
 }

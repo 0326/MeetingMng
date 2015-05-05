@@ -20,9 +20,9 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		templateUrl: 'app/templates/client/meetingdetail.html',
 		controller: 'meetingdetailCtrl',
 		resolve:{
-			meeting:function($route, $http){
+			meetingId:function($route, $http){
 				return $route.current.params.mid;
-			}
+			},
 		}
 	}).when('/meeting-contact', {
 		templateUrl: 'app/templates/client/meetingcontact.html',

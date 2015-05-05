@@ -2,6 +2,9 @@ package com.huiguanjia.action;
 
 import java.util.*;
 
+import org.apache.struts2.json.JSONException;
+import org.apache.struts2.json.JSONUtil;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.alibaba.fastjson.JSON;
@@ -65,7 +68,7 @@ public class MeetingAction  extends ActionSupport{
 		}
 		else{
 			// 创建会议成功，生成二维码图片到本地指定路径里面
-			jsonData.put("code", 1);
+			jsonData.put("code", 0);
 			try{
 				ms.putMeetingQrcode(meetingQrcode,path);
 				}
@@ -138,18 +141,14 @@ public class MeetingAction  extends ActionSupport{
 	/**
 	 * @info 根据会议ID搜索会议
 	 * @return
+	 * @throws JSONException 
 	 */
 	public String findByMeetingId(){
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
-		Meeting departmentList = ms.findByMeetingId(meetingId);
-	
-		if(null == departmentList){
-			jsonData.put("departments", "");
-		}
-		else{
-			jsonData.put("departments", departmentList);
-		}
+		String meeting = ms.findByMeetingId(meetingId);
+		jsonData.put("meeting", meeting);
+//		System.out.println(meeting);
 		
 		return SUCCESS;
 	}
@@ -161,13 +160,17 @@ public class MeetingAction  extends ActionSupport{
 	public String findByUserId(){
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
-		String departmentList = ms.findByUserId(cellphone);
-	
-		if(null == departmentList){
-			jsonData.put("departments", "");
+		String meetinglist1 = ms.findByUserId1(cellphone);
+		String meetinglist2 = ms.findByUserId2(cellphone);
+//		String meetinglist3 = ms.findByUserId3(cellphone);
+		String meetinglist = (String) (meetinglist1+meetinglist2);
+		if(null == meetinglist){
+			jsonData.put("code", -1);
+//			jsonData.put("meetinglist", "");
 		}
 		else{
-			jsonData.put("departments", departmentList);
+			jsonData.put("code", 0);
+			jsonData.put("meetinglist", meetinglist);
 		}
 		
 		return SUCCESS;

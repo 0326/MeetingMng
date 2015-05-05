@@ -20,10 +20,15 @@
 	      <td>{{m.meetingName}}</td>
 	      <td>{{m.meetingStartTime}}</td>
 	      <td>{{m.meetingLocation}}</td>
-	      <td><a href="#/meeting-detail?mid={{m.id}}" class="button tiny">详细</a></td>
+	      <td>
+	      	<a href="#/meeting-detail?mid={{m.meetingId}}" class="button tiny">详细</a>
+	      	<a href="#" class="button tiny">删除</a>
+	      </td>
 	    </tr>
 	  </tbody>
 	</table>
+	
+	<tm-pagination conf="paginationConf"></tm-pagination>
 </div>
 
 <script type="text/javascript">

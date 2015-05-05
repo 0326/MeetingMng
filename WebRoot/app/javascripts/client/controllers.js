@@ -25,16 +25,43 @@ var mControllers = angular.module("mControllers", [])
   }
 })
 
-.controller("homeCtrl", function($scope, meetingService) {
+.controller("homeCtrl", function($scope, meetingService, userService) {
+  $scope.client = userService.profiles;
   $scope.meetinglist = [];
-   meetingService
-   .getAll()
-   .then(function(data){
-      if(data.code == 0){
-        $scope.meetinglist = $.parseJSON(data.meetings);
+  
+  $scope.paginationConf = {
+      currentPage: 1,
+      totalItems: 16,
+      itemsPerPage: 10,
+      pagesLength: 15,
+      perPageOptions: [10, 20, 30, 40, 50],
+      rememberPerPage: 'perPageItems',
+      onChange: function(){
+        console.log(this.currentPage);
       }
-      // console.log(data);
-   });
+  };
+
+
+  meetingService
+  .getAll($scope.client.cellphone)
+  .then(function(data){
+    if(data.code == 0){
+      $scope.meetinglist = $.parseJSON(data.meetinglist);
+    }
+    // console.log(data);
+  });
+  $scope.$on("userProfileBroadcast",function(event, client){
+    $scope.client = client;
+     meetingService
+     .getAll($scope.client.cellphone)
+     .then(function(data){
+        if(data.code == 0){
+          $scope.meetinglist = $.parseJSON(data.meetinglist);
+        }
+        // console.log(data);
+     });
+  });
+  
 })
 
 
@@ -45,7 +72,7 @@ var mControllers = angular.module("mControllers", [])
   $scope.submitAddForm = function(isValid){
     $scope.meeting.meetingStartTime = $("#starttime").val();
     $scope.meeting.meetingPredictFinishTime = $("#endtime").val();
-    console.log("$scope.meeting")
+    console.log("$scope.meeting");
     meetingService.add($scope.meeting);
   }
 })
@@ -54,11 +81,33 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("meetingdetailCtrl", function($scope, meeting) {
-
+.controller("meetingdetailCtrl", function($scope, meetingService,meetingId) {
+  $scope.meeting = {};
+  meetingService
+  .findByMeetingId(meetingId)
+  .then(function(data){
+    // console.log(data);
+    $scope.meeting = $.parseJSON(data.meeting);
+  });
 })
 
 .controller("meetingcontactCtrl", function($scope) {
+  var vm = $scope.vm = {};
+  vm.items = [{id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"},
+  {id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"}];
+  vm.checkAll = function(checked) {
+    angular.forEach(vm.items, function(item) {
+      item.$checked = checked;
+    });
+  };
+  vm.selection = function() {
+    return _.where(vm.items, {$checked: true});
+  };
+  // 供页面中使用的函数
+  vm.age = function(birthday) {
+    return moment().diff(birthday, 'years');
+  };
+
 
 })
 

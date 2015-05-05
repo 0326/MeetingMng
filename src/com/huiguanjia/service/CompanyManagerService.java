@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.alibaba.fastjson.JSONObject;
+import com.huiguanjia.authorityvalidate.MeetingTopicValidate;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.CompanyAndCompanyAdminDao;
 import com.huiguanjia.dao.IndustryDao;
@@ -20,10 +21,12 @@ import com.huiguanjia.dao.ProvinceAndCityDao;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.dao.TempCompanyAndCompanyAdminDao;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
+import com.huiguanjia.pojo.Meeting;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.pojo.TempCompanyAndCompanyAdmin;
 import com.huiguanjia.util.JSONUtil;
 import com.huiguanjia.util.MD5Util;
+import java.util.ArrayList;
 
 public class CompanyManagerService {
 
@@ -246,7 +249,9 @@ public class CompanyManagerService {
 		obj.put("cellphone", ca.getCellphone());
 		obj.put("officePhone", ca.getOfficePhone());
 		obj.put("officeLocation", ca.getOfficeLocation());
-//		SessionDAO.closeSession();
+		SessionDAO.closeSession();
+		
+//		String stres = JSONUtil.serialize(obj);
 		return obj;
 	}
 	
@@ -255,14 +260,15 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return
 	 */
-	public String getAllInfo(String username){	
+	public String getInfos(String username,int pageIndex){	
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
-
+		
 		String hql = "select o from OrdinaryUser as o where o.companyAndCompanyAdmin.username = ?"; 
 		Object[] values = new Object[]{username};
-		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 0, 10, values);
-		
+		//List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)obj.get("list");
 		if(null == or){
 			return null;
 		}
@@ -278,7 +284,11 @@ public class CompanyManagerService {
 			stuff.setDepartName("departName");
 			res.add(stuff);
 		}
-		String stres = JSONUtil.serialize(res);
+		
+		JSONObject result = new JSONObject();
+		result.put("list", res);
+		result.put("total", obj.get("total"));
+		String stres = JSONUtil.serialize(result);
 		System.out.println("json:"+stres);
 		
 		SessionDAO.closeSession();
@@ -454,6 +464,7 @@ public class CompanyManagerService {
 	 * @return
 	 */
 	public OrdinaryUser getOrdinaryUserInfo(String username,String cellphone) {
+	
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 
@@ -467,87 +478,158 @@ public class CompanyManagerService {
 			return or;
 	}
 	
-	public List<OrdinaryUser> search(String username,String keyword){	
-		String hql = null;
-		Object[] values = null;
-		BaseDAO b = new BaseDAO();
-		String line = keyword;
-	    String pattern1 = "[0-9]*";
-	    String pattern2 = "[a-z]*";
-	    // 创建 Pattern 对象
-	    Pattern r1 = Pattern.compile(pattern1);
-	    Pattern r2 = Pattern.compile(pattern2);
-	    // 现在创建 matcher 对象
-	    Matcher m1 = r1.matcher(line);
-	    Matcher m2 = r2.matcher(line);
-	    
-	    if(m2.find( )){
-	    	String name = keyword;
-			
-			Session sess = SessionDAO.getSession();
-			hql = "select o from OrdinaryUser as o where o.name like ? and o.companyAndCompanyAdmin.username=?"; 
-			values = new Object[]{"%"+name+"%",username};
-
-	    }
-	    
-	   if(m1.find()){
-	    	String workNo = keyword;
+//	public JSONObject searchWorkNo(String username,String keyword,int pageIndex){	
+//		BaseDAO b = new BaseDAO();	
+//		Session sess = SessionDAO.getSession();
+//		
+//		String hql = "select o from OrdinaryUser as o where o.workNo like ? and o.companyAndCompanyAdmin.username=?"; 
+//		Object[] values = new Object[]{keyword+'%',username};
+//		//List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 10*(pageIndex-1), 10*pageIndex, values);
+//		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+//		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)obj.get("list");
+////		System.out.println(obj.get("list"));
+//		if(null == or){
+//			return null;
+//		}
+//		
+//		List<Stuff> res = new ArrayList<Stuff>();
+//		for(int i=0;i<or.size();i++){
+//			Stuff stuff = new Stuff();
+//			stuff.setCellphone(or.get(i).getCellphone());
+//			stuff.setName(or.get(i).getName());
+//			stuff.setJob(or.get(i).getJob());
+//			stuff.setWorkNo(or.get(i).getWorkNo());
+//			stuff.setDepartName(or.get(i).getDepartment().getDepartmentName());
+////			stuff.setDepartName("departName");
+//			res.add(stuff);
+//		}
+//		
+//		JSONObject result = new JSONObject();
+//		result.put("list", res);
+//		result.put("total", obj.get("total"));
+////		String stres = JSONUtil.serialize(result);
+////		System.out.println("json:"+stres);
+//		
+//		SessionDAO.closeSession();
+//		
+//		return result;
+//				
+//	}
+//	
+//	public String searchCellphone(String username,String keyword,int pageIndex){	
+//		BaseDAO b = new BaseDAO();	
+//		Session sess = SessionDAO.getSession();
+//		
+//		String hql = "select o from OrdinaryUser as o where o.cellphone like ? and o.companyAndCompanyAdmin.username=?"; 
+//		Object[] values = new Object[]{"%"+keyword+"%",username};
+//		//List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 10*(pageIndex-1), 10*pageIndex, values);
+//		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+//		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)obj.get("list");
+////		System.out.println(obj.get("list"));
+//		if(null == or){
+//			return null;
+//		}
+//		
+//		List<Stuff> res = new ArrayList<Stuff>();
+//		for(int i=0;i<or.size();i++){
+//			Stuff stuff = new Stuff();
+//			stuff.setCellphone(or.get(i).getCellphone());
+//			stuff.setName(or.get(i).getName());
+//			stuff.setJob(or.get(i).getJob());
+//			stuff.setWorkNo(or.get(i).getWorkNo());
+//			stuff.setDepartName(or.get(i).getDepartment().getDepartmentName());
+////			stuff.setDepartName("departName");
+//			res.add(stuff);
+//		}
+//		
+//		JSONObject result = new JSONObject();
+//		result.put("list", res);
+//		result.put("total", obj.get("total"));
+//		String stres = JSONUtil.serialize(result);
+////		System.out.println("json:"+stres);
+//		
+//		SessionDAO.closeSession();
+//		
+//		return stres;
+//	
+//	}
+//	
+	public String searchNumber(String username,String keyword,int pageIndex){	
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
 		
-			Session sess = SessionDAO.getSession();
-			hql = "select o from OrdinaryUser as o where o.workNo like ? and o.companyAndCompanyAdmin.username=?"; 
-			values = new Object[]{workNo+'%',username};
-
-	    }
-	   
-	List<OrdinaryUser> or = (List<OrdinaryUser>)b.findObjectByHql(hql,values);
-	   SessionDAO.closeSession();
-	   if(null == or)
+		String hql = "select o from OrdinaryUser as o where o.cellphone like ? or o.workNo like ? and o.companyAndCompanyAdmin.username=?"; 
+		Object[] values = new Object[]{"%"+keyword+"%",keyword+"%",username};
+		//List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)obj.get("list");
+//		System.out.println(obj.get("list"));
+		if(null == or){
 			return null;
-		else 
-			return or;
+		}
 		
+		List<Stuff> res = new ArrayList<Stuff>();
+		for(int i=0;i<or.size();i++){
+			Stuff stuff = new Stuff();
+			stuff.setCellphone(or.get(i).getCellphone());
+			stuff.setName(or.get(i).getName());
+			stuff.setJob(or.get(i).getJob());
+			stuff.setWorkNo(or.get(i).getWorkNo());
+			stuff.setDepartName(or.get(i).getDepartment().getDepartmentName());
+//			stuff.setDepartName("departName");
+			res.add(stuff);
+		}
+		
+		JSONObject result = new JSONObject();
+		result.put("list", res);
+		result.put("total", obj.get("total"));
+		String stres = JSONUtil.serialize(result);
+//		System.out.println("json:"+stres);
+		
+		SessionDAO.closeSession();
+		
+		return stres;
+	
 	}
 	
-	public List<OrdinaryUser> searchWorkNo(String username,String keyword){	
-		BaseDAO b = new BaseDAO();
-		String workNo = keyword;
-		Session sess = SessionDAO.getSession();
-		String hql = "select o from OrdinaryUser as o where o.workNo like ? and o.companyAndCompanyAdmin.username=?"; 
-		Object[] values = new Object[]{workNo+'%',username};
-		List<OrdinaryUser> or = (List<OrdinaryUser>)b.findObjectByHql(hql,values);
-		SessionDAO.closeSession();
-		if(null == or)
-			return null;
-		else 
-			return or;	
-	}
 	
-	public List<OrdinaryUser> searchCellphone(String username,String keyword){	
-		BaseDAO b = new BaseDAO();
-		String cellphone = keyword;
-		Session sess = SessionDAO.getSession();
-		String hql = "select o from OrdinaryUser as o where o.cellphone like ? and o.companyAndCompanyAdmin.username=?"; 
-		Object[] values = new Object[]{"%"+cellphone+"%",username};
-		List<OrdinaryUser> or = (List<OrdinaryUser>)b.findObjectByHql(hql,values);
-		SessionDAO.closeSession();
-		if(null == or)
-			return null;
-		else 
-			return or;	
-	}
 
-	public List<OrdinaryUser> searchName(String username,String keyword){	
-		BaseDAO b = new BaseDAO();
-		String name = keyword;
+	public String searchName(String username,String keyword,int pageIndex){	
+		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
+		
 		String hql = "select o from OrdinaryUser as o where o.name like ? and o.companyAndCompanyAdmin.username=?"; 
-		Object[] values = new Object[]{'%'+name+'%',username};
-		List<OrdinaryUser> or = (List<OrdinaryUser>)b.findObjectByHql(hql,values);
-		SessionDAO.closeSession();
-		if(null == or)
+		Object[] values = new Object[]{'%'+keyword+'%',username};
+		//List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)b.findPagingObjectByHql(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		List<OrdinaryUser> or = (ArrayList<OrdinaryUser>)obj.get("list");
+//		System.out.println(obj.get("list"));
+		if(null == or){
 			return null;
-		else 
-			return or;	
+		}
+		
+		List<Stuff> res = new ArrayList<Stuff>();
+		for(int i=0;i<or.size();i++){
+			Stuff stuff = new Stuff();
+			stuff.setCellphone(or.get(i).getCellphone());
+			stuff.setName(or.get(i).getName());
+			stuff.setJob(or.get(i).getJob());
+			stuff.setWorkNo(or.get(i).getWorkNo());
+			stuff.setDepartName(or.get(i).getDepartment().getDepartmentName());
+//			stuff.setDepartName("departName");
+			res.add(stuff);
+		}
+		
+		JSONObject result = new JSONObject();
+		result.put("list", res);
+		result.put("total", obj.get("total"));
+		String stres = JSONUtil.serialize(result);
+//		System.out.println("json:"+stres);
+		
+		SessionDAO.closeSession();
+		
+		return stres;
+	
 	}
 	
 	public String searchCompanyByName(String companyName)
@@ -585,7 +667,8 @@ public class CompanyManagerService {
 		}
 		
 		SessionDAO.closeSession();
-		
-		return companyListStr;
+		String stres = JSONUtil.serialize(companyListStr);
+
+		return stres;
 	}
 }

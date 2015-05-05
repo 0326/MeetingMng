@@ -11,6 +11,7 @@ import java.util.Map;
 
 import net.sf.json.JSONArray;
 
+import org.apache.struts2.json.JSONException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -24,6 +25,8 @@ import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Meeting;
+import com.huiguanjia.pojo.MeetingOrganizer;
+import com.huiguanjia.pojo.MeetingOrganizerId;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.util.JSONUtil;
 import com.huiguanjia.util.MatrixToImageWriter;
@@ -49,10 +52,22 @@ public class MeetingService {
 		Transaction ts = sess.beginTransaction();
 		try
 		{
+			//新建会议
 			Date createtime = new Date();
-			meeting.setMeetingCreateTime(Long.toString(createtime.getTime()));
-			
+			meeting.setMeetingCreateTime(Long.toString(createtime.getTime()));	
 			aDAO.saveObject(meeting);
+			//添加创会者
+			MeetingOrganizer orgnizer = new MeetingOrganizer();
+			MeetingOrganizerId orgid = new MeetingOrganizerId(
+					meeting.getOrdinaryUser().getCellphone(),
+					meeting.getMeetingId());
+			
+			orgnizer.setMeeting(meeting);
+			orgnizer.setIsCreator(true);
+			orgnizer.setState(2);
+			orgnizer.setId(orgid);
+			aDAO.saveObject(orgnizer);
+			
 			ts.commit();
 			res = true;
 		}
@@ -148,15 +163,17 @@ public class MeetingService {
 	 * @param id
 	 * @return
 	 */
-	public Meeting findByMeetingId(String id){
+	public String findByMeetingId(String id){
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 		Meeting m = (Meeting)b.findObjectById(Meeting.class, id);
+		
+		String jstr = JSONUtil.serialize(m);
+		
 		SessionDAO.closeSession();
-		if(null == m) 
-			return null;
-		else 
-			return m;
+		
+		return jstr;
+			
 		
 //		JSONObject obj = new JSONObject();
 //		obj.put("MeetingId", m.getMeetingId());
@@ -168,13 +185,13 @@ public class MeetingService {
 //		return objs;
 	}
 	
-	public String findByUserId(String userid){
+	public String findByUserId1(String userid){
 		String res = null;
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 
-		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ?"; 
-		Object[] values = new Object[]{userid};
+		String hql = "select o from MeetingOrganizer as o where o.id.organizerCellphone = ? and o.state = ?"; 
+		Object[] values = new Object[]{userid,0};
 		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
 		
 		if(null == list){
@@ -186,6 +203,44 @@ public class MeetingService {
 		
 		return stres;
 	}
+	
+	public String findByUserId2(String userid){
+		String res = null;
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from MeetingParticipator as o where o.id.participatorCellphone = ? and o.state = ?"; 
+		Object[] values = new Object[]{userid,0};
+		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
+		
+		if(null == list){
+			return null;
+		}
+
+		String stres = JSONUtil.serialize(list);
+		SessionDAO.closeSession();
+		
+		return stres;
+	}
+	
+//	public String findByUserId3(String userid){
+//		String res = null;
+//		BaseDAO b = new BaseDAO();	
+//		Session sess = SessionDAO.getSession();
+//
+//		String hql = "select o from Meeting as o where o.ordinaryUser.cellphone = ? and o.meetingState = ?"; 
+//		Object[] values = new Object[]{userid,0};
+//		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
+//		
+//		if(null == list){
+//			return null;
+//		}
+//
+//		String stres = JSONUtil.serialize(list);
+//		SessionDAO.closeSession();
+//		
+//		return stres;
+//	}
 	
 
 	/**

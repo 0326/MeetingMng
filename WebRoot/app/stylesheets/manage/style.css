@@ -297,3 +297,13 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .headimg-100{
     width: 100px;
 }
+
+.pagination-center{
+    text-align: center;
+}
+.pagination span{
+    cursor: pointer;
+}
+.content .content-table{
+    height: 430px;
+}
