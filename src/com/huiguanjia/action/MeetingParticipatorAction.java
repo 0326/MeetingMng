@@ -3,11 +3,11 @@ package com.huiguanjia.action;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.huiguanjia.service.MeetingOrganizerService;
+import com.huiguanjia.service.MeetingParticipatorService;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
-public class MeetingOrganizerAction extends ActionSupport{
+public class MeetingParticipatorAction extends ActionSupport{
 
 	private String cellphone;
 	private String meetingId;
@@ -66,18 +66,17 @@ public class MeetingOrganizerAction extends ActionSupport{
 		this.jsonData = jsonData;
 	}
 	
-	
 	/**
-	 * @info 添加办会人员到办会人员列表中
+	 * @info 添加参会人员
 	 * @return
 	 */
-	public String addOrganizer()
+	public String addParticipator()
 	{
 		jsonData = new HashMap<String,Object>();
 		
-		MeetingOrganizerService service = new MeetingOrganizerService();
+		MeetingParticipatorService service = new MeetingParticipatorService();
+		int res = service.addParticipator(cellphone,meetingId,users);
 		
-		int res = service.addOrganizer(cellphone,meetingId,users);
 		if(0 == res)
 		{
 			jsonData.put("code", 0);
@@ -91,47 +90,74 @@ public class MeetingOrganizerAction extends ActionSupport{
 			jsonData.put("code", -2);
 		}
 		else if(-3 == res)
-		{
+	    {
 			jsonData.put("code", -3);
-		}
+	    }
 		
 		return SUCCESS;
 	}
-
+	
 	/**
-	 * @info 查找办会人员列表
+	 * @info 查询参会人员列表
 	 * @return
 	 */
-	public String findOrganizer()
+	public String findParticipator()
 	{
 		jsonData = new HashMap<String,Object>();
 		
-		MeetingOrganizerService service = new MeetingOrganizerService();
-		String res = service.findOrganizer(cellphone,meetingId);
-		if(res == null)
+		MeetingParticipatorService service = new MeetingParticipatorService();
+		String res = service.findParticipator(cellphone,meetingId);
+		
+		if(null == res)
 		{
-			jsonData.put("code", -1);
+			jsonData.put("code",-1);
 		}
 		else
 		{
 			jsonData.put("code", 0);
-			jsonData.put("organizers", res);
+			jsonData.put("participators", res);
 		}
 		
 		return SUCCESS;
 	}
 	
 	/**
-	 * @info 删除办会人员
+	 * @info 删除参会人员
 	 * @return
 	 */
-	public String deleteOrganizer()
+	public String deleteParticipator()
 	{
 		jsonData = new HashMap<String,Object>();
 		
-		MeetingOrganizerService service = new MeetingOrganizerService();
+		MeetingParticipatorService service = new MeetingParticipatorService();
+		int res = service.deleteParticipator(cellphone,meetingId,users);
+		if(0 == res)
+		{
+			jsonData.put("code", 0);
+		}
+		else if(-1 == res)
+		{
+			jsonData.put("code", -1);
+		}
+		else if(-2 == res)
+		{
+			jsonData.put("code",-2);
+		}
 		
-		int res = service.deleteOrganizer(cellphone,meetingId,users);
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 更新参会人员状态
+	 * @return
+	 */
+	public String updateParticipator()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingParticipatorService service = new MeetingParticipatorService();
+		int res = service.updateParticipator(cellphone,meetingId,operatedCellphone,state);
+		
 		if(0 == res)
 		{
 			jsonData.put("code", 0);
@@ -148,30 +174,4 @@ public class MeetingOrganizerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	/**
-	 * @info 更新办会人员状态
-	 * @return
-	 */
-	public String updateOrganizer()
-	{
-		jsonData = new HashMap<String,Object>();
-		
-		MeetingOrganizerService service = new MeetingOrganizerService();
-		
-		int res = service.updateOrganizer(cellphone,meetingId,operatedCellphone,state);
-		if(0 == res)
-		{
-			jsonData.put("code", 0);
-		}
-		else if(-1 == res)
-		{
-			jsonData.put("code", -1);
-		}
-		else if(-2 == res)
-		{
-			jsonData.put("code", -2);
-		}
-		
-		return SUCCESS;
-	}
 }

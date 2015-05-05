@@ -46,4 +46,43 @@ public class MeetingOrganizerTest {
 		}
 	}
 	
+	public void deleteOrganizerTest()
+	{
+
+        MeetingOrganizerService service = new MeetingOrganizerService();
+		
+		int res = service.deleteOrganizer("15071345115","550E8400E29B11D4A716446655440000","['15629066899','13026310448']");
+		if(0 == res)
+		{
+			System.out.println("删除办会人员成功");
+		}
+		else if(-1 == res)
+		{
+			System.out.println("无权限或数据无效");
+		}
+		else if(-2 == res)
+		{
+			System.out.println("数据库操作失败");
+		}
+	}
+	
+	public void updateOrganizerTest()
+	{
+        MeetingOrganizerService service = new MeetingOrganizerService();
+		
+		int res = service.updateOrganizer("13026310448","550E8400E29B11D4A716446655440000","13026310448",2);
+		if(0 == res)
+		{
+			System.out.println("更新办会人员状态成功");
+		}
+		else if(-1 == res)
+		{
+			System.out.println("更新办会人员状态无权限或数据无效");
+		}
+		else if(-2 == res)
+		{
+			System.out.println("数据库操作失败");
+		}
+	}
+	
 }

@@ -282,5 +282,95 @@ public class MeetingOrganizerService {
     	//验证执行删除操作的操作者是否具有权限以及要被删除的办会人员信息是否有效
     	MeetingOrganizerValidate aValidate = new MeetingOrganizerValidate();
     	boolean validateRes = aValidate.deleteOrganizerValidate(cellphone,meetingId,userList);
+    	
+    	if(false == validateRes)
+    		return -1;
+    	
+    	//执行删除办会人员操作
+    	BaseDAO aBaseDao = new BaseDAO();
+    	Session sess = SessionDAO.getSession();
+    	Transaction ts = sess.beginTransaction();
+    	try{
+    		Iterator it = userList.iterator();
+    		while(true == it.hasNext())
+    		{
+    			String userStr = (String)it.next();
+    			MeetingOrganizerId moId = new MeetingOrganizerId();
+    			moId.setMeetingId(meetingId);
+    			moId.setOrganizerCellphone(userStr);
+    			aBaseDao.deleteObjectById(MeetingOrganizer.class, moId);
+    		}
+    		
+    		ts.commit();
+    		res = 0;
+    	}
+    	catch(Exception e)
+    	{
+    		ts.rollback();
+    		res = -2;
+    		System.out.println(e);
+    	}
+    	
+    	SessionDAO.closeSession();
+    	
+    	return res;
+    }
+    
+    /**
+     * @info 更新办会人员状态
+     * @param cellphone
+     * @param meetingId
+     * @param operatedCellphone
+     * @param state
+     * @return
+     */
+    public int updateOrganizer(String cellphone,String meetingId,String operatedCellphone,int state)
+    {
+    	int res;
+    	
+    	MeetingOrganizerValidate aValid = new MeetingOrganizerValidate();
+    	boolean validRes = aValid.updateOrganizerValidate(cellphone,meetingId,operatedCellphone,state);
+    	
+    	if(false == validRes)
+    	{
+    		return -1;
+    	}
+    	
+    	BaseDAO aBaseDao = new BaseDAO();
+    	Session sess = SessionDAO.getSession();
+    	Transaction ts = sess.beginTransaction();
+    	try{
+    		if(4 == state)
+    		{
+    			MeetingOrganizerId moId = new MeetingOrganizerId();
+    			moId.setMeetingId(meetingId);
+    			moId.setOrganizerCellphone(operatedCellphone);
+    			aBaseDao.deleteObjectById(MeetingOrganizer.class, moId);
+    			
+    			ts.commit();
+    			
+    			res = 0;
+    		}
+    		else
+    		{
+    			String hql = "update MeetingOrganizer set state = ? where id.meetingId = ? and id.organizerCellphone = ?";
+    			Object[] values = new Object[]{state,meetingId,operatedCellphone};
+    			aBaseDao.updateObjectByHql(hql, values);
+    			
+    			ts.commit();
+    			
+    			res = 0;
+    		}
+    	}
+    	catch(Exception e)
+    	{
+    		ts.rollback();
+    		res = -2;
+    		System.out.println(e);
+    	}
+    	
+    	SessionDAO.closeSession();
+    	
+    	return res;
     }
 }

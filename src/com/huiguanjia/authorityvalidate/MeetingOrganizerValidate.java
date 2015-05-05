@@ -7,6 +7,7 @@ import org.hibernate.Session;
 
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
+import com.huiguanjia.pojo.Meeting;
 import com.huiguanjia.pojo.MeetingOrganizer;
 import com.huiguanjia.pojo.MeetingOrganizerId;
 import com.huiguanjia.pojo.MeetingParticipator;
@@ -96,7 +97,7 @@ public class MeetingOrganizerValidate {
 	 */
 	public boolean deleteOrganizerValidate(String cellphone,String meetingId,List<String> userList)
 	{
-		boolean res;
+		boolean res = true;
 		
 		BaseDAO aBaseDao = new BaseDAO();
 		Session sess = SessionDAO.getSession();
@@ -120,18 +121,101 @@ public class MeetingOrganizerValidate {
 				tmpMoId.setMeetingId(meetingId);
 				tmpMoId.setOrganizerCellphone(userStr);
 				
-				MeetingOrganizer tmpMo = ()
+				MeetingOrganizer tmpMo = (MeetingOrganizer)aBaseDao.findObjectById(MeetingOrganizer.class, tmpMoId);
+				if(null == tmpMo)
+				{
+					res = false;
+					break;
+				}
+				else if(true == tmpMo.getIsCreator())
+				{
+					res = false;
+					break;
+				}
 			}
 		}
-		else if(2 == mo.getState())               //如果是状态为已同意的其他办会人员
-		{
-			
-		}
-		else                                      //如果是状态不是已同意的其他办会人员
+		else                    //如果是其他办会人员
 		{
 			res = false;
 		}
 	    	
 		SessionDAO.closeSession();
+		
+		return res;
 	}
+	
+	/**
+	 * @info 更新办会人员状态权限验证
+	 * @param cellphone
+	 * @param meetingId
+	 * @param operatedCellphone
+	 * @return
+	 */
+	public boolean updateOrganizerValidate(String cellphone,String meetingId,String operatedCellphone,int state)
+	{
+		boolean res = true;
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		
+		MeetingOrganizerId moId = new MeetingOrganizerId();
+		moId.setMeetingId(meetingId);
+		moId.setOrganizerCellphone(cellphone);
+		MeetingOrganizer mo = (MeetingOrganizer)aBaseDao.findObjectById(MeetingOrganizer.class, moId);
+		
+		if(null == mo)
+		{
+			res = false;
+		}
+		else if(true == mo.getIsCreator())                //如果是创建会议者
+		{
+			if(operatedCellphone == cellphone)
+			{
+				res = false;
+			}
+			else
+			{
+				MeetingOrganizerId tmpMoId = new MeetingOrganizerId();
+				tmpMoId.setMeetingId(meetingId);
+				tmpMoId.setOrganizerCellphone(operatedCellphone);
+				MeetingOrganizer tmpMo = (MeetingOrganizer)aBaseDao.findObjectById(MeetingOrganizer.class, tmpMoId);
+				if(null == tmpMo)
+				{
+					res = false;
+				}
+				else if((2 == state) || (3 == state))
+				{
+					res = true;
+				}
+				else
+				{
+					res = false;
+				}
+			}
+		}
+		else if(0 != mo.getState())                      //如果是状态不是未发送状态的其他办会人员
+		{
+			if(operatedCellphone != cellphone)
+			{
+				res = false;
+			}
+			else if((2 == state) || (3 == state) || (4 == state))
+			{
+				res = true;
+			}
+			else
+			{
+				res = false;
+			}
+		}
+		else
+		{
+			res = false;
+		}
+		
+		SessionDAO.closeSession();
+		
+		return res;
+	}
+	
 }
