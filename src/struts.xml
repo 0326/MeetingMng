@@ -300,6 +300,47 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
+    	
+    	<action name="findCompeletedMeetingNumberByHistory" class="com.huiguanjia.action.MeetingRecordAction" method="findCompeletedMeetingNumberByHistory">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+		<action name="findCancedMeetingNumberByHistory" class="com.huiguanjia.action.MeetingRecordAction" method="findCancedMeetingNumberByHistory">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+		<action name="findMeetingNumberByToday" class="com.huiguanjia.action.MeetingRecordAction" method="findMeetingNumberByToday">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+		<action name="findActiveMeetingNumberByToday" class="com.huiguanjia.action.MeetingRecordAction" method="findActiveMeetingNumberByToday">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+		<action name="findFinishedMeetingNumberByToday" class="com.huiguanjia.action.MeetingRecordAction" method="findFinishedMeetingNumberByToday">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+		<action name="findMeetingRateByToday" class="com.huiguanjia.action.MeetingRecordAction" method="findMeetingRateByToday">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+		<action name="findMeetingRateByMeeting" class="com.huiguanjia.action.MeetingRecordAction" method="findMeetingRateByMeeting">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
+		<action name="findMeetingRateByCompany" class="com.huiguanjia.action.MeetingRecordAction" method="findMeetingRateByCompany">
+			<result type="json" name="success">
+				<param name="root">jsonData</param>
+			</result>
+		</action>
  	</package>
  	
  	<!--普通用户api接口-联系人操作-->
