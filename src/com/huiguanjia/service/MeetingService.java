@@ -108,11 +108,13 @@ public class MeetingService {
 		Transaction ts = sess.beginTransaction();
 		
 		try{
+			//删掉会议表记录
 			String hql = "delete from Meeting where meetingId = ?";
 			Object[] values = new Object[]{meetingId};
 			
 			aBaseDao.deleteObjectByHql(hql, values);
-			
+			//删掉相应办会人员和参会人员列表，如果会议已开始或已完成则不能删除
+			//todo...
 			ts.commit();
 			res = true;
 		}
@@ -185,44 +187,80 @@ public class MeetingService {
 //		return objs;
 	}
 	
-	public String findByUserId1(String userid){
-		String res = null;
+	/**
+	 * 普通用户获取会议列表
+	 * @param cellphone 手机号
+	 * @param state 会议状态：0未开始会议；1已完成会议；2：被取消/删除的会议
+	 * @param type 0:获取全部会议;1：获取用户创建/组织的会议;2:获取用户参与的会议
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public String findMeetingList(String cellphone,int state,int type){
+		String res = null;                                 //结果集json串
+		List<Meeting> list = null;                         //查询会议列表结果
+		String hql = null;                                 //hql查询语句
+		String hqlr = "m.meetingId,m.meetingName,m.meetingStartTime,m.meetingLocation";
+		Object[] values = new Object[]{cellphone,state};   //查询参数列表
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
-
-		String hql = "select o from MeetingOrganizer as o where o.id.organizerCellphone = ? and o.state = ?"; 
-		Object[] values = new Object[]{userid,0};
-		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
-		
-		if(null == list){
-			return null;
+		if(0 == type){
+			hql = "select "+hqlr+" from Meeting as m where  "+
+			"m.ordinaryUser.cellphone=? and m.meetingState=?";
 		}
-
-		String stres = JSONUtil.serialize(list);
-		SessionDAO.closeSession();
-		
-		return stres;
-	}
-	
-	public String findByUserId2(String userid){
-		String res = null;
-		BaseDAO b = new BaseDAO();	
-		Session sess = SessionDAO.getSession();
-
-		String hql = "select o from MeetingParticipator as o where o.id.participatorCellphone = ? and o.state = ?"; 
-		Object[] values = new Object[]{userid,0};
-		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
-		
-		if(null == list){
-			return null;
+		else if(1 == type){
+			hql = "select "+hqlr+" from Meeting as m,MeetingOrganizer as o where "+
+			"o.id.organizerCellphone=? and m.meetingState=? and m.meetingId=o.id.meetingId";
 		}
+		else if(2 == type){
+			hql = "select "+hqlr+" from Meeting as m,MeetingParticipator as o where "+
+			"o.id.participatorCellphone=? and m.meetingState=? and m.meetingId=o.id.meetingId";
+		}
+		list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
 
-		String stres = JSONUtil.serialize(list);
+		res = JSONUtil.serialize(list);
 		SessionDAO.closeSession();
-		
-		return stres;
+		return res;
 	}
-	
+//
+//	
+//	public String findByUserId1(String userid){
+//		String res = null;
+//		BaseDAO b = new BaseDAO();	
+//		Session sess = SessionDAO.getSession();
+//
+//		String hql = "select o from MeetingOrganizer as o where o.id.organizerCellphone = ? and o.state = ?"; 
+//		Object[] values = new Object[]{userid,0};
+//		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
+//		
+//		if(null == list){
+//			return null;
+//		}
+//
+//		String stres = JSONUtil.serialize(list);
+//		SessionDAO.closeSession();
+//		
+//		return stres;
+//	}
+//	
+//	public String findByUserId2(String userid){
+//		String res = null;
+//		BaseDAO b = new BaseDAO();	
+//		Session sess = SessionDAO.getSession();
+//
+//		String hql = "select o from MeetingParticipator as o where o.id.participatorCellphone = ? and o.state = ?"; 
+//		Object[] values = new Object[]{userid,0};
+//		List<Meeting> list = (ArrayList<Meeting>)b.findObjectByHql(hql, values);
+//		
+//		if(null == list){
+//			return null;
+//		}
+//
+//		String stres = JSONUtil.serialize(list);
+//		SessionDAO.closeSession();
+//		
+//		return stres;
+//	}
+//	
 //	public String findByUserId3(String userid){
 //		String res = null;
 //		BaseDAO b = new BaseDAO();	

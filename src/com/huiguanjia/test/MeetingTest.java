@@ -114,27 +114,27 @@ public class MeetingTest {
 		}
 	}
 	
-	public void findByUserId1(){
-		MeetingService ms= new MeetingService();
-		if(null ==ms.findByUserId1("15071345115")){
-			System.out.println("失败");
-		}
-		else{
-			System.out.println("成功");
-			System.out.print(ms.findByUserId1("15071345115"));
-		}
-	}
-	
-	public void findByUserId2(){
-		MeetingService ms= new MeetingService();
-		if(null ==ms.findByUserId2("123")){
-			System.out.println("失败");
-		}
-		else{
-			System.out.println("成功");
-			System.out.print(ms.findByUserId2("123"));
-		}
-	}
+//	public void findByUserId1(){
+//		MeetingService ms= new MeetingService();
+//		if(null ==ms.findByUserId1("15071345115")){
+//			System.out.println("失败");
+//		}
+//		else{
+//			System.out.println("成功");
+//			System.out.print(ms.findByUserId1("15071345115"));
+//		}
+//	}
+//	
+//	public void findByUserId2(){
+//		MeetingService ms= new MeetingService();
+//		if(null ==ms.findByUserId2("123")){
+//			System.out.println("失败");
+//		}
+//		else{
+//			System.out.println("成功");
+//			System.out.print(ms.findByUserId2("123"));
+//		}
+//	}
 	
 //	public void findByUserId3(){
 //		MeetingService ms= new MeetingService();
@@ -182,10 +182,17 @@ public class MeetingTest {
 
 	
 	public static void main(String[] args){
-		MeetingTest meetingTest = new MeetingTest();
+//		MeetingTest meetingTest = new MeetingTest();
 //		meetingTest.update();
-		meetingTest.findByUserId2();
+//		meetingTest.findByUserId2();
 //		meetingTest.findByMeetingName2();
+		
+		MeetingService ms = new MeetingService();
+		String str = null;
+		str = ms.findMeetingList("13026310448", 1, 1);
+		System.out.println(str);
+		
+		
 	}
 }
 	

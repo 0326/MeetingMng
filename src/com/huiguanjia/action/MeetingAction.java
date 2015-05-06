@@ -39,7 +39,10 @@ public class MeetingAction  extends ActionSupport{
 	private String username;					//公司管理员主键
 	private String path;						//存放二维码路径
 	
+	//0:获取全部会议;1：获取用户创建/组织的会议;2:获取用户参与的会议
+	private int listType;         
 	private Map<String,Object> jsonData;
+	            
 	
 	public String execute() throws Exception{
 		return "json";
@@ -154,16 +157,14 @@ public class MeetingAction  extends ActionSupport{
 	}
 	
 	/**
-	 * @info 根据用户ID搜索会议
+	 * @info 普通用户  获取会议列表
 	 * @return
 	 */
-	public String findByUserId(){
+	public String findMeetingList(){
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
-		String meetinglist1 = ms.findByUserId1(cellphone);
-		String meetinglist2 = ms.findByUserId2(cellphone);
-//		String meetinglist3 = ms.findByUserId3(cellphone);
-		String meetinglist = (String) (meetinglist1+meetinglist2);
+
+		String meetinglist = ms.findMeetingList(cellphone, meetingState, listType);
 		if(null == meetinglist){
 			jsonData.put("code", -1);
 //			jsonData.put("meetinglist", "");
@@ -205,27 +206,6 @@ public class MeetingAction  extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		MeetingService ms = new MeetingService();
 		String list = ms.findByMeetingName2(meetingName,username);
-		if(null == list){
-			jsonData.put("code", -1);
-			jsonData.put("meetings", "");	 
-		}
-		else{
-			jsonData.put("code", 0);
-			jsonData.put("meetings", list);			
-			System.out.println(JSON.toJSONString(jsonData));
-		}
-		
-		return SUCCESS;
-	}
-	
-	/**
-	 * @info 系统管理员通过会议名称搜索会议
-	 * @return
-	 */
-	public String findByMeetingName3(){
-		jsonData = new HashMap<String,Object>();
-		MeetingService ms = new MeetingService();
-		String list = ms.findByMeetingName3(meetingName);
 		if(null == list){
 			jsonData.put("code", -1);
 			jsonData.put("meetings", "");	 
@@ -395,6 +375,14 @@ public class MeetingAction  extends ActionSupport{
 	
 	public String getPath(){
 		return path;
+	}
+	
+	public void setListType(int type){
+		this.listType = type;
+	}
+	
+	public int getListType(){
+		return listType;
 	}
 	
 	public void setPath(String path){

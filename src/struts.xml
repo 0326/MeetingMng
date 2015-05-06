@@ -226,7 +226,7 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="findByMeetingId" class="com.huiguanjia.action.MeetingAction" method="findByMeetingId">
+    	<action name="findMeetingList" class="com.huiguanjia.action.MeetingAction" method="findMeetingList">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
@@ -236,7 +236,7 @@
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="findByMeetingName1" class="com.huiguanjia.action.MeetingAction" method="findByMeetingName1">
+    	<action name="findByMeetingId" class="com.huiguanjia.action.MeetingAction" method="findByMeetingId">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>

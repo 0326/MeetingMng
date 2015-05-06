@@ -1,6 +1,27 @@
 body {
     color: #777;
 }
+
+.pure-form input[readonly], .pure-form select[readonly], .pure-form textarea[readonly]{
+    background-color: #fff;
+    border: none;
+    box-shadow: none;
+}
+.pure-form-aligned .pure-control-group label{
+    width: 5em;
+}
+.pure-form-aligned .pure-control-group input{
+    width: 18em;
+}
+.pure-form-aligned .pure-control-group input[type=radio]{
+    width: 4em;
+}
+a.pure-button:visited{
+    color: #fff;
+}
+a.pure-button:hover{
+    text-decoration: none;
+}
 .button-small {
     font-size: 85%;
 }
@@ -295,9 +316,12 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     width: 50px;
 }
 .headimg-100{
-    width: 100px;
+    width: 100%;
 }
-
+#qiniu_upload_container{
+    display: block;
+    text-align: center;
+}
 .pagination-center{
     text-align: center;
 }

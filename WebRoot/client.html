@@ -97,8 +97,17 @@
 
 	<script type="text/javascript">
 		// $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
-		$(document).foundation();
+		$(document).foundation({
+			accordion: {
+	      callback : function (accordion) {
+	        alert(accordion);
+	      }
+	    }
+		});
 		// $(document).foundation('main-section', 'reflow');
+		$(".accordion-head").on("click",function(){
+			$(this.nextSbiling).toggle();
+		});
 	</script>
 </body>
 </html>

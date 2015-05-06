@@ -13,7 +13,7 @@ var mControllers = angular.module("mControllers", [])
         $("#layout").fadeIn();
     });
     // $window.MMComet.initialize($scope.company.username);
-    console.log("websocket init ok")
+    console.log("websocket init ok");
   })
 
   $scope.$on('userProfileChange',function(event, company){
@@ -32,6 +32,11 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("profileCtrl", function($scope, userService) {
   $scope.company = userService.profiles;
+  userService
+  .getInfo()
+  .then(function(data){
+    $scope.company = data;
+  })
 
   $scope.userLogout = function(){
     userService.logout({username: $scope.company.username});
@@ -189,8 +194,13 @@ var mControllers = angular.module("mControllers", [])
     initFunc(1);
   });
 })
-.controller("stufflistCtrl", function($scope, userService, StuffService) {
+
+.controller("stufflistCtrl", function($scope, userService, StuffService, departmentService) {
   $scope.company = userService.profiles;
+  $scope.departlist = {};
+  $scope.selectlist = {};
+  $scope.currStuff = {};
+
   var initFunc = function(pageIndex){  
     StuffService
     .getStuffs(pageIndex)
@@ -201,6 +211,27 @@ var mControllers = angular.module("mControllers", [])
     });
   }
   initFunc(1);
+
+  departmentService
+  .getDepartments()
+  .then(function(data){
+    $scope.departlist = data;
+    $scope.selectlist = departmentService.form2list($scope.departlist);
+    console.log($scope.departlist);
+  });
+
+  $scope.onUpdate = function(cellphone){
+    StuffService
+    .getStuff(cellphone)
+    .then(function(data){
+      $scope.currStuff = data;
+    });
+  }
+
+  $scope.submitUpdateForm = function(isValid){
+    $scope.currStuff.username = userService.profiles.username;
+    StuffService.updateStuff($scope.currStuff);
+  }
 
   $scope.paginationConf = {
       currentPage: 1,
@@ -250,6 +281,11 @@ var mControllers = angular.module("mControllers", [])
     StuffService.add($scope.stuff);
   }
 
+})
+
+.controller("stuffdetailCtrl", function($scope, userService, StuffService) {
+  $scope.company = userService.profiles;
+  $scope.currStuff = {};
 
 })
 

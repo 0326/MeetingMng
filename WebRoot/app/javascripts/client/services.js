@@ -86,27 +86,35 @@ var mServices = angular.module("mServices", [])
     return d.promise;
   }
 
-  service.delete = function(){
-
+  service.delete = function(meetingId){
+    $http.post("/MeetingMng/api/v1/u/meeting/delete",{'meetingId':meetingId}, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("删掉了！哈哈哈！");
+      }
+      else{
+        alert("未知错误");
+      }
+    });
   }
 
   service.update = function(){
 
   }
 
-  service.getAll = function(cellphone){
+  service.getAll = function(cellphone,meetingState,listType){
     // var cellphone = "15071345115";
     var d = $q.defer();
-    $http.get("/MeetingMng/api/v1/u/meeting/findByUserId?cellphone="+cellphone)
+    $http.get("/MeetingMng/api/v1/u/meeting/findMeetingList?cellphone="+cellphone+
+      "&meetingState="+meetingState+"&listType="+listType)
     .success(function(data){
-      // var obj;
-      // if(data.code == 0){
-      //   obj = $.parseJSON(data.meetinglist);
-      //   // for(var i=0;i<obj.length;i++){
-      //   //   obj[i].meetingStartTime = new Date(obj[i].meetingStartTime);
-      //   // }
-      // }
-      d.resolve(data);
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.meetinglist));  
+      }
+      else{
+        d.resolve("[]");
+      }
+      
     });
     return d.promise;
   }
@@ -124,7 +132,7 @@ var mServices = angular.module("mServices", [])
   return service;
 }])
 
-.factory('meetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+.factory('fuckmeetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
   var service = {};
 
   service.add = function(meeting){

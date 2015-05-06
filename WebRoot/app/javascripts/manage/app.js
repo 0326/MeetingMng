@@ -51,6 +51,14 @@ angular.module("appmanage", ["ngRoute", "ngCookies",
 	}).when('/stufflist', {
 		templateUrl: 'app/templates/manage/stufflist.html',
 		controller: 'stufflistCtrl'
+	}).when('/stuffdetail', {
+		templateUrl: 'app/templates/manage/stuffdetail.html',
+		controller: 'stuffdetailCtrl',
+		resolve:{
+			cellphone:function($route, $http){
+				return $route.current.params.cellphone;
+			},
+		}
 	})
 
 	.when('/profile', {

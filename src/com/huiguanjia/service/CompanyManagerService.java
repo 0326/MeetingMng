@@ -230,7 +230,7 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return
 	 */
-	public JSONObject getInfo(String username){	
+	public String getInfo(String username){	
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 		CompanyAndCompanyAdmin ca = (CompanyAndCompanyAdmin)b.findObjectById(CompanyAndCompanyAdmin.class, username);
@@ -249,10 +249,11 @@ public class CompanyManagerService {
 		obj.put("cellphone", ca.getCellphone());
 		obj.put("officePhone", ca.getOfficePhone());
 		obj.put("officeLocation", ca.getOfficeLocation());
-		SessionDAO.closeSession();
+		String stres = JSONUtil.serialize(obj);
 		
-//		String stres = JSONUtil.serialize(obj);
-		return obj;
+		SessionDAO.closeSession();
+	
+		return stres;
 	}
 	
 	/**
@@ -434,14 +435,20 @@ public class CompanyManagerService {
 	 * @param u
 	 * @return
 	 */
-	public boolean updateOrdinaryUser(OrdinaryUser u) {
+	public boolean updateOrdinaryUser(Object[] values) {
 		boolean res;
 		BaseDAO aDAO = new BaseDAO();
 		Session sess = SessionDAO.getSession();
 		Transaction ts = sess.beginTransaction();
 		try
 		{
-			aDAO.updateObject(u);
+//			Object[] updateValues = new Object[]{name,workNo,sex,
+//					departmentId,job,email,officePhone,officeLocation,cellphone};
+			String hql = "update ordinary_user u set u.name=?,u.workNo=?,u.sex=?,"+
+					"u.departmentId=?,u.job=?,u.email=?,u.officePhone=?,"+
+					"u.officeLocation=?,where u.username=?";
+			//Object[] values = new Object[]{email,name,sex,officePhone,avatarUrl,cellphone,officeLocation,username};
+			aDAO.updateObjectByHql(hql,values);
 			ts.commit();
 			res = true;
 		}
@@ -463,7 +470,7 @@ public class CompanyManagerService {
 	 * @param username
 	 * @return
 	 */
-	public OrdinaryUser getOrdinaryUserInfo(String username,String cellphone) {
+	public String getOrdinaryUserInfo(String username,String cellphone) {
 	
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
@@ -471,11 +478,24 @@ public class CompanyManagerService {
 		String hql = "select o from OrdinaryUser as o where o.companyAndCompanyAdmin.username=? and o.cellphone=?"; 
 		Object[] values = new Object[]{username,cellphone};
 		OrdinaryUser or = (OrdinaryUser)b.findSingletonResultByHql(hql,values);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("name", or.getName());
+		obj.put("workNo", or.getWorkNo());
+		obj.put("sex", or.getSex());
+		obj.put("cellphone", or.getCellphone());
+		obj.put("departmentId", or.getDepartment().getDepartmentId());
+		obj.put("job", or.getJob());
+		obj.put("email", or.getEmail());
+		obj.put("officePhone", or.getOfficePhone());
+		obj.put("officeLocation", or.getOfficeLocation());
+		String restr = JSONUtil.serialize(obj);
+		System.out.println(restr);
 		SessionDAO.closeSession();
 		if(null == or)
 			return null;
 		else 
-			return or;
+			return restr;
 	}
 	
 //	public JSONObject searchWorkNo(String username,String keyword,int pageIndex){	

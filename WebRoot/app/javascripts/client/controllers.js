@@ -25,7 +25,7 @@ var mControllers = angular.module("mControllers", [])
   }
 })
 
-.controller("homeCtrl", function($scope, meetingService, userService) {
+.controller("homeCtrl", function($scope, meetingService, userService, listType) {
   $scope.client = userService.profiles;
   $scope.meetinglist = [];
   
@@ -41,24 +41,23 @@ var mControllers = angular.module("mControllers", [])
       }
   };
 
-
   meetingService
-  .getAll($scope.client.cellphone)
-  .then(function(data){
-    if(data.code == 0){
-      $scope.meetinglist = $.parseJSON(data.meetinglist);
-    }
-    // console.log(data);
-  });
+   .getAll($scope.client.cellphone,1,listType)
+   .then(function(meetinglist){
+      $scope.meetinglist = meetinglist;
+   });
+
+
+  $scope.onDelete = function(meetingId){
+    meetingService.delete(meetingId);
+  }
+  //用户如果在此刷新浏览器，需要重新加载数据
   $scope.$on("userProfileBroadcast",function(event, client){
     $scope.client = client;
      meetingService
-     .getAll($scope.client.cellphone)
-     .then(function(data){
-        if(data.code == 0){
-          $scope.meetinglist = $.parseJSON(data.meetinglist);
-        }
-        // console.log(data);
+     .getAll($scope.client.cellphone,1,listType)
+     .then(function(meetinglist){
+        $scope.meetinglist = meetinglist;
      });
   });
   
@@ -67,7 +66,8 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("meetingnewCtrl", function($scope, meetingService, userService) {
   $scope.meeting = {
-    meetingCreatorId: userService.profiles.cellphone
+    meetingCreatorId: userService.profiles.cellphone,
+    meetingFrequency: 1
   };
   $scope.submitAddForm = function(isValid){
     $scope.meeting.meetingStartTime = $("#starttime").val();

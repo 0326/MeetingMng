@@ -6,7 +6,20 @@
 	</ul>
 </div>
 <div class="page-content">
-	<form>
+	<div class="row">
+		<div class="small-12 large-6 columns">
+			<h1>{{meeting.meetingName}}</h1>
+			<p>当前状态{{meeting.meetingState}}</p>
+			<p>{{meeting.meetingLocation}} </p>
+			<p>{{ [meeting.meetingFrequency,meeting.meetingStartTime] | meetingDate}}</p>
+			<p>会议内容：{{meeting.meetingContent}}</p>
+			<p>创建者：{{meeting.ordinaryUser.name}}</p>
+			<div>
+				<img src="/MeetingMng/app/images/qrcode.png">
+			</div>
+		</div>
+	</div>
+	<!-- <form>
 			<div class="large-6 row">
 	      <div class="row prefix-round">
 	        <div class="small-3 columns"><p class="button prefix">会议名称</p></div>
@@ -70,7 +83,7 @@
         </div>
       </div>
     </div>
-		</form>
+		</form> -->
 </div>
 
 <script type="text/javascript">

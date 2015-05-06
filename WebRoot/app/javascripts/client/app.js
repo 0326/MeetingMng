@@ -5,11 +5,17 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 
 .config(function($routeProvider) {
 	$routeProvider
+	//首页
 	.when('/', {
 		templateUrl: 'app/templates/client/home.html',
-		controller: 'homeCtrl'
+		controller: 'homeCtrl',
+		resolve:{
+			listType:function($route){
+				return $route.current.params.listType || 0;
+			}
+		}
 	})
-
+	//会议相关
 	.when('/meeting-new', {
 		templateUrl: 'app/templates/client/meetingnew.html',
 		controller: 'meetingnewCtrl'
@@ -20,7 +26,7 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		templateUrl: 'app/templates/client/meetingdetail.html',
 		controller: 'meetingdetailCtrl',
 		resolve:{
-			meetingId:function($route, $http){
+			meetingId:function($route){
 				return $route.current.params.mid;
 			},
 		}
@@ -34,14 +40,14 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		templateUrl: 'app/templates/client/meetinghistory.html',
 		controller: 'meetinghistoryCtrl'
 	})
-
+	//个人设置相关
 	.when('/profile', {
 		templateUrl: 'app/templates/client/profile.html',
 		controller: 'profileCtrl'
 	})
 
 	.otherwise({
-		redirectTo: '/'
+		// redirectTo: '/'
 	});
 
 })

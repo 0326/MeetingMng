@@ -16,7 +16,7 @@ var mServices = angular.module("mServices", [])
         $http
         .get("/MeetingMng/api/v1/companyManagerGetInfo?username="+$cookieStore.get("username"))
         .success(function(data, status){
-          service.profiles = data.user;
+          service.profiles = $.parseJSON(data.user);
           if(service.profiles.avatarUrl == null){
             service.profiles.avatarUrl = "app/images/logo.png";
           }
@@ -46,8 +46,15 @@ var mServices = angular.module("mServices", [])
           }
         });
       },
-      updateInfo: function(company){
+      updateInfo: function(companyData){
         var d = $q.defer();
+        var company = $.extend({},companyData);
+        if(company.sex == 0){
+          company.sex = false;
+        }
+        else{
+          company.sex = true;
+        }
         $http.post("/MeetingMng/api/v1/companyManagerUpdateInfo",company, PostCfg)
         .success(function(data){
           if(data.code == 0){
@@ -189,6 +196,17 @@ function($http, $q, PostCfg, userService){
           }
         });
       },
+      getStuff: function(cellphone){
+        // if(_stuffs) return _stuffs;
+        var d = $q.defer();
+        $http.get("/MeetingMng/api/v1/companyManagerGetOrdinaryUserInfo?cellphone="+cellphone+"&username="+userService.profiles.username)
+        .success(function(data){
+          if(data.code == 0){
+            d.resolve($.parseJSON(data.user));
+          }
+        });
+        return d.promise;
+      },
       getStuffs: function(pageIndex){
         // if(_stuffs) return _stuffs;
         var d = $q.defer();
@@ -201,9 +219,9 @@ function($http, $q, PostCfg, userService){
         });
         return d.promise;
       },
-      updateInfo: function(company){
+      updateStuff: function(stuff){
         var d = $q.defer();
-        $http.post("/MeetingMng/api/v1/companyManagerUpdateInfo",company, PostCfg)
+        $http.post("/MeetingMng/api/v1/companyManagerUpdateOrdinaryUser",stuff, PostCfg)
         .success(function(data){
           if(data.code != '0'){
             alert("修改失败");

@@ -1,8 +1,8 @@
 <div class="page-head">
 	<ul class="button-group even-3">
-	  <li><a href="#/?x=1" class="button">所有会议</a></li>
-	  <li><a href="#/?x=1" class="button">我参与的</a></li>
-	  <li><a href="#/?x=1" class="button">我创建的</a></li>
+	  <li><a href="#/?listType=0" class="button">所有会议</a></li>
+	  <li><a href="#/?listType=1" class="button">我参与的</a></li>
+	  <li><a href="#/?listType=2" class="button">我创建的</a></li>
 	</ul>
 </div>
 <div class="page-content">
@@ -17,12 +17,12 @@
 	  </thead>
 	  <tbody>
 	    <tr ng-repeat="m in meetinglist">
-	      <td>{{m.meetingName}}</td>
-	      <td>{{m.meetingStartTime}}</td>
-	      <td>{{m.meetingLocation}}</td>
+	      <td>{{m[1]}}</td>
+	      <td>{{m[2]}}</td>
+	      <td>{{m[3]}}</td>
 	      <td>
-	      	<a href="#/meeting-detail?mid={{m.meetingId}}" class="button tiny">详细</a>
-	      	<a href="#" class="button tiny">删除</a>
+	      	<a href="#/meeting-detail?mid={{m[0]}}" class="button tiny">详细</a>
+	      	<button href="" class="button tiny" ng-click="onDelete(m[0])">删除</button>
 	      </td>
 	    </tr>
 	  </tbody>
