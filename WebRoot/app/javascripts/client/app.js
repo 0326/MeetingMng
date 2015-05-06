@@ -32,14 +32,35 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		}
 	}).when('/meeting-contact', {
 		templateUrl: 'app/templates/client/meetingcontact.html',
-		controller: 'meetingcontactCtrl'
+		controller: 'meetingcontactCtrl',
+		resolve:{
+			meetingId:function($route){
+				return $route.current.params.mid;
+			},
+		}
 	}).when('/meeting-discuss', {
 		templateUrl: 'app/templates/client/meetingdiscuss.html',
-		controller: 'meetingdiscussCtrl'
+		controller: 'meetingdiscussCtrl',
+		resolve:{
+			meetingId:function($route){
+				return $route.current.params.mid;
+			},
+		}
 	}).when('/meeting-history', {
 		templateUrl: 'app/templates/client/meetinghistory.html',
 		controller: 'meetinghistoryCtrl'
 	})
+	//会议话题相关
+	.when('/topic-comment', {
+		templateUrl: 'app/templates/client/topiccomment.html',
+		controller: 'topicCommentCtrl',
+		resolve:{
+			topicId:function($route){
+				return $route.current.params.tid;
+			},
+		}
+	})
+
 	//个人设置相关
 	.when('/profile', {
 		templateUrl: 'app/templates/client/profile.html',

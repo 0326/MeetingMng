@@ -198,10 +198,11 @@ public class MeetingTopicAction extends ActionSupport{
 	public String findTopicByMeetingId(){
 		jsonData = new HashMap<String,Object>();
 		MeetingTopicService t = new MeetingTopicService();
-		String obj = t.findTopicByMeetingId(meetingId,cellphone);
-	
+//		String obj = t.findTopicByMeetingId(meetingId,cellphone);
+		String obj = t.findTopicList(meetingId,cellphone);
+//		String obj = t.findTopicList("76a95da6e7df42efbd14dd9ebd0e844e", "13026310448");
 		if(null == obj){
-			jsonData.put("code", -1);
+			jsonData.put("obj", "[]");
 		}
 		else{
 			jsonData.put("obj", obj);

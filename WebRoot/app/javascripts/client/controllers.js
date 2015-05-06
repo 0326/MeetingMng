@@ -10,7 +10,9 @@ var mControllers = angular.module("mControllers", [])
     $scope.client = data;
     $scope.$broadcast('userProfileBroadcast', $scope.client);
     $("#loading").fadeOut("normal",function(){
-        $("#layout").fadeIn();
+        $("#layout").fadeIn("normal",function(){
+          $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
+        });
     });
   })
 
@@ -82,7 +84,7 @@ var mControllers = angular.module("mControllers", [])
 })
 
 .controller("meetingdetailCtrl", function($scope, meetingService,meetingId) {
-  $scope.meeting = {};
+  $scope.meeting = {'meetingId': meetingId};
   meetingService
   .findByMeetingId(meetingId)
   .then(function(data){
@@ -91,7 +93,9 @@ var mControllers = angular.module("mControllers", [])
   });
 })
 
-.controller("meetingcontactCtrl", function($scope) {
+.controller("meetingcontactCtrl", function($scope, meetingId) {
+  $scope.meeting = {'meetingId': meetingId};
+
   var vm = $scope.vm = {};
   vm.items = [{id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"},
   {id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"}];
@@ -101,23 +105,75 @@ var mControllers = angular.module("mControllers", [])
     });
   };
   vm.selection = function() {
-    return _.where(vm.items, {$checked: true});
+    // return _.where(vm.items, {$checked: true});
   };
   // 供页面中使用的函数
   vm.age = function(birthday) {
-    return moment().diff(birthday, 'years');
+    // return moment().diff(birthday, 'years');
   };
 
 
 })
 
-.controller("meetingdiscussCtrl", function($scope) {
+.controller("meetingdiscussCtrl", function($scope, userService, topicService, meetingId) {
+  $scope.meeting = {'meetingId': meetingId};
+  $scope.topicList = [];
+
+  var init = function(){
+    $scope.newTopic = {
+      'meetingId': $scope.meeting.meetingId,
+      'creatorId': userService.profiles.cellphone
+    }
+
+    topicService
+    .findTopicList($scope.meeting.meetingId,userService.profiles.cellphone)
+    .then(function(data){
+      $scope.topicList = data;
+    });  
+  }
+  init();
+  
+  $scope.onCreate = function (){
+    topicService.create($scope.newTopic);
+  }
+
+  //用户如果在此刷新浏览器，需要重新加载数据
+  $scope.$on("userProfileBroadcast",function(event, client){
+    init();
+  });
 
 })
 
+//话题评论页面
+.controller("topicCommentCtrl", function($scope, userService, topicService, topicId) {
+  $scope.topic = {'topicId': topicId};
+  $scope.commentList = [];
+
+  var init = function(){
+    topicService
+    .findCommentByTopicId($scope.meeting.meetingId,userService.profiles.cellphone)
+    .then(function(data){
+      $scope.topicList = data;
+    });  
+  }
+  init();
+  
+  $scope.onCreate = function (){
+    topicService.create($scope.newTopic);
+  }
+
+  //用户如果在此刷新浏览器，需要重新加载数据
+  $scope.$on("userProfileBroadcast",function(event, client){
+    init();
+  });
+
+})
 .controller("meetinghistoryCtrl", function($scope) {
 
 })
+
+
+
 
 .controller("profileCtrl", function($scope, userService) {
    $scope.client =userService.profiles;

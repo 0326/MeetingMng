@@ -1,68 +1,35 @@
 <div class="page-head">
 	<ul class="button-group even-3">
-	  <li><a href="#/meeting-detail?x=1" class="button">会议详细</a></li>
-	  <li><a href="#/meeting-contact?x=1" class="button">会议联系人</a></li>
-	  <li><a href="#/meeting-discuss?x=1" class="button active">会议讨论</a></li>
+	  <li><a href="#/meeting-detail?mid={{meeting.meetingId}}" class="button">会议详细</a></li>
+	  <li><a href="#/meeting-contact?mid={{meeting.meetingId}}" class="button">会议联系人</a></li>
+	  <li><a href="#/meeting-discuss?mid={{meeting.meetingId}}" class="button active">会议讨论</a></li>
 	</ul>
 </div>
 <div class="page-content">
-	<form>
-			<div class="large-6 row">
-	      <div class="row prefix-round">
-	        <div class="small-3 columns"><p class="button prefix">会议名称</p></div>
-	        <div class="small-9 columns">
-	          <input type="text" placeholder="Value">
-	        </div>
-	      </div>
-	    </div>
-	    <div class="large-6 row">
-	      <div class="row prefix-round">
-	        <div class="small-3 columns"><p class="button prefix">会议地点</p></div>
-	        <div class="small-9 columns">
-	          <input type="text" placeholder="Value">
-	        </div>
-	      </div>
-	    </div>
-	    <div class="large-6 row">
-	      <div class="row prefix-round">
-	        <div class="small-3 columns"><p class="button prefix">开始时间</p></div>
-	        <div class="small-9 columns">
-	          <input type="text" placeholder="点击选择开会时间" class="form_datetime datetimepicker"  readonly>
-	        </div>
-	      </div>
-	    </div>
-	    <div class="large-6 row">
-	      <div class="row prefix-round">
-	        <div class="small-3 columns"><p class="button prefix">结束时间</p></div>
-	        <div class="small-9 columns">
-	          <input type="text" placeholder="点击选择结束会议时间" class="form_datetime datetimepicker"  readonly>
-	        </div>
-	      </div>
-	    </div>
-	    <div class="large-6 row">
-	      <div class="row prefix-round">
-	        <div class="small-3 columns"><p class="button prefix">会议频率</p></div>
-	        <div class="small-9 columns">
-	          <label>
-	          <select>
-	            <option value="husker">Husker</option>
-	            <option value="starbuck">Starbuck</option>
-	            <option value="hotdog">Hot Dog</option>
-	            <option value="apollo">Apollo</option>
-	          </select>
-	          </label>
-	        </div>
-	      </div>
-	    </div>
-	    <div class="large-6 row">
-	      <div class="row prefix-round">
-	        <div class="small-3 columns"><p class="button prefix">会议内容</p></div>
-	        <div class="small-9 columns">
-	           <textarea placeholder="small-12.columns"></textarea>
-	        </div>
-	      </div>
-	    </div>
-		</form>
+	<div class="row">
+		<button class="button tiny" data-reveal-id="createModal" onclick="$('#createModal').foundation('reveal', 'open');">新建话题</button>
+	</div>
+	<div id="createModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+	  <h2 id="modalTitle">新建话题</h2>
+	  <input type="text" placeholder="请输入话题标题" ng-model="newTopic.title">
+	  <textarea placeholder="small-12.columns" ng-model="newTopic.content"></textarea>
+	  <button class="button tiny" ng-click="onCreate()">新建</button>
+	  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+	</div>
+	<ul class="row topic-list">
+		<li ng-repeat="topic in topicList" class="columns">
+			<div class="row">
+			<a class="large-2 columns col-user text-center" href="#/contact-detail?uid={{topic[0]}}">
+				<img src="{{topic[2]}}">
+				<p>{{topic[1]}}</p>
+			</a>
+			<a class="large-10 columns col-content" href="#/topic-comment?tid={{topic[3]}}">
+				<h3 class="clearfix">{{topic[4]}}<span class="right">{{topic[6] | date:'yyyy-MM-dd HH:mm'}}</span></h3>
+				<p class="clearfix text-justify">{{topic[5]}}<span class="right">共6条回复</span></p>
+			</a>
+			</div>
+		</li>
+	</ul>
 </div>
 
 <script type="text/javascript">

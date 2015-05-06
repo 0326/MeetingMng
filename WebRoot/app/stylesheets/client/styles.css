@@ -55,3 +55,21 @@ table{ width: 100%;}
 #meetingnew form textarea{
 	height: 160px;
 }
+
+/*topic*/
+.topic-list li{
+	list-style: none;
+	border-bottom: 1px solid #aaa;
+}
+.topic-list .col-user{
+	/*text-align: center;*/
+}
+.topic-list .col-user img{
+	height: 60px;width: 60px;
+}
+.topic-list .col-content:hover {
+	background-color: #eee;
+}
+.topic-list .col-content .right{
+	font-size: .6em;
+}

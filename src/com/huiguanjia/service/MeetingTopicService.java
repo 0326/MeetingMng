@@ -179,6 +179,28 @@ public class MeetingTopicService {
 	}
 	
 	/**
+	 * 获取会议话题列表
+	 * @param meetingId
+	 * @param cellphone
+	 * @return
+	 */
+	public String findTopicList(String meetingId,String cellphone){
+		String res = null;
+		List<Topic> list = null;                         
+		String hql = null;   
+		String hqlr = "o.cellphone,o.name,o.avatarUrl,t.id,t.title,t.content,t.createTime";
+		Object[] values = new Object[]{meetingId,cellphone};   
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+		hql = "select "+hqlr+" from Topic as t,OrdinaryUser as o where "+
+				"t.meeting.meetingId=? and o.cellphone=? and o.cellphone=t.creatorId";
+		list = (ArrayList<Topic>)b.findObjectByHql(hql, values);
+
+		res = JSONUtil.serialize(list);
+		SessionDAO.closeSession();
+		return res;
+	}
+	/**
 	 * @info  根据MeetinId查找会议的所有话题
 	 * @param meetingName
 	 * @return

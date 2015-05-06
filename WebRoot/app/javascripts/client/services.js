@@ -1,6 +1,8 @@
 // client services.js
 var mServices = angular.module("mServices", [])
 
+
+//个人用户
 .factory('userService',['$http', '$q', '$cookieStore', 'PostCfg',
   function($http, $q, $cookieStore, PostCfg){
     var service = {
@@ -67,6 +69,8 @@ var mServices = angular.module("mServices", [])
   }
 ])
 
+
+//会议
 .factory('meetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
   var service = {};
 
@@ -132,16 +136,19 @@ var mServices = angular.module("mServices", [])
   return service;
 }])
 
-.factory('fuckmeetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+
+//话题
+.factory('topicService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
   var service = {};
 
-  service.add = function(meeting){
+  service.create = function(topic){
     var d = $q.defer();
-    $http.post("/MeetingMng/api/v1/u/meeting/create",meeting, PostCfg)
+    $http.post("/MeetingMng/api/v1/u/topic/create",topic, PostCfg)
     .success(function(data){
       if(data.code == 0){
         alert("创建成功！");
-        window.location.href="/MeetingMng/u";
+        $('#createModal').foundation('reveal', 'close');
+        // window.location.href="/MeetingMng/u";
       }
       else{
         alert("创建失败");
@@ -162,26 +169,32 @@ var mServices = angular.module("mServices", [])
   service.getAll = function(cellphone){
     // var cellphone = "15071345115";
     var d = $q.defer();
-    $http.get("/MeetingMng/api/v1/u/meeting/findByUserId?cellphone="+cellphone)
+    $http.get("/MeetingMng/api/v1/u/topic/findByUserId?cellphone="+cellphone)
     .success(function(data){
-      // var obj;
-      // if(data.code == 0){
-      //   obj = $.parseJSON(data.meetinglist);
-      //   // for(var i=0;i<obj.length;i++){
-      //   //   obj[i].meetingStartTime = new Date(obj[i].meetingStartTime);
-      //   // }
-      // }
       d.resolve(data);
     });
     return d.promise;
   }
 
-  service.findByMeetingId = function(meetingId){
+  service.findTopicList = function(meetingId,cellphone){
     // var cellphone = "15071345115";
     var d = $q.defer();
-    $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    $http.get("/MeetingMng/api/v1/u/topic/findTopicByMeetingId?meetingId="+meetingId+
+      "&cellphone="+cellphone)
     .success(function(data){
-      d.resolve(data);
+      d.resolve($.parseJSON(data.obj));
+    });
+    return d.promise;
+  }
+  //获取评论列表
+  service.findCommentByTopicId = function(topicId,cellphone){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/topic/findCommentByTopicId?topicId="+topicId+
+      "&cellphone="+cellphone)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.comments));
+      }
     });
     return d.promise;
   }

@@ -120,8 +120,11 @@ public class MeetingTopicTest {
 	
 	
 	public static void main(String[] args){
-		MeetingTopicTest meetingTopicTest = new MeetingTopicTest();
-		meetingTopicTest.findCommentByTopicId();
+//		MeetingTopicTest meetingTopicTest = new MeetingTopicTest();
+//		meetingTopicTest.findCommentByTopicId();
 		
+		MeetingTopicService mts = new MeetingTopicService();
+		String res = mts.findTopicList("76a95da6e7df42efbd14dd9ebd0e844e", "13026310448");
+		System.out.println(res);
 	}
 }
