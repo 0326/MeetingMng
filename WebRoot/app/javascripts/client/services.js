@@ -102,8 +102,18 @@ var mServices = angular.module("mServices", [])
     });
   }
 
-  service.update = function(){
-
+  service.update = function(meeting){
+    $http.post("/MeetingMng/api/v1/u/meeting/update",meeting, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("更新成功！哈哈哈！");
+        $("#detailBox").removeClass("hide");
+        $("#updateBox").addClass("hide");
+      }
+      else{
+        alert("未知错误");
+      }
+    });
   }
 
   service.getAll = function(cellphone,meetingState,listType){

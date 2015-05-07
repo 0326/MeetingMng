@@ -1,18 +1,21 @@
 // client controllers.js
 var mControllers = angular.module("mControllers", [])
 
-.controller("layoutCtrl", function($scope, userService) {
+.controller("layoutCtrl", function($scope, $rootScope, $window, userService) {
   $scope.client = {};
   
   userService
   .getInfo()
   .then(function(data){
     $scope.client = data;
+    // $rootScope.client = data;
     $scope.$broadcast('userProfileBroadcast', $scope.client);
     $("#loading").fadeOut("normal",function(){
         $("#layout").fadeIn("normal",function(){
           $('.off-canvas-wrap').foundation('offcanvas', 'show', 'move-right');
         });
+        $window.MMComet.initialize($scope.client.cellphone);
+        console.log("websocket init ok");
     });
   })
 
@@ -91,6 +94,20 @@ var mControllers = angular.module("mControllers", [])
     // console.log(data);
     $scope.meeting = $.parseJSON(data.meeting);
   });
+
+
+  $scope.onUpdate = function(){
+    $("#detailBox").addClass("hide");
+    $("#updateBox").removeClass("hide");
+  }
+  $scope.submitUpdateForm = function(isValid){
+    meetingService.update($scope.meeting);
+  }
+  $scope.cancelUpdate = function(){
+    $("#detailBox").removeClass("hide");
+    $("#updateBox").addClass("hide");
+  }
+
 })
 
 .controller("meetingcontactCtrl", function($scope, userService, meetingId, organizerService) {

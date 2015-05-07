@@ -8,13 +8,13 @@ var mFilters = angular.module("mFilters", [])
 		var time = obj[1]; 
 		var result = "";
 		if(freq == 1){
-			result = $filter('date')(time,'mm月dd日 h:mma');
+			result = $filter('date')(time,'mm月dd日 HH:mm');
 		}
 		else if(freq == 2){ 
-			result = "每天 " + $filter('date')(time,'h:mma');
+			result = "每天 " + $filter('date')(time,'HH:mm');
 		}
 		else if(freq == 3){ 
-			result="每周" + $filter('date')(time,'EEEE h:mma')
+			result="每周" + $filter('date')(time,'EEEE HH:mm')
 				.replace('Monday','一')
 				.replace('Tuesday','二') 
 				.replace('Wednesday','三') 
@@ -24,7 +24,7 @@ var mFilters = angular.module("mFilters", [])
 				.replace('Sunday','日'); 
 		}
 		else if(freq == 4){ 
-			result="每月" + $filter('date')(time,'dd日 h:mma'); 
+			result="每月" + $filter('date')(time,'dd日 HH:mm'); 
 		}
 
 		return result;

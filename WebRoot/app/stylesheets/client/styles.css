@@ -56,6 +56,18 @@ table{ width: 100%;}
 	height: 160px;
 }
 
+/*detail*/
+#updateBox form .error{
+	display: none;
+}
+#updateBox form .columns{
+	padding-right: 0;
+	padding-left: 0;
+}
+#updateBox form textarea{
+	height: 160px;
+}
+
 /*topic*/
 .topic-list li{
 	list-style: none;
