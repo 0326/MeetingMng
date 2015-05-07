@@ -34,6 +34,7 @@ public class CometInterceptor extends EmptyInterceptor
     @Override
     public void afterTransactionBegin(Transaction tx){
     	System.out.println("afterTransactionBegin start..");
+    	
     }
     
     @Override

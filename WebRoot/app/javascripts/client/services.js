@@ -146,6 +146,57 @@ var mServices = angular.module("mServices", [])
   return service;
 }])
 
+///////////////////////////////////参会人
+
+.factory('organizerService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+
+  service.add = function(meeting){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/create",meeting, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("创建成功！");
+        window.location.href="/MeetingMng/u";
+      }
+      else{
+        alert("创建失败");
+      }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  service.findOrganizer = function(cellphone,meetingId){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findOrganizer?cellphone="+cellphone+"&meetingId="+meetingId)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.organizers));  
+      }
+      else{
+        d.resolve("[]");
+      }
+      
+    });
+    return d.promise;
+  }
+
+  service.findByMeetingId = function(meetingId){
+    // var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  return service;
+}])
+
+
+
 
 //话题
 .factory('topicService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
@@ -211,6 +262,49 @@ var mServices = angular.module("mServices", [])
 
   return service;
 }])
+
+
+
+
+///////////////////////联系人
+.factory('contactService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+  var _companyUsers = null;
+  var _myContactors = null;
+  //获取公司联系人列表  
+  service.findCompanyContact = function(cellphone){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/contact/findCompanyContact?cellphone="+cellphone)
+    .success(function(data){
+      if(data.code == 0){
+        _companyUsers = $.parseJSON(data.companyContact);
+        d.resolve(_companyUsers);
+      }
+    });
+    return d.promise;
+  }
+  //添加办会人员时列表
+  service.findCompanyContactForOrganizer = function(cellphone, meetingId){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/contact/findCompanyContactForOrganizer?cellphone="+cellphone+
+      "&meetingId="+meetingId)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.companyContact));
+      }
+    });
+    return d.promise;
+  }
+
+  
+  service.getCompanyUsers = function(){ return _companyUsers;}
+  service.getMyContactors = function(){ return _myContactors;} 
+
+  return service;
+}])
+
+
+
 
 .constant('PostCfg',{
   headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},

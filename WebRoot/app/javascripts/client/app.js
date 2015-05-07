@@ -60,7 +60,25 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 			},
 		}
 	})
-
+	// 联系人模块
+	.when('/contact-list-company', {
+		templateUrl: 'app/templates/client/contactlistcompany.html',
+		controller: 'contactListCompanyCtrl',
+		resolve:{
+			topicId:function($route){
+				// return $route.current.params.tid;
+			},
+		}
+	})
+	.when('/contact-list-mine', {
+		templateUrl: 'app/templates/client/contactlistmine.html',
+		controller: 'contactListMineCtrl',
+		resolve:{
+			topicId:function($route){
+				// return $route.current.params.tid;
+			},
+		}
+	})
 	//个人设置相关
 	.when('/profile', {
 		templateUrl: 'app/templates/client/profile.html',

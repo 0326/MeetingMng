@@ -33,7 +33,8 @@ public class MeetingMsgInbound extends MessageInbound {
         List<Message> msglist = msgService.findMsg(this.userid, false);
         if(msglist !=null){
         	this.pushSigle(msglist, userid);
-        }  
+        }
+        
     }
 
     @Override
