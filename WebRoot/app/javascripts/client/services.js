@@ -136,6 +136,57 @@ var mServices = angular.module("mServices", [])
   return service;
 }])
 
+///////////////////////////////////参会人
+
+.factory('organizerService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+
+  service.add = function(meeting){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/create",meeting, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("创建成功！");
+        window.location.href="/MeetingMng/u";
+      }
+      else{
+        alert("创建失败");
+      }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  service.findOrganizer = function(cellphone,meetingId){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findOrganizer?cellphone="+cellphone+"&meetingId="+meetingId)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.organizers));  
+      }
+      else{
+        d.resolve("[]");
+      }
+      
+    });
+    return d.promise;
+  }
+
+  service.findByMeetingId = function(meetingId){
+    // var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  return service;
+}])
+
+
+
 
 //话题
 .factory('topicService',['$http', '$q','PostCfg', function($http, $q, PostCfg){

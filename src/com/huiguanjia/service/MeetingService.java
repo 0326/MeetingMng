@@ -199,7 +199,7 @@ public class MeetingService {
 		String res = null;                                 //结果集json串
 		List<Meeting> list = null;                         //查询会议列表结果
 		String hql = null;                                 //hql查询语句
-		String hqlr = "m.meetingId,m.meetingName,m.meetingStartTime,m.meetingLocation";
+		String hqlr = "m.meetingId,m.meetingName,m.meetingStartTime,m.meetingLocation,m.meetingFrequency";
 		Object[] values = new Object[]{cellphone,state};   //查询参数列表
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
