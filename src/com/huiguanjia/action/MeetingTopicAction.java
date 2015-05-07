@@ -35,6 +35,7 @@ public class MeetingTopicAction extends ActionSupport{
 	
 	
 	private Map<String,Object> jsonData;
+	private int pageIndex;
 	
 	public Map<String,Object> getJsonData() {
 		return jsonData;
@@ -96,6 +97,15 @@ public class MeetingTopicAction extends ActionSupport{
 	public void setCommentorId(String commentorId) {
 		this.commentorId = commentorId;
 	}
+	
+	public int getPageIndex() {
+		return pageIndex;
+	}
+
+	public void setPageIndex(int pageIndex) {
+		this.pageIndex = pageIndex;
+	}
+	
 	
 	public String execute() throws Exception{
 		return "json";
@@ -236,7 +246,7 @@ public class MeetingTopicAction extends ActionSupport{
 	}
 	
 	/**
-	 * @info 查看评论
+	 * @info 根据话题查看评论
 	 * @return
 	 * @throws Exception
 	 */
@@ -257,7 +267,54 @@ public class MeetingTopicAction extends ActionSupport{
 		}
 		
 		return SUCCESS;
-
+	}
+	
+	/**
+	 * @info 根据用户查看话题
+	 * @return
+	 * @throws Exception
+	 */
+	public String findTopicByCellphone(){
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingTopicService service = new MeetingTopicService();
+		String topic = service.findTopicByCellphone(cellphone,pageIndex);
+		
+		if(null == topic)
+		{
+			jsonData.put("code", -1);	
+		}
+		else
+		{
+			jsonData.put("code", 0);
+			jsonData.put("comments", topic);
+		}
+		
+		return SUCCESS;
+	}
+	
+	/**
+	 * @info 根据用户查看评论
+	 * @return
+	 * @throws Exception
+	 */
+	public String findCommentByCellphone(){
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingTopicService service = new MeetingTopicService();
+		String comments = service.findCommentByCellphone(cellphone,pageIndex);
+		
+		if(null == comments)
+		{
+			jsonData.put("code", -1);	
+		}
+		else
+		{
+			jsonData.put("code", 0);
+			jsonData.put("comments", comments);
+		}
+		
+		return SUCCESS;
 	}
 }
 

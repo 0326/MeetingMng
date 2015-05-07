@@ -117,14 +117,41 @@ public class MeetingTopicTest {
 		}
 	}
 	
+	public void findCommentByCellphone(){
+		MeetingTopicService service = new MeetingTopicService();
+		String comments = service.findCommentByCellphone("13026310448",1);
+		
+		if(null ==comments){
+			System.out.println("失败");
+		}
+		else{
+			System.out.println("成功");
+			System.out.println(service.findCommentByCellphone("13026310448",1));
+		}
+	}
+	
+	
+	public void findTopicByCellphone(){
+		MeetingTopicService service = new MeetingTopicService();
+		String comments = service.findTopicByCellphone("13026310448",1);
+		
+		if(null ==comments){
+			System.out.println("失败");
+		}
+		else{
+			System.out.println("成功");
+			System.out.println(service.findTopicByCellphone("13026310448",1));
+		}
+	}
 	
 	
 	public static void main(String[] args){
-//		MeetingTopicTest meetingTopicTest = new MeetingTopicTest();
+		MeetingTopicTest meetingTopicTest = new MeetingTopicTest();
 //		meetingTopicTest.findCommentByTopicId();
 		
-		MeetingTopicService mts = new MeetingTopicService();
-		String res = mts.findTopicList("76a95da6e7df42efbd14dd9ebd0e844e", "13026310448");
-		System.out.println(res);
+//		MeetingTopicService mts = new MeetingTopicService();
+//		String res = mts.findTopicList("76a95da6e7df42efbd14dd9ebd0e844e", "13026310448");
+//		System.out.println(res);
+		meetingTopicTest.findTopicByCellphone();
 	}
 }
