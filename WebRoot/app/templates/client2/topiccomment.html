@@ -1,0 +1,24 @@
+<div class="page-head">
+	娃哈哈AD钙奶
+</div>
+<div class="page-content">
+	
+	<ul class="row topic-list">
+		<li ng-repeat="topic in topicList" class="columns">
+			<div class="row">
+			<a class="large-2 columns col-user" href="#/contact-detail?uid={{topic[0]}}">
+				<img src="{{topic[2]}}">
+				<p>{{topic[1]}}</p>
+			</a>
+			<a class="large-10 columns col-content" href="#/topic-list?tid={{topic[3]}}">
+				<h3>{{topic[4]}}<span class="right">{{topic[6] | date:'yyyy-MM-dd HH:mm'}}</span></h3>
+				<p>{{topic[5]}}<span class="right">共6条回复</span></p>
+			</a>
+			</div>
+		</li>
+	</ul>
+</div>
+
+<script type="text/javascript">
+
+</script>

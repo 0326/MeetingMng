@@ -1,0 +1,239 @@
+
+<div class="pure-g static-container" >
+	<div class="regist-tab">
+        <div class="pure-u-12-24 regist-tab-user">
+        	<img src="app/images/userbg.jpg">
+            <a class="pure-button pure-button-primary action-button animated fadeInLeft" id="user-regist-btn">普通用户注册</a>
+            <p>适用于企业员工,组织,团体中的成员</p>
+        </div>
+        <div class="pure-u-12-24 regist-tab-company">
+            <img src="app/images/companybg.jpg">
+            <a class="pure-button pure-button-primary action-button animated fadeInLeft" id="company-regist-btn">公司管理员注册</a>
+            <p>适用于企业,组织,团体的管理者,每个组织只能有一个管理员账号</p>
+        </div>
+    </div>
+  <div class="regist-forms pure-g">
+    <div class="pure-u-1 pure-u-md-2-5  user-regist-form">
+        <form class="pure-form pure-form-aligned" name="userForm1" ng-submit="submitUserForm1(userForm1.$valid)" novalidate>
+            <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>普通用户注册</label>
+            <fieldset>
+                <div class="pure-control-group">
+                    <label for="cellphone">手机号(该手机号将作为登录账号)</label>
+                    <input id="cellphone" class="i-validater validater-user-cellphone" ng-model="user.cellphone" type="text" placeholder="" class="i-validater validater-phone" required>
+                    <p class="validater-helper"></p>
+                </div>
+                <div class="pure-control-group">
+                    <label for="companyName">所在公司</label>
+                    <input  ng-model="user.companyId" type="hidden">
+                    <input id="companyName" ng-model="user.companyName" type="text" placeholder="请输入您的所属公司名称" class="i-validater validater-user-company">
+                    <p class="validater-helper"></p>
+                </div>
+                <div class="pure-control-group">
+                    <label for="ordinaryUsername">用户姓名</label>
+                    <input  ng-model="user.name" type="hidden">
+                    <input id="ordinaryUsername" ng-model="user.name" class="i-validater validater-notempty" type="text" placeholder="请输入您的真实姓名">
+                    <p class="validater-helper"></p>
+                </div>
+                <div class="pure-control-group">
+                    <label for="password">设置密码</label>
+                    <input id="password" ng-model="user.password" type="password" placeholder="请输入密码" class="i-validater validater-password" required>
+                    <p class="validater-helper"></p>
+                </div>
+
+                <div class="pure-control-group">
+                    <label for="repassword">重复密码</label>
+                    <input id="repassword" ng-model="user.repassword" type="password" placeholder="请确认密码" class="i-validater validater-repassword" required>
+                    <p class="validater-helper"></p>
+                </div>
+                <div class="pure-control-group">
+                    <button class="pure-button pure-button-primary" id="submitForm1" ng-disabled="userForm1.$invalid">下一步</button>
+                </div>
+            </fieldset>
+        </form>
+        <form class="pure-form pure-form-aligned" name="userForm2" ng-submit="submitUserForm2(userForm2.$valid)" novalidate>
+        	<fieldset>
+                 <div class="pure-control-group">
+                    <label for="phonecode">验证码</label>
+                    <input class="pure-input-3-5" id="phonecode" type="text" placeholder="请输入手机收到的验证码,测试请输入1234">
+                    <button class="pure-button pure-button-primary" id="phonecodeBtn">发送手机验证码</button>
+                </div>
+                <div class="pure-control-group">
+                    <input id="cb1" type="checkbox" required>
+                    <label for="cb1" class="pure-checkbox">我已阅读《会管家用户使用协议》</label>
+                    <button type="submit" class="pure-button pure-button-primary" ng-disabled="userForm2.$invalid">注册</button>
+                    <a href="#/">已有账号，直接登录</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="pure-u-1 pure-u-md-2-5 company-regist-form">
+    	<form class="pure-form pure-form-aligned " name="companyForm" ng-submit="submitCompanyForm(companyForm.$valid)" novalidate>
+            <label class="form-label click-reload"><i class="fa fa-arrow-left"></i>企业注册</label>
+    	    <fieldset>
+    	        <div class="pure-control-group">
+    	            <label for="username">邮箱(该邮箱将作为登录账号)</label>
+    	            <input id="username" class="i-validater validater-company-username" ng-model="user.username" type="email" placeholder="请不要使用公司内网邮箱账号" required>
+                    <p class="validater-helper"></p>
+    	        </div>
+
+    	        <div class="pure-control-group">
+    	            <label for="password">设置密码</label>
+    	            <input id="password" class="i-validater validater-password" ng-model="user.password" type="password" placeholder="建议数字,字母,大小写组合"  required>
+                    <p class="validater-helper"></p>
+    	        </div>
+
+    	        <div class="pure-control-group">
+    	            <label for="repassword">重复密码</label>
+    	            <input id="repassword" class="i-validater validater-repassword" ng-model="user.repassword" type="password" placeholder="请确认密码" required>
+                    <p class="validater-helper"></p>
+    	        </div>
+
+    	        <div class="pure-control-group">
+    	            <label for="foo">公司名称</label>
+    	            <input id="foo" class="i-validater validater-company-name" ng-model="user.companyName" type="text" placeholder="请输入您的注册公司名称" required>
+                    <p class="validater-helper"></p>
+    	        </div>
+
+    	        <div class="pure-control-group">
+                <label class="inline">公司所在地</label>
+                <select class="pure-input-1-5" ng-model="vm.province" ng-options="p.province for p in vm.provinces">
+                    <option value="">--请选择--</option>
+                </select>
+                <select class="pure-input-1-5" ng-if="vm.province.cities" ng-model="vm.city" ng-options="c.code as c.name for c in vm.province.cities">
+                    <option value="">--请选择--</option>
+                </select>
+            	</div>
+			     <div class="pure-control-group">
+		            <label class="inline">所属行业</label>
+		            <select class="pure-input-1-2" ng-model="vm.industy" ng-options="i.code as i.name group by i.category for i in vm.industies">
+                    <option value="">--请选择--</option>
+		            </select>
+		        	</div>
+		        	<div class="pure-control-group">
+    	            <label class="inline" for="foo">请输入验证码</label>
+    	            <input class="pure-input-1-5" id="inputcode" ng-model="inputcode" type="text" placeholder="">
+    	            <div class="vcode-box"></div>
+    	            <!-- <button class="pure-button pure-button-primary vcode-btn">验证</button> -->
+    	        </div>
+    	        <div class="pure-control-group">
+                    <input id="cb2" type="checkbox">
+    	            <label for="cb2" class="pure-checkbox">我已阅读《会管家用户使用协议》</label>
+
+    	            <button type="submit" class="pure-button pure-button-primary" ng-disabled="companyForm.$invalid">注册</button>
+    	            <a href="#/">已有账号，直接登录</a>
+    	        </div>
+    	    </fieldset>
+    	</form>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" href="app/bower_components/auto-complete/jquery.autocomplete.css">
+<script src="app/bower_components/auto-complete/jquery.autocomplete.min.js"></script>
+<!-- <script src="app/javascripts/autocomplete.js"></script> -->
+<script src="app/javascripts/vCode.js"></script>
+<script src="app/javascripts/validater.js"></script>
+<script type="text/javascript">
+/*    var companydata = [];
+    var lastName = null;
+    var timer = function(thisname){
+        setInterval(function(){
+            var cname = encodeURI($("#companyName").val());
+            var acurl = encodeURI('/MeetingMng/api/v1/findCompanyByName?companyName='+cname);
+            $.ajax({
+                url:acurl,
+                type:"GET",
+                success:function(data){
+                    var acdata = [];
+                    if(data.code == 0){
+                        companydata = $.parseJSON(data.company);
+                        console.log(acdata);
+                        for(var i=0;i<companydata.length;i++){
+                            acdata.push(companydata[i].name);
+                        }
+                        $('#companyName').AutoComplete({
+                            'data': acdata,
+                            'width': 540,
+                            'matchHandler': function(key, data){
+                                console.log(key);
+                                console.log(data);
+                            },
+                            'afterSelectedHandler': function(data) {
+                                console.log(data);
+                            },
+                            'onerror': function(msg) {
+                                alert(msg);
+                            }
+                        });
+                    }
+                    else{
+
+                    }
+                }
+            });
+        },2000);
+    }
+    $("#companyName").change(function(){
+        if(lastName == null){
+            lastName = $("#companyName").val();
+        }
+        else{
+            console.log(lastName);
+            console.log($("#companyName").val())
+        }
+        // timer();
+    });
+    $("#companyName").blur(function(){
+        clearInterval(timer);
+    });*/
+
+	// 选择注册方式
+    $(".click-reload").on("click", function(){
+        window.location.reload();
+    });
+
+    $(".action-button").on('click', function(){
+		if(this.id == 'user-regist-btn'){
+			$(".regist-forms .user-regist-form").css({'display':'block'});
+		}
+		else if(this.id == 'company-regist-btn'){
+			$(".regist-forms .company-regist-form").css({'display':'block'});
+		}
+		$(".regist-tab").css({'display':'none'});
+	});
+
+    //普通用户注册：1.填写手机验证码；2.填写公司个人信息，注册完成；
+    $("#phonecodeBtn").on("click", function(){
+        //调用发送验证码api
+        // $.ajax();
+
+        $("#phonecodeBtn").addClass("pure-button-disabled");
+
+        $("#phonecode").val("1234");
+
+        $("#phonecodeBtn").html("(<span id='phonecount'>60</span>)请输入手机短信验证码");
+        var timeLeft;
+        var timer = setInterval(function(){
+            timeLeft = $("#phonecount").text() - 1;
+            if(timeLeft < 0){
+                clearInterval(timer);
+                $("#phonecodeBtn").removeClass("pure-button-disabled");
+                $("#phonecodeBtn").text("验证超时，请重新发送验证码");
+            }
+            else{
+                $("#phonecount").text(timeLeft);
+            }
+        },1000);
+    });
+
+    /*$("#submitForm1").on('click', function(){
+        $("#submitForm1,#phonecodeBtn").slideUp();
+        $(".regist-forms form[name='userForm2']").slideDown();
+    })*/
+
+  /*  $("#submitForm2").on('click', function(){
+        if($("#phonecode").val() != "1234"){
+            alert("验证码错误");
+            return;
+        }
+    })*/
+</script>

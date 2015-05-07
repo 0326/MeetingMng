@@ -1,0 +1,69 @@
+<div class="page-head">
+	<ul class="button-group even-3">
+	  <li><a href="#/meeting-detail?mid={{meeting.meetingId}}" class="button">会议详细</a></li>
+	  <li><a href="#/meeting-contact?mid={{meeting.meetingId}}" class="button  active">会议联系人</a></li>
+	  <li><a href="#/meeting-discuss?mid={{meeting.meetingId}}" class="button">会议讨论</a></li>
+	</ul>
+</div>
+<div class="page-content">
+	<div class="row">
+		<div class="columns large-6 medium-6 small-12">
+			<div class="panel">
+				<h3 class="subheader">办会人名单 <button class="button">添加</button></h3>
+				<table class="table table-bordered table-hover">
+				  <thead>
+				  <tr>
+				    <th><input type="checkbox" ng-model="vm.allChecked" ng-change="vm.checkAll(vm.allChecked)"/></th>
+				    <th>姓名</th>
+				    <th>状态</th>
+				    <th>操作</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+				  <tr ng-repeat="item in vm.items">
+				    <td><input type="checkbox" ng-model="item.$checked"/></td>
+				    <td>{{item.name}}</td>
+				    <td>{{item.followers|number}}</td>
+				    <td>{{item.income|currency}}</td>
+				  </tr>
+				  </tbody>
+				</table>
+				<div> 选中的项：<br/>
+				  <label class="label label-success" ng-repeat-start="item in vm.selection()">{{item.name}}</label><span
+				      ng-if="!$last && $index % 5 !== 4">,</span><br ng-repeat-end ng-if="$index % 5 === 4"/>
+				</div>
+				<!-- table end -->s
+			</div>
+		</div>
+		<div class="columns large-6 medium-6 small-12">
+			<div class="panel">
+				<h3 class="subheader">参会人名单</h3>
+				<ul class="accordion" data-accordion role="tablist">
+				  <li class="accordion-navigation">
+				    <a href="" role="tab" id="panel1d-heading" class="accordion-head" aria-controls="panel1d">Accordion 1</a>
+				    <div id="panel1d" class="content active" role="tabpanel" aria-labelledby="panel1d-heading">
+				      Panel 1. Lorem ipsum dolor
+				    </div>
+				  </li>
+				  <li class="accordion-navigation">
+				    <a href=""  role="tab" id="panel2d-heading" class="accordion-head" aria-controls="panel2d">Accordion 2</a>
+				    <div id="panel2d" class="content" role="tabpanel" aria-labelledby="panel2d-heading">
+				      Panel 2. Lorem ipsum dolor
+				    </div>
+				  </li>
+				  <li class="accordion-navigation">
+				    <a href="" role="tab" id="panel3d-heading" class="accordion-head" aria-controls="panel3d">Accordion 3</a>
+				    <div id="panel3d" class="content" role="tabpanel" aria-labelledby="panel3d-heading">
+				      Panel 3. Lorem ipsum dolor
+				    </div>
+				  </li>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+</script>

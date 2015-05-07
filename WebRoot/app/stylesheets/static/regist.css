@@ -1,0 +1,74 @@
+.regist-tab{
+	width: 800px;
+	margin:0 auto;
+}
+.regist-tab > div{
+	width: 50%;
+	/*height: 400px;*/
+	/*border:1px solid #eee;*/
+	text-align: center;
+}
+.regist-tab img{
+	width: 100%;
+}
+.regist-tab .regist-tab-user{
+	
+}
+
+.regist-tab .regist-tab-company{
+
+}
+
+.regist-forms{
+	width: 100%;
+}
+
+.regist-forms .company-regist-form, .regist-forms .user-regist-form{
+	display: none;
+	margin:0 auto;
+}
+
+/*.regist-forms form{
+	width: 100%;
+	margin: 0 auto;
+}*/
+.pure-form-aligned .pure-control-group label{
+	text-align: left;
+	width: auto;
+}
+.pure-form-aligned .pure-control-group label.inline{
+	width: 7em;
+}
+.pure-form input[type="checkbox"]{
+	width: auto;
+	margin-top: 15px;
+}
+#inputcode{
+	width: 6em;
+}
+
+
+.vcode-btn{
+	display: inline-block;
+}
+.vcode-box{
+	width:100px; 
+  height: 30px; 
+  border: 1px solid #ccc; 
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+form[name="userForm2"]{
+	display: none;
+}
+
+/*email page*/
+.email-box{
+	margin:0 auto;
+	display: block;
+}
+.email-box button{
+	display: inline-block;
+	margin: .5em;
+}
+/*end email*/
