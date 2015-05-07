@@ -19,6 +19,7 @@ import com.huiguanjia.pojo.Comment;
 import com.huiguanjia.pojo.Meeting;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.pojo.Topic;
+
 import com.huiguanjia.util.JSONUtil;
 import com.huiguanjia.authorityvalidate.MeetingTopicValidate;
 
@@ -365,5 +366,103 @@ public class MeetingTopicService {
 
 		return commentStr;	
 	}
+
+	/**
+	 * @info 用户查看自己的话题
+	 * @param cellphone
+	 * @param pageIndex
+	 * @return
+	 */
+	public String findTopicByCellphone(String cellphone,int pageIndex) {
+		String topicStr;
+		List<Map> topicMap = new ArrayList<Map>();
+		Session sess = SessionDAO.getSession();
+		BaseDAO aBaseDao = new BaseDAO();
+		String hql = "select topic.id , topic.title , topic.content , topic.createTime "
+				+ "from Topic as topic where topic.creatorId = ?";
+		Object[] values = new Object[] { cellphone };
+		JSONObject obj = aBaseDao.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		List<Object[]> l = (ArrayList<Object[]>) obj.get("list");
+		if(null == l){
+			return null;
+		}
+		Iterator it = l.iterator();
+
+		if (false == it.hasNext())
+			topicStr = null;
+		else {
+			Object[] objs;
+			while(true == it.hasNext())
+			{
+				objs = (Object[])it.next();
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("id", objs[0]);
+				map.put("title", objs[1]);
+				map.put("content", objs[2]);
+				map.put("createTime", objs[3]);
+//				String commentName = this.findNameByCreatorId((String) obj[3]);
+//				map.put("commentName", commentName);
+	
+				topicMap.add(map);
+			}
+		}
+		JSONObject result = new JSONObject();
+		result.put("list", topicMap);
+		result.put("total", obj.get("total"));
+		topicStr = JSONUtil.serialize(result);
+		SessionDAO.closeSession();
+
+		return topicStr;	
+	}
+
+	/**
+	 * @info 用户查看自己的评论
+	 * @param cellphone
+	 * @param pageIndex
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public String findCommentByCellphone(String cellphone,int pageIndex) {
+		String commentStr;
+		List<Map> commentMap = new ArrayList<Map>();
+		Session sess = SessionDAO.getSession();
+		BaseDAO aBaseDao = new BaseDAO();
+		String hql = "select comment.id , comment.content , comment.commentTime "
+				+ "from Comment as comment where comment.commentorId = ?";
+		Object[] values = new Object[] { cellphone };
+		JSONObject obj = aBaseDao.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		List<Object[]> l = (ArrayList<Object[]>) obj.get("list");
+		if(null == l){
+			return null;
+		}
+		Iterator it = l.iterator();
+
+		if (false == it.hasNext())
+			commentStr = null;
+		else {
+			Object[] objs;
+			while(true == it.hasNext())
+			{
+				objs = (Object[])it.next();
+				Map<String,Object> map = new HashMap<String,Object>();
+				map.put("id", objs[0]);
+				map.put("content", objs[1]);
+				map.put("commentTime", objs[2]);
+//				String commentName = this.findNameByCreatorId((String) obj[3]);
+//				map.put("commentName", commentName);
+	
+				commentMap.add(map);
+			}
+		}
+		JSONObject result = new JSONObject();
+		result.put("list", commentMap);
+		result.put("total", obj.get("total"));
+		commentStr = JSONUtil.serialize(result);
+		SessionDAO.closeSession();
+
+		return commentStr;	
+	}
 }
+
+
 
