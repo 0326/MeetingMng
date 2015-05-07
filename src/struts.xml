@@ -345,12 +345,12 @@
  	
  	<!--普通用户api接口-联系人操作-->
 	<package name="u-contact-package" namespace="/api/v1/u/contact" extends="json-default">
-    	<action name="createindusty" class="com.huiguanjia.action.DevAction" method="createIndusty">
+    	<action name="findCompanyContact" class="com.huiguanjia.action.ContactAction" method="findCompanyContact">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>
     	</action>
-    	<action name="createcity" class="com.huiguanjia.action.DevAction" method="createCity">
+    	<action name="findCompanyContactForOrganizer" class="com.huiguanjia.action.ContactAction" method="findCompanyContactForOrganizer">
     		<result type="json" name="success">
     			<param name="root">jsonData</param>
     		</result>

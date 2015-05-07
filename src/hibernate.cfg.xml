@@ -40,5 +40,6 @@
 		<mapping class="com.huiguanjia.pojo.MeetingParticipator" />
 		<mapping class="com.huiguanjia.pojo.Topic" />
 		<mapping class="com.huiguanjia.pojo.Comment" />
+		<mapping class="com.huiguanjia.pojo.Contact" />
 	</session-factory>
 </hibernate-configuration>

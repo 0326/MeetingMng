@@ -7,19 +7,16 @@
 </div>
 <div class="page-content">
 	<div class="row">
-		<div class="small-12 large-8 columns">
-			<h1>{{meeting.meetingName}} <i class="fa fa-pencil-square-o"></i></h1>
+		<div class="small-12 large-6 columns">
+			<h1>{{meeting.meetingName}}</h1>
 			<p>当前状态{{meeting.meetingState}}</p>
 			<p>{{meeting.meetingLocation}} </p>
 			<p>{{ [meeting.meetingFrequency,meeting.meetingStartTime] | meetingDate}}</p>
 			<p>会议内容：{{meeting.meetingContent}}</p>
 			<p>创建者：{{meeting.ordinaryUser.name}}</p>
-		</div>
-		<div class="small-12 large-4 columns text-center">
 			<div>
 				<img src="/MeetingMng/app/images/qrcode.png">
 			</div>
-			<button class="button">签到</button>
 		</div>
 	</div>
 	<!-- <form>

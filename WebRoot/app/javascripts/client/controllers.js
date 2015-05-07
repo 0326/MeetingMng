@@ -93,15 +93,25 @@ var mControllers = angular.module("mControllers", [])
   });
 })
 
-.controller("meetingcontactCtrl", function($scope, userService, meetingId, organizerService) {
+.controller("meetingcontactCtrl", function($scope, meetingId) {
   $scope.meeting = {'meetingId': meetingId};
-  $scope.organizerList = [];
-  
-  organizerService
-  .findOrganizer(userService.profiles.cellphone,$scope.meeting.meetingId)
-  .then(function(data){
-    $scope.organizerList = data;
-  });
+
+  var vm = $scope.vm = {};
+  vm.items = [{id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"},
+  {id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"}];
+  vm.checkAll = function(checked) {
+    angular.forEach(vm.items, function(item) {
+      item.$checked = checked;
+    });
+  };
+  vm.selection = function() {
+    // return _.where(vm.items, {$checked: true});
+  };
+  // 供页面中使用的函数
+  vm.age = function(birthday) {
+    // return moment().diff(birthday, 'years');
+  };
+
 
 })
 
