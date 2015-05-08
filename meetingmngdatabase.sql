@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-05-06 17:36:42
+Date: 2015-05-07 21:53:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -220,7 +220,9 @@ CREATE TABLE `meeting` (
 -- Records of meeting
 -- ----------------------------
 INSERT INTO `meeting` VALUES ('063b693b55f44aec84b0172fa4a59a3e', '趴趴熊的会议', '请各位小动物带好节操，准时开会', '璀璨森林', '13026310444', null, 'https://www.huiguanjia.com/api/v1/u/meeting063b693b55f44aec84b0172fa4a59a3e', '1', '1', '1430925840000', '1430925840000', '1430900712610', null, null);
+INSERT INTO `meeting` VALUES ('269d8c3bc02048bf9df477a40e9174cb', '质检部每周五例会', '每周总结报告asdsfsdasdasdasdsadsadsadasdasdassssssssdasd', '质检1号大厅', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meeting269d8c3bc02048bf9df477a40e9174cb', '1', '3', '1431075632000', '1431075632000', '1430964517320', null, null);
 INSERT INTO `meeting` VALUES ('76a95da6e7df42efbd14dd9ebd0e844e', 'lalala', '胜多负少鼎飞丹砂', '哇哇哇', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meeting76a95da6e7df42efbd14dd9ebd0e844e', '1', '2', '1429125044000', '1429125044000', '1430205431746', null, null);
+INSERT INTO `meeting` VALUES ('a3e8fc2847fb40d7b7e0b5c290d8ead1', '质检部周一例会', '制定每周工作计划和任务', '质检1号楼', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meetinga3e8fc2847fb40d7b7e0b5c290d8ead1', '1', '3', '1431307820000', '1431307820000', '1430963678780', null, null);
 
 -- ----------------------------
 -- Table structure for meeting_organizer
@@ -241,7 +243,9 @@ CREATE TABLE `meeting_organizer` (
 -- Records of meeting_organizer
 -- ----------------------------
 INSERT INTO `meeting_organizer` VALUES ('13026310444', '063b693b55f44aec84b0172fa4a59a3e', '2', '1', null);
+INSERT INTO `meeting_organizer` VALUES ('13026310448', '269d8c3bc02048bf9df477a40e9174cb', '2', '1', null);
 INSERT INTO `meeting_organizer` VALUES ('13026310448', '76a95da6e7df42efbd14dd9ebd0e844e', '2', '1', null);
+INSERT INTO `meeting_organizer` VALUES ('13026310448', 'a3e8fc2847fb40d7b7e0b5c290d8ead1', '2', '1', null);
 
 -- ----------------------------
 -- Table structure for meeting_participator
@@ -841,7 +845,7 @@ CREATE TABLE `topic` (
   PRIMARY KEY (`id`),
   KEY `FK_topic_meeting_meetingId` (`meetingId`),
   CONSTRAINT `FK_topic_meeting_meetingId` FOREIGN KEY (`meetingId`) REFERENCES `meeting` (`meetingId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of topic
@@ -849,6 +853,8 @@ CREATE TABLE `topic` (
 INSERT INTO `topic` VALUES ('1', '标题啊', '这是话题内容哈哈哈哈哈', '13026310448', '1430879932130', '76a95da6e7df42efbd14dd9ebd0e844e');
 INSERT INTO `topic` VALUES ('2', '我又创建了一个话题', '这是话题内容啊哈哈哈哈哈', '13026310448', '1430894990916', '76a95da6e7df42efbd14dd9ebd0e844e');
 INSERT INTO `topic` VALUES ('3', '节操君', '把拉撒睡懒觉大赛', '13026310444', '1430900754454', '063b693b55f44aec84b0172fa4a59a3e');
+INSERT INTO `topic` VALUES ('4', 'buasdasj', 'dfsdflsdjflsd;jflsd;jldjflsdjflds;jfsldjfsdahgoiccicvnbvcnbm,hseriofewv', '13026310448', '1430983014572', '269d8c3bc02048bf9df477a40e9174cb');
+INSERT INTO `topic` VALUES ('5', 'helloworld', 'cosole.log(\"helloworld\");', '13026310448', '1430990722659', '269d8c3bc02048bf9df477a40e9174cb');
 
 -- ----------------------------
 -- View structure for active_meeting_view

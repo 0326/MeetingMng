@@ -7,19 +7,13 @@
 </div>
 <div class="page-content">
 	<div class="row">
-<<<<<<< HEAD
 		<div id="detailBox" class="small-12 large-8 columns">
 			<h1>{{meeting.meetingName}} <i class="fa fa-pencil-square-o" ng-click="onUpdate()"></i></h1>
-=======
-		<div class="small-12 large-6 columns">
-			<h1>{{meeting.meetingName}}</h1>
->>>>>>> 78f7660e22b8ea2b4a3d2ef8dcac8e488c585ad2
 			<p>当前状态{{meeting.meetingState}}</p>
 			<p>{{meeting.meetingLocation}} </p>
 			<p>{{ [meeting.meetingFrequency,meeting.meetingStartTime] | meetingDate}}</p>
 			<p>会议内容：{{meeting.meetingContent}}</p>
 			<p>创建者：{{meeting.ordinaryUser.name}}</p>
-<<<<<<< HEAD
 		</div>
 		<div id="updateBox" class="small-12 large-8 columns hide">
 			<form name="updateForm" ng-submit="submitUpdateForm(updateForm.$valid)" novalidate>
@@ -90,15 +84,13 @@
 		      <div class="row prefix-round">
 		        <div class="small-9 small-offset-3 columns">
 		          <button type="submit" class="button success button-sm">修改</button>
-		          <button class="button success button-sm" ng-click="cancelUpdate()">取消</button>
+		          <a class="button success button-sm" ng-click="cancelUpdate()">取消</a>
 		        </div>
 		      </div>
 		    </div>
 			</form>
 		</div>
 		<div class="small-12 large-4 columns text-center">
-=======
->>>>>>> 78f7660e22b8ea2b4a3d2ef8dcac8e488c585ad2
 			<div>
 				<img src="/MeetingMng/app/images/qrcode.png">
 			</div>

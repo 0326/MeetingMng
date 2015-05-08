@@ -1,0 +1,39 @@
+<div class="page-head">
+	<ul class="button-group even-3">
+	  <li><a href="#/contact-list-mine?" class="button">我的联系人</a></li>
+	  <li><a href="#/contact-list-company?" class="button  active">公司联系人</a></li>
+	</ul>
+</div>
+<div class="page-content">
+	<div class="row">
+		<div class="columns large-6 medium-6 small-12">
+			<div class="panel">
+				<div class="row collapse postfix-round">
+	        <div class="small-9 columns">
+	          <input type="text" placeholder="Value">
+	        </div>
+	        <div class="small-3 columns">
+	          <a href="#" class="button postfix">搜索</a>
+	        </div>
+	      </div>
+				<ul class="row contact-list">
+					<li class="columns clearfix" ng-repeat="o in userList">
+						<div class="left">
+							<img src="{{o.avatar}}">
+						</div>
+						<div>
+							<span>{{o.name}}</span>
+							<!-- <span class="tag-info tag-state-0"></span> -->
+						</div>
+						<div class="sub-info">
+							<span>{{o.department}}</span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+</script>

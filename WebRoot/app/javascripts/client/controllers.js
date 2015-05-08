@@ -42,7 +42,7 @@ var mControllers = angular.module("mControllers", [])
       perPageOptions: [10, 20, 30, 40, 50],
       rememberPerPage: 'perPageItems',
       onChange: function(){
-        console.log(this.currentPage);
+        // console.log(this.currentPage);
       }
   };
 
@@ -110,26 +110,36 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("meetingcontactCtrl", function($scope, meetingId) {
-  $scope.meeting = {'meetingId': meetingId};
-
-  var vm = $scope.vm = {};
-  vm.items = [{id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"},
-  {id:1,name:"hello",followers:"followers",birthday:"2014",income:"2000"}];
-  vm.checkAll = function(checked) {
-    angular.forEach(vm.items, function(item) {
-      item.$checked = checked;
+//会议联系人管理
+.controller("meetingcontactCtrl", function($scope, userService, meetingId, organizerService, contactService) {
+  $scope.meeting = {'meetingId': meetingId};  //会议
+  $scope.organizerList = null;                //办会人员列表
+  $scope.companyUsers = null;                 //公司联系人名单
+  $scope.myContactors = null;                 //我的联系人名单
+  $scope.addorganizerList = null;             //要添加的办会人员名单
+  var init = function(){
+    //获取办会者列表
+    organizerService
+    .findOrganizer(userService.profiles.cellphone,$scope.meeting.meetingId)
+    .then(function(data){
+      $scope.organizerList = data;
     });
-  };
-  vm.selection = function() {
-    // return _.where(vm.items, {$checked: true});
-  };
-  // 供页面中使用的函数
-  vm.age = function(birthday) {
-    // return moment().diff(birthday, 'years');
-  };
+    //获取添加办会人员列表
+    contactService
+    .findCompanyContactForOrganizer(userService.profiles.cellphone, $scope.meeting.meetingId)
+    .then(function(data){
+      $scope.addorganizerList = data;
+    });  
+    //对比要添加的联系人和
+    function stateCallback(){
 
-
+    }
+  }
+  init();
+  //用户如果在此刷新浏览器，需要重新加载数据
+  $scope.$on("userProfileBroadcast",function(event, client){
+    init();
+  });
 })
 
 .controller("meetingdiscussCtrl", function($scope, userService, topicService, meetingId) {
@@ -185,11 +195,51 @@ var mControllers = angular.module("mControllers", [])
   });
 
 })
+
+
 .controller("meetinghistoryCtrl", function($scope) {
 
 })
 
 
+//联系人模块
+.controller("contactListCompanyCtrl", function($scope, userService, contactService) {
+  $scope.userList = [];
+
+  var init = function(){
+    contactService
+    .findCompanyContact(userService.profiles.cellphone)
+    .then(function(data){
+      $scope.userList = data;
+    });  
+  }
+  init();
+  
+  //用户如果在此刷新浏览器，需要重新加载数据
+  $scope.$on("userProfileBroadcast",function(event, client){
+    init();
+  });
+
+})
+
+.controller("contactListMineCtrl", function($scope, userService, contactService) {
+  $scope.userList = [];
+
+  var init = function(){
+    contactService
+    .findCompanyContact(userService.profiles.cellphone)
+    .then(function(data){
+      $scope.userList = data;
+    });  
+  }
+  init();
+  
+  //用户如果在此刷新浏览器，需要重新加载数据
+  $scope.$on("userProfileBroadcast",function(event, client){
+    init();
+  });
+
+})
 
 
 .controller("profileCtrl", function($scope, userService) {
@@ -202,8 +252,3 @@ var mControllers = angular.module("mControllers", [])
       $scope.$emit('userProfileChange',$scope.client);
    }
 })
-
-
-
-
-
