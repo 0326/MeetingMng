@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 
 import org.hibernate.Session;
 
+import com.alibaba.fastjson.JSONObject;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.Comment;
@@ -20,6 +21,7 @@ import com.huiguanjia.pojo.Topic;
 import com.huiguanjia.service.MeetingService;
 import com.huiguanjia.service.MeetingTopicService;
 import com.huiguanjia.service.OrdinaryUserService;
+import com.huiguanjia.util.JSONUtil;
 import com.huiguanjia.util.RandomUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import com.huiguanjia.service.MeetingRecordService;;
@@ -64,8 +66,11 @@ public class MeetingRecordAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		MeetingRecordService t = new MeetingRecordService();
 		int obj = t.findCompeletedMeetingNumberByHistory(username);
-		jsonData.put("obj", obj);
-		
+		JSONObject result = new JSONObject();
+		// number代表会议数量
+		result.put("number", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);		
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
@@ -83,8 +88,12 @@ public class MeetingRecordAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		MeetingRecordService t = new MeetingRecordService();
 		int obj = t.findCancedMeetingNumberByHistory(username);
-		jsonData.put("obj", obj);
-
+		JSONObject result = new JSONObject();
+		// number代表会议数量
+		result.put("number", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);
+		
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
@@ -102,8 +111,11 @@ public class MeetingRecordAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		MeetingRecordService t = new MeetingRecordService();
 		int obj = t.findMeetingNumberByToday(username);
-		jsonData.put("obj", obj);
-
+		JSONObject result = new JSONObject();
+		// number代表会议数量
+		result.put("number", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
@@ -121,8 +133,11 @@ public class MeetingRecordAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		MeetingRecordService t = new MeetingRecordService();
 		int obj = t.findActiveMeetingNumberByToday(username);
-		jsonData.put("obj", obj);
-
+		JSONObject result = new JSONObject();
+		// number代表会议数量
+		result.put("number", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
@@ -140,8 +155,11 @@ public class MeetingRecordAction extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		MeetingRecordService t = new MeetingRecordService();
 		int obj = t.findFinishedMeetingNumberByToday(username);
-		jsonData.put("obj", obj);
-//
+		JSONObject result = new JSONObject();
+		// number代表会议数量
+		result.put("number", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);//
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
@@ -163,8 +181,11 @@ public class MeetingRecordAction extends ActionSupport{
 		// 找到今天所有的参会者，在已完成的会议中
 		int obj2 = t.findTotalNumberByToday(username);
 		String obj = this.myPercent(obj1,obj2);
-		jsonData.put("obj", obj);
-
+		JSONObject result = new JSONObject();
+		// rate代表签到率
+		result.put("rate", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
@@ -186,8 +207,11 @@ public class MeetingRecordAction extends ActionSupport{
 		// 找到单个会议总人数
 		int obj2 = t.findTotalNumberByMeeting(meetingId);
 		String obj = this.myPercent(obj1,obj2);
-		jsonData.put("obj", obj);
-
+		JSONObject result = new JSONObject();
+		// rate代表签到率
+		result.put("rate", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
@@ -209,8 +233,11 @@ public class MeetingRecordAction extends ActionSupport{
 		// 找到公司历史中所有的参会者，在已完成的会议中
 		int obj2 = t.findTotalNumberByCompany(username);
 		String obj = this.myPercent(obj1,obj2);
-		jsonData.put("obj", obj);
-		
+		JSONObject result = new JSONObject();
+		// rate代表签到率
+		result.put("rate", obj);	
+		String stres = JSONUtil.serialize(result);
+		jsonData.put("stres", stres);		
 //		if(null == obj){
 //			jsonData.put("code", -1);
 //		}
