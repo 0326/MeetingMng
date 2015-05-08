@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Stack;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
+import com.huiguanjia.pojo.Contact;
 import com.huiguanjia.pojo.Department;
+import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.util.JSONUtil;
 
 public class ContactService {
@@ -59,7 +62,7 @@ public class ContactService {
 			this.avatar = avatar;
 		}
 	}
-		public class CompanyContactInfoForOrganizer{
+		public class CompanyContactExtendInfo{
 			private String cellphoneOfInfo;
 			private boolean isCellphoneHide;
 			private String name;
@@ -112,6 +115,47 @@ public class ContactService {
 			}
 	}
 	
+		public class MyContactInfo{
+			private String cellphoneOfInfo;
+			private boolean isCellphoneHide;
+			private String name;
+			private String avatar;
+			private String company;
+			
+			public String getCellphoneOfInfo() {
+				return cellphoneOfInfo;
+			}
+			public void setCellphoneOfInfo(String cellphoneOfInfo) {
+				this.cellphoneOfInfo = cellphoneOfInfo;
+			}
+			public boolean isCellphoneHide() {
+				return isCellphoneHide;
+			}
+			public void setCellphoneHide(boolean isCellphoneHide) {
+				this.isCellphoneHide = isCellphoneHide;
+			}
+			public String getName() {
+				return name;
+			}
+			public void setName(String name) {
+				this.name = name;
+			}
+			public String getAvatar() {
+				return avatar;
+			}
+			public void setAvatar(String avatar) {
+				this.avatar = avatar;
+			}
+			public String getCompany()
+			{
+				return company;
+			}
+			public void setCompany(String company)
+			{
+				this.company = company;
+			}
+		}
+		
 	/**
 	 * @info 获取公司联系人列表，列表格式是JSON格式的字符串
 	 * @param cellphone
@@ -152,7 +196,7 @@ public class ContactService {
 		}
 		
 		//标示出列表中已被添加为办会人员的联系人
-		List<CompanyContactInfoForOrganizer> resList = new ArrayList<CompanyContactInfoForOrganizer>();
+		List<CompanyContactExtendInfo> resList = new ArrayList<CompanyContactExtendInfo>();
 		
 		BaseDAO aBaseDao = new BaseDAO();
 		Session sess = SessionDAO.getSession();
@@ -167,7 +211,7 @@ public class ContactService {
 			while(true == itOfInfoList.hasNext())
 			{
 				CompanyContactInfo info = (CompanyContactInfo)itOfInfoList.next();
-				CompanyContactInfoForOrganizer infoForOrganizer = new CompanyContactInfoForOrganizer();
+				CompanyContactExtendInfo infoForOrganizer = new CompanyContactExtendInfo();
 				
 				infoForOrganizer.setAdd(false);
 				infoForOrganizer.setCellphoneOfInfo(info.getCellphoneOfInfo());
@@ -186,7 +230,7 @@ public class ContactService {
 			while(true == itOfInfoList.hasNext())
 			{
 				CompanyContactInfo info = (CompanyContactInfo)itOfInfoList.next();
-				CompanyContactInfoForOrganizer infoForOrganizer = new CompanyContactInfoForOrganizer();
+				CompanyContactExtendInfo infoForOrganizer = new CompanyContactExtendInfo();
 				
 				//判断是否为办会人员
 				infoForOrganizer.setAdd(false);
@@ -220,6 +264,91 @@ public class ContactService {
 	}
 	
 	/**
+	 * @info 当添加参会人员时获取公司联系人列表
+	 * @param cellphone
+	 * @param meetingId
+	 * @return
+	 */
+	public String findCompanyContactForParticipator(String cellphone,String meetingId)
+	{
+        String res;
+		
+		//获取公司联系人列表
+		List<CompanyContactInfo> infoList = findCompanyContactList(cellphone);
+		if(null == infoList)
+		{
+			return null;
+		}
+		
+		//标示出列表中已被添加为参会人员的联系人
+		List<CompanyContactExtendInfo> resList = new ArrayList<CompanyContactExtendInfo>();
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		
+		String hql = "select mp.id.participatorCellphone from MeetingParticipator as mp " +
+				"where mp.id.meetingId = ?";
+		Object[] values = new Object[]{meetingId};
+		List participatorList = aBaseDao.findObjectByHql(hql, values);
+		if(0 == participatorList.size())
+		{
+			Iterator itOfInfoList = infoList.iterator();
+			while(true == itOfInfoList.hasNext())
+			{
+				CompanyContactInfo info = (CompanyContactInfo)itOfInfoList.next();
+				CompanyContactExtendInfo infoForParticipator = new CompanyContactExtendInfo();
+				
+				infoForParticipator.setAdd(false);
+				infoForParticipator.setCellphoneOfInfo(info.getCellphoneOfInfo());
+				infoForParticipator.setCellphoneHide(info.isCellphoneHide());
+				infoForParticipator.setDepartment(info.getDepartment());
+				infoForParticipator.setName(info.getName());
+				infoForParticipator.setJob(info.getJob());
+				infoForParticipator.setAvatar(info.getAvatar());
+				
+				resList.add(infoForParticipator);
+			}
+		}
+		else
+		{
+			Iterator itOfInfoList = infoList.iterator();
+			while(true == itOfInfoList.hasNext())
+			{
+				CompanyContactInfo info = (CompanyContactInfo)itOfInfoList.next();
+				CompanyContactExtendInfo infoForParticipator = new CompanyContactExtendInfo();
+				
+				//判断是否为办会人员
+				infoForParticipator.setAdd(false);
+				Iterator it = participatorList.iterator();
+				while(true == it.hasNext())
+				{
+					String participatorCellphone = (String)it.next();
+					if(participatorCellphone.equals(info.getCellphoneOfInfo()))
+					{
+						infoForParticipator.setAdd(true);
+						break;
+					}
+				}
+				
+				infoForParticipator.setCellphoneOfInfo(info.getCellphoneOfInfo());
+				infoForParticipator.setCellphoneHide(info.isCellphoneHide());
+				infoForParticipator.setDepartment(info.getDepartment());
+				infoForParticipator.setName(info.getName());
+				infoForParticipator.setJob(info.getJob());
+				infoForParticipator.setAvatar(info.getAvatar());
+				
+				resList.add(infoForParticipator);
+			}
+		}
+		
+		res = JSONUtil.serialize(resList);
+		
+		SessionDAO.closeSession();
+		
+		return res;
+	}
+	
+	/**
 	 * @info 获取公司联系人列表，列表格式是一个List
 	 * @param cellphone
 	 * @return
@@ -235,6 +364,7 @@ public class ContactService {
 		List tmpList1 = aBaseDao.findObjectByHql(hql1, values1);
 		if(0 == tmpList1.size())
 		{
+			SessionDAO.closeSession();
 			return null;
 		}
 		
@@ -246,6 +376,7 @@ public class ContactService {
 		List<Object[]> tmpList2 = (List<Object[]>)aBaseDao.findObjectByHql(hql2, values2);
 		if(0 == tmpList2.size())
 		{
+			SessionDAO.closeSession();
 			return null;
 		}
 		
@@ -289,12 +420,143 @@ public class ContactService {
     		while(false == departName.isEmpty())
     		{
     			departNameStr += departName.pop();
-    			departNameStr +="-";
+    			departNameStr += "-";
     		}
     		departNameStr = departNameStr.substring(0, (departNameStr.length()-1));
     		
     		info.setDepartment(departNameStr);
     		infoList.add(info);
+		}
+		
+		SessionDAO.closeSession();
+		
+		return infoList;
+	}
+	
+	/**
+	 * @info 将一个会管家账户添加到我的联系人
+	 * @param cellphone
+	 * @param contactCellphone
+	 * @return
+	 */
+	public int addMyContact(String cellphone,String contactCellphone)
+	{
+		int res;
+		
+		if(cellphone == contactCellphone)
+		{
+			return -3;
+		}
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		
+		//判断要被添加的账户是否是已经注册的会管家账户
+		String hql1 = "select ou.cellphone from OrdinaryUser as ou " +
+				"where ou.cellphone = ? and ou.isRegister = true";
+		Object[] values1 = new Object[]{contactCellphone};
+		List tmpList1 = aBaseDao.findObjectByHql(hql1, values1);
+		if(0 == tmpList1.size())
+		{
+			SessionDAO.closeSession();
+			return -1;
+		}
+		
+		//判断要被添加的会管家账户是否已经被添加为联系人
+		String hql2 = "select c.contactCellphone.cellphone from Contact as c " +
+				"where c.cellphone.cellphone = ? and c.contactCellphone.cellphone = ?";
+		Object[] values2 = new Object[]{cellphone,contactCellphone};
+		List tmpList2 = aBaseDao.findObjectByHql(hql2, values2);
+		if(0 != tmpList2.size())
+		{
+			SessionDAO.closeSession();
+			return -2;
+		}
+		
+		//把该会管家账户添加到我的联系人
+		Transaction ts = sess.beginTransaction();
+		try{
+			Contact c = new Contact();
+			OrdinaryUser owner = new OrdinaryUser();
+			OrdinaryUser contact = new OrdinaryUser();
+			owner.setCellphone(cellphone);
+			contact.setCellphone(contactCellphone);
+			c.setCellphone(owner);
+			c.setContactCellphone(contact);
+			
+			aBaseDao.saveObject(c);
+			ts.commit();
+			res = 0;
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = -4;
+			System.out.println(e);
+		}
+		
+		SessionDAO.closeSession();
+		
+		return res;
+	}
+	
+	/**
+	 * @info 获取我的联系人列表
+	 * @param cellphone
+	 * @return
+	 */
+	public String findMyContact(String cellphone)
+	{
+		String res;
+		
+		List<MyContactInfo> infoList = findMyContactList(cellphone);
+		if(null == infoList)
+		{
+			return null;
+		}
+		else
+		{
+			res = JSONUtil.serialize(infoList);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * @info 获取我的联系人列表，列表格式是一个List
+	 * @param cellphone
+	 * @return
+	 */
+	public List<MyContactInfo> findMyContactList(String cellphone)
+	{
+		List<MyContactInfo> infoList = new ArrayList<MyContactInfo>();
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		
+		String hql = "select c.contactCellphone.cellphone,c.contactCellphone.isCellphoneHide,c.contactCellphone.name," +
+				"c.contactCellphone.avatarUrl,c.contactCellphone.companyAndCompanyAdmin.companyName from Contact as c " +
+				"where c.cellphone.cellphone = ?";
+		Object[] values = new Object[]{cellphone};
+		List<Object[]> l = (List<Object[]>)aBaseDao.findObjectByHql(hql, values);
+		if(0 == l.size())
+		{
+			SessionDAO.closeSession();
+			return null;
+		}
+		
+		Iterator it = l.iterator();
+		while(true == it.hasNext())
+		{
+			Object[] obj = (Object[])it.next();
+			MyContactInfo info = new MyContactInfo();
+			info.setCellphoneOfInfo((String)obj[0]);
+			info.setCellphoneHide((Boolean)obj[1]);
+			info.setName((String)obj[2]);
+			info.setAvatar((String)obj[3]);
+			info.setCompany((String)obj[4]);
+			
+			infoList.add(info);
 		}
 		
 		SessionDAO.closeSession();
