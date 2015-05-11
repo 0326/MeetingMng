@@ -51,7 +51,7 @@ var mControllers = angular.module("mControllers", [])
   };
 
   meetingService
-   .getAll($scope.client.cellphone,1,listType)
+   .getAll($scope.client.cellphone,0,listType)
    .then(function(meetinglist){
       $scope.meetinglist = meetinglist;
    });
@@ -90,7 +90,7 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("meetingdetailCtrl", function($scope, meetingService,meetingId) {
+.controller("meetingdetailCtrl", function($scope, meetingService, userService, meetingId) {
   $scope.meeting = {'meetingId': meetingId};
   meetingService
   .findByMeetingId(meetingId)
@@ -115,11 +115,11 @@ var mControllers = angular.module("mControllers", [])
   }
   //完成会议
   $scope.onFinish = function(){
-
+     meetingService.finish($scope.meeting.meetingId, userService.profiles.cellphone);
   }
   //删除/取消会议
   $scope.onDelete = function(){
-
+    meetingService.delete($scope.meeting.meetingId, userService.profiles.cellphone);
   }
   //会议签到
   $scope.onChecked = function(){
@@ -388,7 +388,7 @@ var mControllers = angular.module("mControllers", [])
   };
 
   meetingService
-   .getAll($scope.client.cellphone,2,listType)
+   .getAll($scope.client.cellphone,1,listType)
    .then(function(meetinglist){
       $scope.meetinglist = meetinglist;
    });

@@ -96,11 +96,21 @@ var mServices = angular.module("mServices", [])
     return d.promise;
   }
 
-  service.delete = function(meetingId){
-    $http.post("/MeetingMng/api/v1/u/meeting/delete",{'meetingId':meetingId}, PostCfg)
+  service.delete = function(meetingId,cellphone){
+    $http.post("/MeetingMng/api/v1/u/meeting/delete",{
+      'meetingId':meetingId,
+      'cellphone':cellphone
+    }, PostCfg)
     .success(function(data){
       if(data.code == 0){
         alert("删掉了！哈哈哈！");
+        window.location.href="/MeetingMng/u#/";
+      }
+      else if(data.code == -1){
+        alert("数据库错误");
+      }
+      else if(data.code == -2){
+        alert("权限不足");
       }
       else{
         alert("未知错误");
@@ -108,6 +118,27 @@ var mServices = angular.module("mServices", [])
     });
   }
 
+  service.finish = function(meetingId,cellphone){
+    $http.post("/MeetingMng/api/v1/u/meeting/finish",{
+      'meetingId':meetingId,
+      'cellphone':cellphone
+    }, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("您成功结束此次会议！该会议将会被移入历史会议中~");
+        window.location.href="/MeetingMng/u#/";
+      }
+      else if(data.code == -1){
+        alert("数据库错误");
+      }
+      else if(data.code == -2){
+        alert("权限不足");
+      }
+      else{
+        alert("未知错误");
+      }
+    });
+  }
   service.update = function(meeting){
     $http.post("/MeetingMng/api/v1/u/meeting/update",meeting, PostCfg)
     .success(function(data){

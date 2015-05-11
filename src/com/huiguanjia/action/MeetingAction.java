@@ -27,7 +27,7 @@ public class MeetingAction  extends ActionSupport{
 	private String meetingCreatorId;             //创建者id(cellphone)，null=true?
 	private String meetingRemark;                //会议备注null=true
 //	private String meetingQrcode;                //会议二维码
-	private Integer meetingState;				 //会议状态：1未开始2已开始3已结束4已删除
+	private Integer meetingState;				 //会议状态：0活动 1完成 2删除
 	private Integer meetingFrequency;            //频率：1单次2每天3每周4每月
 	private String meetingStartTime;             //会议开始时间
 	private String meetingPredictFinishTime;     //预期结束时间
@@ -59,7 +59,7 @@ public class MeetingAction  extends ActionSupport{
 		String meetingQrcode = (String)"https://www.huiguanjia.com/api/v1/u/meeting"+meetingId;
 		Meeting meeting = new Meeting(meetingId,user, meetingName,
 				meetingContent, meetingLocation,
-				meetingRemark, meetingQrcode, 1,
+				meetingRemark, meetingQrcode, 0,
 				meetingFrequency, meetingStartTime,
 				meetingPredictFinishTime, meetingCreateTime,
 				null, null);
@@ -107,16 +107,17 @@ public class MeetingAction  extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		
 		MeetingService ms= new MeetingService();
-		if(false == ms.delete(meetingId)){
-			jsonData.put("code", -1);
-		}
-		else{
-			jsonData.put("code", 0);
-		}
-		
+		jsonData.put("code", ms.delete(meetingId,cellphone));
 		return SUCCESS;
 	}
 	
+	public String finish(){
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingService ms= new MeetingService();
+		jsonData.put("code", ms.finish(meetingId,cellphone));
+		return SUCCESS;
+	}
 
 	public String update(){
 		jsonData = new HashMap<String,Object>();

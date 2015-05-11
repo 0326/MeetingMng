@@ -24,7 +24,16 @@ public class RandomUtil {
 		String s = java.util.UUID.randomUUID().toString();
 		return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24);
 	}
-	
+
+	/**
+	 * 比较时间戳大小
+	 * @param t1
+	 * @param t2
+	 * @return true:t1>t2; false:t1<t2
+	 */
+	public static boolean compareTimer(String t1,String t2){
+		return Long.parseLong(t1) > Long.parseLong(t2);
+	}
 	public static void main(String[] args){
 		for(int i=0; i<10; i++){
 			System.out.println(RandomUtil.UUID());

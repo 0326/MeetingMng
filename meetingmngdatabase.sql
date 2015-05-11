@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2015-05-07 21:53:32
+Date: 2015-05-11 14:39:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,6 +35,26 @@ INSERT INTO `activate` VALUES ('0d6b76a2239e8e5fe8cd25d21cd374c0', '0', 'dc8cd77
 INSERT INTO `activate` VALUES ('15071345115', '1', '5501', '2015-04-16 00:00:00', null);
 INSERT INTO `activate` VALUES ('6c1297b49a255211fcfe9a533971dbea', '0', '1f137eb7ab5786acc35a6778150babc8', '2015-04-23 15:22:58', '2577839872@qq.com');
 INSERT INTO `activate` VALUES ('e19583055e37805075e358c1373813de', '0', 'c63872d91ae048703df8ca70768c5080', '2015-04-23 15:03:22', 'yyt19932002@163.com');
+
+-- ----------------------------
+-- Table structure for alarm
+-- ----------------------------
+DROP TABLE IF EXISTS `alarm`;
+CREATE TABLE `alarm` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `meetingId` char(32) NOT NULL,
+  `cellphone` varchar(15) NOT NULL,
+  `alarmTime` char(13) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_alarm_meeting_meetingId` (`meetingId`),
+  KEY `FK_alarm_ordinary_cellphone` (`cellphone`),
+  CONSTRAINT `FK_alarm_ordinary_cellphone` FOREIGN KEY (`cellphone`) REFERENCES `ordinary_user` (`cellphone`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_alarm_meeting_meetingId` FOREIGN KEY (`meetingId`) REFERENCES `meeting` (`meetingId`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of alarm
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for comment
@@ -219,10 +239,11 @@ CREATE TABLE `meeting` (
 -- ----------------------------
 -- Records of meeting
 -- ----------------------------
-INSERT INTO `meeting` VALUES ('063b693b55f44aec84b0172fa4a59a3e', '趴趴熊的会议', '请各位小动物带好节操，准时开会', '璀璨森林', '13026310444', null, 'https://www.huiguanjia.com/api/v1/u/meeting063b693b55f44aec84b0172fa4a59a3e', '1', '1', '1430925840000', '1430925840000', '1430900712610', null, null);
-INSERT INTO `meeting` VALUES ('269d8c3bc02048bf9df477a40e9174cb', '质检部每周五例会', '每周总结报告asdsfsdasdasdasdsadsadsadasdasdassssssssdasd', '质检1号大厅', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meeting269d8c3bc02048bf9df477a40e9174cb', '1', '3', '1431075632000', '1431075632000', '1430964517320', null, null);
-INSERT INTO `meeting` VALUES ('76a95da6e7df42efbd14dd9ebd0e844e', 'lalala', '胜多负少鼎飞丹砂', '哇哇哇', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meeting76a95da6e7df42efbd14dd9ebd0e844e', '1', '2', '1429125044000', '1429125044000', '1430205431746', null, null);
-INSERT INTO `meeting` VALUES ('a3e8fc2847fb40d7b7e0b5c290d8ead1', '质检部周一例会', '制定每周工作计划和任务', '质检1号楼', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meetinga3e8fc2847fb40d7b7e0b5c290d8ead1', '1', '3', '1431307820000', '1431307820000', '1430963678780', null, null);
+INSERT INTO `meeting` VALUES ('063b693b55f44aec84b0172fa4a59a3e', '趴趴熊的会议', '请各位小动物带好节操，准时开会', '璀璨森林', '13026310444', null, 'https://www.huiguanjia.com/api/v1/u/meeting063b693b55f44aec84b0172fa4a59a3e', '0', '1', '1430925840000', '1430925840000', '1430900712610', null, null);
+INSERT INTO `meeting` VALUES ('1cc672cbd0b74b3691404fcef377cd7e', '铁柱大会', 'hello kitty！', '铁柱大楼', '13026310449', null, 'https://www.huiguanjia.com/api/v1/u/meeting1cc672cbd0b74b3691404fcef377cd7e', '1', '1', '1432433940000', '1432433940000', '1431157195388', '1431311931788', null);
+INSERT INTO `meeting` VALUES ('269d8c3bc02048bf9df477a40e9174cb', '质检部每周五例会', '每周总结报告asdsfsdasdasdasdsadsadsadasdasdassssssssdasd', '质检1号大厅', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meeting269d8c3bc02048bf9df477a40e9174cb', '0', '3', '1431075632000', '1431075632000', '1430964517320', null, null);
+INSERT INTO `meeting` VALUES ('a3e8fc2847fb40d7b7e0b5c290d8ead1', '质检部周一例会', '制定每周工作计划和任务', '质检1号楼', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meetinga3e8fc2847fb40d7b7e0b5c290d8ead1', '1', '3', '1431307820000', '1431307820000', '1430963678780', '1431311937878', null);
+INSERT INTO `meeting` VALUES ('e1ef19f595284133afffae8d1d851eef', '单词会议', '士大夫似的似懂非懂水电费山东省水电费的股份梵蒂冈', '阿斯顿', '13026310448', null, 'https://www.huiguanjia.com/api/v1/u/meetinge1ef19f595284133afffae8d1d851eef', '0', '1', '1431268847000', '1431268847000', '1431222205623', null, null);
 
 -- ----------------------------
 -- Table structure for meeting_organizer
@@ -243,9 +264,13 @@ CREATE TABLE `meeting_organizer` (
 -- Records of meeting_organizer
 -- ----------------------------
 INSERT INTO `meeting_organizer` VALUES ('13026310444', '063b693b55f44aec84b0172fa4a59a3e', '2', '1', null);
+INSERT INTO `meeting_organizer` VALUES ('13026310444', '1cc672cbd0b74b3691404fcef377cd7e', '0', '0', null);
+INSERT INTO `meeting_organizer` VALUES ('13026310444', '269d8c3bc02048bf9df477a40e9174cb', '0', '0', null);
+INSERT INTO `meeting_organizer` VALUES ('13026310448', '1cc672cbd0b74b3691404fcef377cd7e', '2', '0', null);
 INSERT INTO `meeting_organizer` VALUES ('13026310448', '269d8c3bc02048bf9df477a40e9174cb', '2', '1', null);
-INSERT INTO `meeting_organizer` VALUES ('13026310448', '76a95da6e7df42efbd14dd9ebd0e844e', '2', '1', null);
 INSERT INTO `meeting_organizer` VALUES ('13026310448', 'a3e8fc2847fb40d7b7e0b5c290d8ead1', '2', '1', null);
+INSERT INTO `meeting_organizer` VALUES ('13026310448', 'e1ef19f595284133afffae8d1d851eef', '2', '1', null);
+INSERT INTO `meeting_organizer` VALUES ('13026310449', '1cc672cbd0b74b3691404fcef377cd7e', '1', '1', null);
 
 -- ----------------------------
 -- Table structure for meeting_participator
@@ -264,6 +289,7 @@ CREATE TABLE `meeting_participator` (
 -- ----------------------------
 -- Records of meeting_participator
 -- ----------------------------
+INSERT INTO `meeting_participator` VALUES ('13026310449', 'a3e8fc2847fb40d7b7e0b5c290d8ead1', '0', null);
 
 -- ----------------------------
 -- Table structure for message
@@ -277,12 +303,13 @@ CREATE TABLE `message` (
   `isChecked` tinyint(1) NOT NULL DEFAULT '0',
   `createTime` char(13) NOT NULL,
   PRIMARY KEY (`msgId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7173 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of message
 -- ----------------------------
-INSERT INTO `message` VALUES ('1', '2577839872@qq.com', 'this is test', '0', '0', '1430104302407');
+INSERT INTO `message` VALUES ('7171', '13026310448', '{\"to\":\"张全蛋\",\"body\":\"{\\\"meetingName\\\":\\\"铁柱大会\\\",\\\"meetingId\\\":\\\"1cc672cbd0b74b3691404fcef377cd7e\\\",\\\"meetingStartTime\\\":\\\"1432433940000\\\",\\\"meetingContent\\\":\\\"铁柱大楼\\\",\\\"meetingLocation\\\":\\\"铁柱大楼\\\"}\",\"from\":\"王铁柱\",\"type\":\"oinvi*****\"}', '1', '0', '1431186190481');
+INSERT INTO `message` VALUES ('7172', '13026310448', '{\"to\":\"张全蛋\",\"body\":\"{\\\"meetingName\\\":\\\"铁柱大会\\\",\\\"meetingId\\\":\\\"1cc672cbd0b74b3691404fcef377cd7e\\\",\\\"meetingStartTime\\\":\\\"1432433940000\\\",\\\"meetingContent\\\":\\\"铁柱大楼\\\",\\\"meetingLocation\\\":\\\"铁柱大楼\\\"}\",\"from\":\"王铁柱\",\"type\":\"oinvi*****\"}', '1', '0', '1431186772199');
 
 -- ----------------------------
 -- Table structure for ordinary_user
@@ -315,18 +342,18 @@ CREATE TABLE `ordinary_user` (
 -- ----------------------------
 -- Records of ordinary_user
 -- ----------------------------
-INSERT INTO `ordinary_user` VALUES ('13026310400', '0', '马小可', '2577839872@qq.com', '7', '123456', '0', null, 'aaa@qq.com', '0', '0', '111111', '客服', 'app/images/headimg.jpg', '??????????????????????', '009');
+INSERT INTO `ordinary_user` VALUES ('13026310400', '0', '马小可', '2577839872@qq.com', '7', '123456', '1', '2015-05-09 15:54:56', 'aaa@qq.com', '0', '0', '111111', null, 'http://7u2j45.com1.z0.glb.clouddn.com/o_19krqo8pl1d911oj71qk36o187j7.jpg-head100', '韵苑大厦102', '009');
 INSERT INTO `ordinary_user` VALUES ('13026310444', '0', '趴趴熊', '2577839872@qq.com', '8', '123456', '1', '2015-05-06 16:22:46', '123456@qq.com', '0', '0', '132465', null, 'http://7u2j45.com1.z0.glb.clouddn.com/o_19kk55nf7974gi8us3f7k2mj7.jpg-head100', '阿萨帝', '45');
 INSERT INTO `ordinary_user` VALUES ('13026310447', '0', '王大锤', '2577839872@qq.com', '7', '123456', '0', null, 'wwww@qq.com', '0', '0', '0104478', '形象代言人', 'app/images/headimg.jpg', '你猜猜', '007');
 INSERT INTO `ordinary_user` VALUES ('13026310448', '0', '张全蛋', '2577839872@qq.com', '7', '123456', '1', '2015-04-24 15:07:24', '2577839871@qq.com', '0', '0', '888888', null, 'http://7u2j45.com1.z0.glb.clouddn.com/o_19jl78jhg175m1r2pj4ljcm9bn7.jpg-head100', '华强北五角大楼#901', '001');
-INSERT INTO `ordinary_user` VALUES ('13026310449', '0', '王铁柱', '2577839872@qq.com', '7', '123456', '0', null, 'wwww@qq.com', '0', '0', '0104478', '质检员', 'app/images/headimg.jpg', '你猜猜', '002');
+INSERT INTO `ordinary_user` VALUES ('13026310449', '0', '王铁柱', '2577839872@qq.com', '7', '123456', '1', '2015-05-08 10:46:27', 'wwww@qq.com', '0', '0', '0104478', null, 'http://7u2j45.com1.z0.glb.clouddn.com/o_19krpp2dsocq11tqbco1bsu920c.jpg-head100', '你猜猜', '002');
 INSERT INTO `ordinary_user` VALUES ('13026321111', '0', '1号', '2577839872@qq.com', '9', '123456', '0', null, '132465@qq.com', '0', '0', '789465', '厨师', 'app/images/headimg.jpg', '皇贵妃大哥', '1000');
 INSERT INTO `ordinary_user` VALUES ('13026321112', '0', '2号', '2577839872@qq.com', '9', '123456', '0', null, '1324625@qq.com', '0', '0', '7894265', '厨师', 'app/images/headimg.jpg', '皇贵妃大哥2', '2000');
 INSERT INTO `ordinary_user` VALUES ('13026321113', '0', '3号', '2577839872@qq.com', '9', '123456', '0', null, '13246225@qq.com', '0', '0', '78942265', '厨师', 'app/images/headimg.jpg', '皇贵妃大哥2', '3000');
-INSERT INTO `ordinary_user` VALUES ('13026330448', '0', '不一样的美男子', '2577839872@qq.com', '10', '123456', '0', null, '45678941@qq.com', '0', '0', '78941232', '帅哥', 'app/images/headimg.jpg', '软件201', '7812');
+INSERT INTO `ordinary_user` VALUES ('13026330448', '0', '不一样的美男子', '2577839872@qq.com', '10', '123456', '1', '2015-05-09 16:01:21', '45678941@qq.com', '0', '0', '78941232', '帅哥', 'app/images/headimg.jpg', '软件201', '7812');
 INSERT INTO `ordinary_user` VALUES ('15580574444', '0', '小小', '2577839872@qq.com', '8', '123456', '0', null, 'xxcvc@qq.com', '0', '0', '123456', '外交部长', 'app/images/headimg.jpg', '某地', '010');
 INSERT INTO `ordinary_user` VALUES ('15584578888', '0', '船长', '2577839872@qq.com', '7', '123456', '0', null, 'aaaaa@qq.com', '0', '0', '123456', '船长', 'app/images/headimg.jpg', '123456', '011');
-INSERT INTO `ordinary_user` VALUES ('18845678952', '0', '旺仔', '2577839872@qq.com', '10', '123456', '0', null, '4561@qq.com', '0', '0', '445464', '程序员鼓励师', 'app/images/headimg.jpg', '旺仔大酒店', '789');
+INSERT INTO `ordinary_user` VALUES ('18845678952', '0', '旺仔', '2577839872@qq.com', '10', '123456', '1', '2015-05-09 15:56:50', '4561@qq.com', '0', '0', '445464', null, 'http://7u2j45.com1.z0.glb.clouddn.com/o_19krquiv9vbm15j0hhi1vmqtr97.jpg-head100', '旺仔大酒店', '789');
 INSERT INTO `ordinary_user` VALUES ('18845678954', '0', '剑圣', '2577839872@qq.com', '8', '123456', '0', null, '465789@qq.com', '0', '0', '1654789', '保安', 'app/images/headimg.jpg', '圣达菲', '123');
 
 -- ----------------------------
@@ -845,16 +872,15 @@ CREATE TABLE `topic` (
   PRIMARY KEY (`id`),
   KEY `FK_topic_meeting_meetingId` (`meetingId`),
   CONSTRAINT `FK_topic_meeting_meetingId` FOREIGN KEY (`meetingId`) REFERENCES `meeting` (`meetingId`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of topic
 -- ----------------------------
-INSERT INTO `topic` VALUES ('1', '标题啊', '这是话题内容哈哈哈哈哈', '13026310448', '1430879932130', '76a95da6e7df42efbd14dd9ebd0e844e');
-INSERT INTO `topic` VALUES ('2', '我又创建了一个话题', '这是话题内容啊哈哈哈哈哈', '13026310448', '1430894990916', '76a95da6e7df42efbd14dd9ebd0e844e');
 INSERT INTO `topic` VALUES ('3', '节操君', '把拉撒睡懒觉大赛', '13026310444', '1430900754454', '063b693b55f44aec84b0172fa4a59a3e');
 INSERT INTO `topic` VALUES ('4', 'buasdasj', 'dfsdflsdjflsd;jflsd;jldjflsdjflds;jfsldjfsdahgoiccicvnbvcnbm,hseriofewv', '13026310448', '1430983014572', '269d8c3bc02048bf9df477a40e9174cb');
 INSERT INTO `topic` VALUES ('5', 'helloworld', 'cosole.log(\"helloworld\");', '13026310448', '1430990722659', '269d8c3bc02048bf9df477a40e9174cb');
+INSERT INTO `topic` VALUES ('8', 'sdfsdf', 'sdfsdfsdf', '13026310448', '1431267059818', 'a3e8fc2847fb40d7b7e0b5c290d8ead1');
 
 -- ----------------------------
 -- View structure for active_meeting_view

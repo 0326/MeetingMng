@@ -41,5 +41,6 @@
 		<mapping class="com.huiguanjia.pojo.Topic" />
 		<mapping class="com.huiguanjia.pojo.Comment" />
 		<mapping class="com.huiguanjia.pojo.Contact" />
+		<mapping class="com.huiguanjia.pojo.Alarm" />
 	</session-factory>
 </hibernate-configuration>
