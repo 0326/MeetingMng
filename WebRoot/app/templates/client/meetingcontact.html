@@ -15,53 +15,64 @@
 				</h3>
 				<ul class="row contact-list">
 					<li class="columns clearfix" ng-repeat="o in organizerList">
-						<div class="left">
-							<img src="http://7u2j45.com1.z0.glb.clouddn.com/o_19jl78jhg175m1r2pj4ljcm9bn7.jpg-head100">
+						<div class="info-group">
+							<div class="left">
+								<img src="http://7u2j45.com1.z0.glb.clouddn.com/o_19jl78jhg175m1r2pj4ljcm9bn7.jpg-head100">
+							</div>
+							<div>
+								<span>{{o.name}}</span>
+								<span class="tag-info tag-state-{{o.state}}">{{o.state | mcontact:'state'}}</span>
+								<span class="tag-info tag-creator" ng-show="o.creator">{{o.creator | mcontact:'isCreator' }}</span>
+							</div>
+							<div class="sub-info">
+								<span>{{o.companyName}}</span>
+								<span>{{o.departmentName}}</span>
+							</div>
 						</div>
-						<div>
-							<span>{{o.name}}</span>
-							<span class="tag-info tag-creator">{{o.creator | mcontact:'isCreator' }}</span>
-							<span class="tag-info tag-state-{{o.state}}">{{o.state | mcontact:'state'}}</span>
-						</div>
-						<div class="sub-info">
-							<span>{{o.companyName}}</span>
-							<span>{{o.departmentName}}</span>
+						<div class="button-group even-3 slide-bottom">
+						  <button class="button secondary tiny" ng-click="onDeleteOrganizer(o.cellphone)">删除</button>
+						  <button class="button secondary tiny" ng-click="onupdateState(o.cellphone,'o')">修改状态</button>
+						  <button class="button secondary tiny" ng-click="onSendInvite(o.cellphone)">发送邀请</button>
 						</div>
 					</li>
 				</ul>
 			</div>
-		</div>
+		</div><!--办会人end-->
 		<div class="columns large-6 medium-6 small-12">
 			<div class="panel">
-				<h3 class="subheader">参会人名单</h3>
-				<ul class="accordion" data-accordion role="tablist">
-				  <li class="accordion-navigation">
-				    <a href="" role="tab" id="panel1d-heading" class="accordion-head" aria-controls="panel1d">Accordion 1</a>
-				    <div id="panel1d" class="content active" role="tabpanel" aria-labelledby="panel1d-heading">
-				      Panel 1. Lorem ipsum dolor
-				    </div>
-				  </li>
-				  <li class="accordion-navigation">
-				    <a href=""  role="tab" id="panel2d-heading" class="accordion-head" aria-controls="panel2d">Accordion 2</a>
-				    <div id="panel2d" class="content" role="tabpanel" aria-labelledby="panel2d-heading">
-				      Panel 2. Lorem ipsum dolor
-				    </div>
-				  </li>
-				  <li class="accordion-navigation">
-				    <a href="" role="tab" id="panel3d-heading" class="accordion-head" aria-controls="panel3d">Accordion 3</a>
-				    <div id="panel3d" class="content" role="tabpanel" aria-labelledby="panel3d-heading">
-				      Panel 3. Lorem ipsum dolor
-				    </div>
-				  </li>
+				<h3 class="subheader">
+					参会人名单 
+					<button class="button tiny" data-reveal-id="addUserModal2" onclick="$('#addUserModal2').foundation('reveal', 'open');">添加参会嘉宾</button>
+				</h3>
+				<ul class="row contact-list">
+					<li class="columns clearfix" ng-repeat="o in participatorList">
+						<div class="info-group">
+							<div class="left">
+								<img src="http://7u2j45.com1.z0.glb.clouddn.com/o_19jl78jhg175m1r2pj4ljcm9bn7.jpg-head100">
+							</div>
+							<div>
+								<span>{{o.name}}</span>
+								<span class="tag-info tag-state-{{o.state}}">{{o.state | mcontact:'state'}}</span>
+							</div>
+							<div class="sub-info">
+								<span>{{o.companyName}}</span>
+								<span>{{o.departmentName}}</span>
+							</div>
+						</div>
+						<div class="button-group even-3 slide-bottom">
+						  <button class="button secondary tiny" ng-click="onDeleteParticipator(o.cellphone)">删除</button>
+						  <button class="button secondary tiny" ng-click="onupdateState(o.cellphone,'p')">修改状态</button>
+						  <button class="button secondary tiny" ng-click="onSendInvite(o.cellphone)">发送邀请</button>
+						</div>
+					</li>
 				</ul>
-
 			</div>
-		</div>
+		</div><!--参会人end-->
 	</div>
 </div>
 
-<div id="addUserModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-  <h2 id="modalTitle">请选择要添加的办会人员</h2>
+<div id="addUserModal" class="reveal-modal" data-reveal  aria-hidden="true" role="dialog">
+  <h2>请选择要添加的办会人员</h2>
   <ul class="row contact-list">
 		<li class="columns clearfix li-user-add-{{o.add}}" ng-repeat="o in addorganizerList">
 			<div class="left">
@@ -75,13 +86,38 @@
 			 	<span>已添加</span>
 			</div>
 			<div class="switch right" ng-show="!o.add">
-			  <input id="{{o.cellphoneOfInfo}}" type="checkbox">
-			  <label for="{{o.cellphoneOfInfo}}"></label>
+			  <input id="o{{o.cellphoneOfInfo}}" type="checkbox">
+			  <label for="o{{o.cellphoneOfInfo}}"></label>
 			</div>
 		</li>
 	</ul>
-  <button class="button tiny" ng-click="onCreate()">确定</button>
+  <button class="button tiny" ng-click="onAddOrganizer()">添加</button>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+<div id="addUserModal2" class="reveal-modal" data-reveal  aria-hidden="true" role="dialog">
+  <h2>请选择要添加的参会嘉宾</h2>
+  <ul class="row contact-list">
+		<li class="columns clearfix li-user-add-{{o.add}}" ng-repeat="o in addparticipatorList">
+			<div class="left">
+				<img src="{{o.avatar}}">
+			</div>
+			<div class="left">
+				<span>{{o.name}}</span><br/>
+				<span class="sub-info">{{o.department}}</span>
+			</div>
+			<div class="switch right" ng-show="o.add">
+			 	<span>已添加</span>
+			</div>
+			<div class="switch right" ng-show="!o.add">
+			  <input id="p{{o.cellphoneOfInfo}}" type="checkbox">
+			  <label for="p{{o.cellphoneOfInfo}}"></label>
+			</div>
+		</li>
+	</ul>
+  <button class="button tiny" ng-click="onAddParticipator()">添加</button>
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 <script type="text/javascript">
+
 </script>

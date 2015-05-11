@@ -31,9 +31,11 @@ public class MeetingMsgInbound extends MessageInbound {
     	//查询数据库表Message，若用户不在线时有漏接推送，登录时应及时推送给用户
         MessageService msgService = new MessageService();
         List<Message> msglist = msgService.findMsg(this.userid, false);
-        if(msglist !=null){
-        	this.pushSigle(msglist, userid);
-        }
+//        if(msglist !=null){
+//        	while(msglist.iterator().hasNext()){
+//        		this.pushSigle(msglist.iterator().next());
+//        	}
+//        }
         
     }
 
@@ -69,23 +71,23 @@ public class MeetingMsgInbound extends MessageInbound {
         }
     }
     /**
-     * 给指定用户发送推送
-     * 可以同时发送多条消息，但多条将压缩为同一条推送，由前端解析
+     * 单用户推送单条信息
      * @param msglist
      * @param userid
      */
-    public static void pushSigle(List<Message> msglist, String userid){
-
+    public static void pushSigle(Message msg){
+    	MessageService msgService = new MessageService();
+    	msgService.save(msg);
     	for(MeetingMsgInbound connection : MeetingServlet.connections){
-    		if(connection.userid.equals(userid)){
+    		if(connection.userid.equals(msg.getUsername())){
     			try {
-    				MessageService msgService = new MessageService();
-    				List<String> ctxlist = msgService.getMsgContentList(msglist);
-    				String msg = JSONUtil.serialize(ctxlist);
-                    CharBuffer buffer = CharBuffer.wrap(msg);
+//    				
+//    				List<String> ctxlist = msgService.getMsgContentList(msglist);
+//    				String msg = JSONUtil.serialize(ctxlist);
+                    CharBuffer buffer = CharBuffer.wrap(msg.getMsgContent());
                     connection.getWsOutbound().writeTextMessage(buffer);
                     //更新推送记录状态
-                    msgService.makePushed(msglist);
+                    msgService.makePushed(msg);
                     
                 } catch (IOException ignore) {
                     // Ignore

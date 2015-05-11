@@ -188,9 +188,30 @@ public class MeetingService {
 	}
 	
 	/**
+	 * @info 获取会议简要信息,只返回会议名，内容，时间，地点
+	 * @param id
+	 * @return
+	 */
+	public String findBrifyInfo(String id){
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+		Meeting m = (Meeting)b.findObjectById(Meeting.class, id);
+	
+		JSONObject obj = new JSONObject();
+		obj.put("meetingId", m.getMeetingId());
+		obj.put("meetingName", m.getMeetingName());
+		obj.put("meetingContent", m.getMeetingLocation());
+		obj.put("meetingLocation", m.getMeetingLocation());
+		obj.put("meetingStartTime", m.getMeetingStartTime());
+		String objs = JSONUtil.serialize(obj);
+		SessionDAO.closeSession();
+				
+		return objs;
+	}
+	/**
 	 * 普通用户获取会议列表
 	 * @param cellphone 手机号
-	 * @param state 会议状态：0未开始会议；1已完成会议；2：被取消/删除的会议
+	 * @param state 会议状态：1未开始会议；2已完成会议；3：被取消/删除的会议
 	 * @param type 0:获取全部会议;1：获取用户创建/组织的会议;2:获取用户参与的会议
 	 * @return
 	 */
@@ -205,7 +226,8 @@ public class MeetingService {
 		Session sess = SessionDAO.getSession();
 		if(0 == type){
 			hql = "select "+hqlr+" from Meeting as m where  "+
-			"m.ordinaryUser.cellphone=? and m.meetingState=?";
+			"m.ordinaryUser.cellphone=? and m.meetingState=? order by "+
+			"m.meetingStartTime desc";
 		}
 		else if(1 == type){
 			hql = "select "+hqlr+" from Meeting as m,MeetingOrganizer as o where "+

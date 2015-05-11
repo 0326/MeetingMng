@@ -1,8 +1,13 @@
 package com.huiguanjia.action;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
+import com.huiguanjia.comet.CometCfg;
+import com.huiguanjia.comet.MeetingMsgInbound;
+import com.huiguanjia.pojo.Message;
 import com.huiguanjia.service.MeetingOrganizerService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -172,6 +177,43 @@ public class MeetingOrganizerAction extends ActionSupport{
 			jsonData.put("code", -2);
 		}
 		
+		return SUCCESS;
+	}
+	/**
+	 * 邀请办会人员，发送邀请推送通知
+	 * @return
+	 */
+	public String inviteOrganizer()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+//		Message msg = CometCfg.createMsg(
+//				operatedCellphone,
+//				"/MeetingMng/u#/meeting-detail?mid="+meetingId,
+//				"这是一条办会邀请测试消息",
+//				CometCfg.ORG_INVITE
+//				);
+		Message msg = CometCfg.createMessage(cellphone,
+				operatedCellphone, CometCfg.ORG_INVITE, meetingId);
+		MeetingOrganizerService service = new MeetingOrganizerService();
+		int res = service.inviteOrganizer(msg, meetingId, cellphone);
+		
+		jsonData.put("code", res);
+		return SUCCESS;
+	}
+	
+	/**
+	 * 修改办会人员状态
+	 * @return
+	 */
+	public String updateState()
+	{
+		jsonData = new HashMap<String,Object>();
+
+		MeetingOrganizerService service = new MeetingOrganizerService();
+		int res = service.updateState(meetingId, cellphone, state);
+		
+		jsonData.put("code", res);
 		return SUCCESS;
 	}
 }

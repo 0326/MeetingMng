@@ -110,6 +110,12 @@ table{ width: 100%;}
 	opacity: 0.5;
 	cursor: not-allowed;
 }
+.contact-list .slide-bottom{
+	display: none;
+}
+.contact-list .button-group .button{
+	margin-bottom:0;
+}
 
 /*tag*/
 .tag-info{

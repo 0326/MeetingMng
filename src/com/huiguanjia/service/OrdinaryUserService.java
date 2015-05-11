@@ -478,5 +478,20 @@ public class OrdinaryUserService {
 		
 		return objs;
 	}
-	
+	//获取用户姓名
+	public String findUsername(String cellphone) {
+		BaseDAO b = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from OrdinaryUser as o where o.cellphone=?";
+		Object[] values = new Object[] { cellphone };
+		OrdinaryUser or = (OrdinaryUser) b.findSingletonResultByHql(hql, values);
+		if (null == or) {
+			return null;
+		}
+		String username = or.getName();	
+		SessionDAO.closeSession();
+		
+		return username;
+	}
 }

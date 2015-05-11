@@ -25,7 +25,7 @@
       <div class="row prefix-round">
         <div class="small-3 columns"><p class="button prefix">开始时间</p></div>
         <div class="small-9 columns">
-          <input type="text" placeholder="点击选择开会时间"  class="form_datetime datetimepicker"  readonly>
+          <input type="text" placeholder="点击选择开会时间"  class="form_datetime_start datetimepicker"  readonly>
           <input type="hidden" name="starttime" id="starttime" ng-model="meeting.meetingStartTime">
           <small class="error">Invalid entry</small>
         </div>
@@ -35,7 +35,7 @@
       <div class="row prefix-round">
         <div class="small-3 columns"><p class="button prefix">结束时间</p></div>
         <div class="small-9 columns">
-          <input type="text" placeholder="点击选择结束会议时间" class="form_datetime datetimepicker"  readonly>
+          <input type="text" placeholder="点击选择结束会议时间" class="form_datetime_end datetimepicker"  readonly>
           <input type="hidden" name="endtime" id="endtime" ng-model="meeting.meetingPredictFinishTime">
           <small class="error">Invalid entry</small>
         </div>
@@ -75,11 +75,12 @@
     </div>
 	</form>
 </div>
-<link href="app/bower_components/bootstrap-datetimepicker/css/dropmenu.css" rel="stylesheet">
-<link href="app/bower_components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-<script src="app/bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 
 <script type="text/javascript">
+
+//如果有，删除之前生成的控件
+$(".dropdown-menu").remove();
+
 ;(function($){
 $.fn.datetimepicker.dates['zh-CN'] = {
       days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
@@ -92,7 +93,8 @@ $.fn.datetimepicker.dates['zh-CN'] = {
       meridiem: ["上午", "下午"]
   };
 }(jQuery));
-$('.form_datetime').datetimepicker({
+
+$('.form_datetime_start,.form_datetime_end').datetimepicker({
     language:  'zh-CN',
     weekStart: 1,
     todayBtn:  1,
@@ -102,9 +104,15 @@ $('.form_datetime').datetimepicker({
     forceParse: 0,
     showMeridian: 1
 });
-$('.form_datetime').datetimepicker().on('hide',function(ev){
-  var TimeZoned = new Date(ev.date.setTime(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000)));
-  $(".form_datetime + input").val(TimeZoned.getTime());
-  console.log(TimeZoned.getTime());
-});
+addDatetimeListener("form_datetime_start");
+addDatetimeListener("form_datetime_end");
+
+function addDatetimeListener(classname){
+  $('.'+classname).datetimepicker().on('hide',function(ev){
+    var TimeZoned = new Date(ev.date.setTime(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000)));
+    $("."+ classname +" + input").val(TimeZoned.getTime());
+    console.log(TimeZoned.getTime());
+  });
+}
+
 </script>

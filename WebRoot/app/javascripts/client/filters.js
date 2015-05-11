@@ -8,7 +8,8 @@ var mFilters = angular.module("mFilters", [])
 		var time = obj[1]; 
 		var result = "";
 		if(freq == 1){
-			result = $filter('date')(time,'mm月dd日 HH:mm');
+			// result = $filter('date')(time,'mm月dd日 HH:mm');
+			result = new Date(parseInt(time)).toLocaleString();
 		}
 		else if(freq == 2){ 
 			result = "每天 " + $filter('date')(time,'HH:mm');
@@ -60,6 +61,35 @@ var mFilters = angular.module("mFilters", [])
 				result = "拒绝";
 			}
 		}
+		return result;
+	}
+})
+
+//消息过滤器
+//msgContent = {from, to, type, body}
+.filter('mmessage',function($filter, $window){
+	return function(msgContent,arg){
+		var obj = $.parseJSON(msgContent);
+		var body = $.parseJSON(obj.body);
+		var result = "";
+
+		if(arg == "body"){
+			result = $window.MMessageParse.getMsgBody(obj.type, body);
+		}
+		else if(arg == "type"){
+			result = $window.MMessageParse.getMsgType(obj.type);
+		}
+		else if(arg == "from"){
+			result = obj.from;
+		}
+		else if(arg == "to"){
+			result = obj.to;
+		}
+		else if(arg == "rid"){
+			result = $window.MMessageParse.getMsgRid(obj.type, body);
+		}
+		
+
 		return result;
 	}
 })
