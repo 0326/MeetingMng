@@ -1,14 +1,16 @@
 package com.huiguanjia.action;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+
 import com.huiguanjia.service.DevService;
 
+import org.apache.struts2.ServletActionContext;
+
 @SuppressWarnings("serial")
-public class DevAction  extends ActionSupport{
+public class DevAction  extends MyActionSupport{
 	private String industrycategory;
 	private String industryname;
 	private String industrycode;
@@ -118,6 +120,24 @@ public class DevAction  extends ActionSupport{
 		
 		
 		
+		return SUCCESS;
+	}
+	
+	public String testJSONP(){
+		jsonData = new HashMap<String,Object>();
+		jsonData.put("code", 0);
+		jsonData.put("res", "hello");
+		return SUCCESS;
+	}
+	
+	public String testJSONP2(){
+		Collection<String> str=ServletActionContext.getResponse().getHeaderNames();
+		
+		jsonData = new HashMap<String,Object>();
+		jsonData.put("code", 0);
+		jsonData.put("res", "hello jsonp2");
+		System.out.println(this.cityname);
+		System.out.println(this.citycode);
 		return SUCCESS;
 	}
 }

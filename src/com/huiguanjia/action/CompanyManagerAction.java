@@ -420,12 +420,11 @@ public class CompanyManagerAction extends ActionSupport {
 
 	public String findStuffs() {
 
-		List<Message> mlist = new ArrayList<Message>();
-		Message m = new Message();
-		m.setMsgContent("findStuffs");
-		mlist.add(m);
-		MeetingMsgInbound.pushSigle(mlist, (String) ActionContext.getContext()
-				.getSession().get("username"));
+//		List<Message> mlist = new ArrayList<Message>();
+//		Message m = new Message();
+//		m.setMsgContent("findStuffs");
+//		mlist.add(m);
+//		MeetingMsgInbound.pushSigle(m);
 
 		jsonData = new HashMap<String, Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();

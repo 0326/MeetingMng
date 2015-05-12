@@ -105,6 +105,60 @@ MMessageParse.getMsgRid = function(type, body){
 }
 
 window.MMessageParse = MMessageParse;
+
+//设置闹钟
+var MAlarm = {
+    myAudioContext: null,
+    mySource: null,
+    myBuffer: null,
+    play: function(){
+        if(navigator.userAgent.indexOf("Safari")>-1 && navigator.userAgent.indexOf("Safari")>-1){
+            //safari
+            _playBase64();
+        }
+        else{
+            document.getElementById("alarm-audio").play();
+        }
+    },
+    _playBase64(): function(){
+        var arrayBuff = Base64Binary.decodeArrayBuffer(sound);
+        MAlarm.myAudioContext.decodeAudioData(arrayBuff, function(audioData) {
+            MAlarm.myBuffer = audioData;
+        });
+        
+        if ('AudioContext' in window) {
+            MAlarm.myAudioContext = new AudioContext();
+        } 
+        else if ('webkitAudioContext' in window) {
+            MAlarm.myAudioContext = new webkitAudioContext();
+        } 
+        else {
+            //alert('Your browser does not support yet Web Audio API');
+            return;
+        }
+        MAlarm.mySource = MAlarm.myAudioContext.createBufferSource();
+        MAlarm.mySource.buffer = MAlarm.myBuffer;
+        MAlarm.mySource.connect(MAlarm.myAudioContext.destination);
+        if ('AudioContext' in window) {
+            MAlarm.mySource.start(0);
+        } else if ('webkitAudioContext' in window) {
+            MAlarm.mySource.noteOn(0);
+        } 
+    }
+    stop: function(){
+        if(navigator.userAgent.indexOf("Safari")>-1 && navigator.userAgent.indexOf("Safari")>-1){
+            //safari
+            MAlarm._playBase64();
+        }
+        else{
+           document.getElementById("alarm-audio").stop();
+        }
+    }
+}
+
+
+
+
 //http://github.hubspot.com/messenger/docs/welcome/
 
 
