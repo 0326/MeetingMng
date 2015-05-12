@@ -15,6 +15,7 @@ import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
 import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.service.MeetingBulletinService?
 //import com.huiguanjia.util.QiniuyunQRcodeUtil;
+import com.huiguanjia.util.QiniuyunUtil;
 import com.huiguanjia.util.RandomUtil;
 
 public class MeetingAction  extends ActionSupport{
@@ -59,7 +60,7 @@ public class MeetingAction  extends ActionSupport{
 		String meetingQrcode = (String)"https://www.huiguanjia.com/api/v1/u/meeting"+meetingId;
 		Meeting meeting = new Meeting(meetingId,user, meetingName,
 				meetingContent, meetingLocation,
-				meetingRemark, meetingQrcode, 0,
+				meetingRemark, meetingQrcode, 1,
 				meetingFrequency, meetingStartTime,
 				meetingPredictFinishTime, meetingCreateTime,
 				null, null);
@@ -70,10 +71,15 @@ public class MeetingAction  extends ActionSupport{
 			jsonData.put("code", -1);
 		}
 		else{
-			// 创建会议成功，生成二维码图片到本地指定路径里面
+			// 创建会议成功，生成二维码图片到本地指定路径里面,上传二维码到七牛云
 			jsonData.put("code", 0);
 			try{
+//				String path = "test.gif";
 				ms.putMeetingQrcode(meetingQrcode,path);
+				QiniuyunUtil qiniuyunUtil = new QiniuyunUtil();
+				qiniuyunUtil.upTokenFile(path);
+				// 生成指向二维码图片的url，返回这个url
+				jsonData.put("url",qiniuyunUtil.downloadFile(path));
 				}
 			catch(Exception e){
 			

@@ -18,7 +18,7 @@ import com.huiguanjia.util.MD5Util;
 import com.huiguanjia.util.MailSendUtil;
 
 @SuppressWarnings("serial")
-public class OrdinaryUserAction extends ActionSupport{
+public class OrdinaryUserAction extends MyActionSupport{
 	
 	private String name;
 	private String cellphone;
