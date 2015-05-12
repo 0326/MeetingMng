@@ -1,0 +1,26 @@
+<div style="width: 350px; height: 350px;" id="qrcodebox">
+</div>
+<input type="button" value="Stop" id="btn_stop" />
+<p>
+Last QRCode value: <span id="qrcode_result">none</span>
+</p>
+
+
+<script type="text/javascript" src="app/bower_components/jquery.webcamqrcode/js/jquery.min.js"></script>
+<script type="text/javascript" src="app/bower_components/jquery.webcamqrcode/js/jquery.webcamqrcode.js"></script>
+WebcamQRCode View:<br />
+<script>
+(function($){
+	$('document').ready(function(){
+		$('#qrcodebox').WebcamQRCode().start();
+		$('#qrcodebox').WebcamQRCode({
+			onQRCodeDecode: function( p_data ){
+					$('#qrcode_result').html( p_data );
+			}
+		});
+		$('#btn_stop').click(function(){
+			$('#qrcodebox').WebcamQRCode().stop();
+		});
+	});
+})(jQuery);
+</script>

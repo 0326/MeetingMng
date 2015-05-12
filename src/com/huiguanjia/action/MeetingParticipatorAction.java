@@ -3,6 +3,9 @@ package com.huiguanjia.action;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.huiguanjia.comet.CometCfg;
+import com.huiguanjia.pojo.Message;
+import com.huiguanjia.service.MeetingOrganizerService;
 import com.huiguanjia.service.MeetingParticipatorService;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -171,6 +174,23 @@ public class MeetingParticipatorAction extends ActionSupport{
 			jsonData.put("code", -2);
 		}
 		
+		return SUCCESS;
+	}
+	/**
+	 * 邀请参会人员
+	 * @return
+	 */
+	public String inviteParticipator()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+
+		Message msg = CometCfg.createMessage(cellphone,
+				operatedCellphone, CometCfg.PART_INVITE, meetingId);
+		MeetingParticipatorService service = new MeetingParticipatorService();
+		int res = service.inviteParticipator(msg, meetingId, cellphone);
+		
+		jsonData.put("code", res);
 		return SUCCESS;
 	}
 	

@@ -1,6 +1,7 @@
 package com.huiguanjia.service;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,6 +31,8 @@ import com.huiguanjia.pojo.MeetingOrganizerId;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.util.JSONUtil;
 import com.huiguanjia.util.MatrixToImageWriter;
+import com.huiguanjia.util.RandomUtil;
+
 import java.io.File; 
 import java.util.Hashtable; 
    
@@ -100,28 +103,36 @@ public class MeetingService {
 	}
 	
 	
-	public boolean delete(String meetingId){
-		boolean res = false;
+	public int delete(String meetingId,String cellphone){
+		int res = 0;
 		
 		BaseDAO aBaseDao = new BaseDAO();
 		Session sess = SessionDAO.getSession();
 		Transaction ts = sess.beginTransaction();
 		
 		try{
-			//删掉会议表记录
-			String hql = "delete from Meeting where meetingId = ?";
+			//验证操作者权限
+			String hql0 = "select m from MeetingOrganizer as m where "+
+					" m.id.organizerCellphone=? and m.id.meetingId=?";
+			Object[] values0 = new Object[]{cellphone,meetingId};
+			;
+			if(aBaseDao.findObjectByHql(hql0, values0) == null){
+				return -2;//权限不足
+			}
+			//删掉会议表记录,会议状态必须是活动态
+			//拦截器需要向相关人员发送通知
+			String hql = "delete from Meeting where meetingId = ? and "+
+					"meetingState = 0";
 			Object[] values = new Object[]{meetingId};
 			
 			aBaseDao.deleteObjectByHql(hql, values);
-			//删掉相应办会人员和参会人员列表，如果会议已开始或已完成则不能删除
-			//todo...
+			
 			ts.commit();
-			res = true;
 		}
 		catch(Exception e)
 		{
 			ts.rollback();
-			res = false;
+			res = -1;
 			System.out.println(e);
 		}
 		
@@ -129,6 +140,100 @@ public class MeetingService {
 		return res;
 	}
 	
+	/**
+	 * 完成会议
+	 * @param meetingId
+	 * @param cellphone
+	 * @return 
+	 * 0:正常
+	 * -1：数据库操作错误
+	 * -2：权限不足
+	 * -3：完成时间早于会议开始时间
+	 * -4: 该会议状态已是完成态
+	 * -5: 会议还未开始，无法完成
+	 */
+	@SuppressWarnings("deprecation")
+	public int finish(String meetingId,String cellphone){
+		int res = 0;
+		
+		BaseDAO aBaseDao = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+		Transaction ts = sess.beginTransaction();
+		
+		try{
+			//验证操作者权限，只有创会者才能完成会议
+			String hql0 = "select m from MeetingOrganizer as m where "+
+					" m.id.organizerCellphone=? and m.id.meetingId=?";
+			Object[] values0 = new Object[]{cellphone,meetingId};
+			;
+			if(aBaseDao.findObjectByHql(hql0, values0) == null){
+				return -2;//权限不足
+			}
+			
+			
+			//拦截器需要向相关人员发送通知
+			
+			
+			Meeting meeting = (Meeting)aBaseDao.findObjectById(Meeting.class, meetingId);
+			String finishtime =Long.toString(new Date().getTime()) ;
+			String newstarttime = meeting.getMeetingStartTime();
+			//会议状态必须是活动态
+			if(meeting.getMeetingState() == 1){
+				return -4;
+			}
+			
+			
+			//完成时间必须大于会议开始时间
+			if(RandomUtil.compareTimer(meeting.getMeetingStartTime(), finishtime)){
+				return -5;
+			}
+			else{
+				//根据会议频率更新下次会议开始时间
+				long day = 1000*60*60*24;
+				switch(meeting.getMeetingFrequency()){
+				case 1://单次
+					break;
+				case 2://每天
+					newstarttime = Long.toString(day+Long.parseLong(newstarttime));
+					break;
+				case 3://每周
+					newstarttime = Long.toString(day*7+Long.parseLong(newstarttime));
+					break;
+				case 4://每月
+					SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+					Long time = Long.parseLong(meeting.getMeetingStartTime());
+					Date date = format.parse(format.format(time));
+					if(date.getMonth() == 11){
+						date.setMonth(0);
+					}
+					else{
+						date.setMonth(date.getMonth()+1);
+					}
+					
+					newstarttime = date.toLocaleString();
+					break;
+				default:
+					break;
+				}
+			}
+			String hql = "update Meeting  m set m.meetingState=1,m.meetingFinishTime= "+
+					finishtime + "m.meetingStartTime=? where m.meetingId = ? and m.meetingState=0";
+			Object[] values = new Object[]{newstarttime,meetingId};
+			
+			aBaseDao.deleteObjectByHql(hql, values);
+			
+			ts.commit();
+		}
+		catch(Exception e)
+		{
+			ts.rollback();
+			res = -1;
+			System.out.println(e);
+		}
+		
+		SessionDAO.closeSession();
+		return res;
+	}
 	public boolean update(Meeting meeting){
 		boolean res = false;
 
@@ -138,7 +243,10 @@ public class MeetingService {
 		try
 		{
 			String hql = "update Meeting meeting set meeting.meetingName=?,"+
-			        "meeting.meetingContent=?,meeting.meetingLocation=?,meeting.meetingRemark=?,meeting.meetingStartTime=?,meeting.meetingPredictFinishTime=?,meeting.meetingFrequency=? where meeting.meetingId=?";
+			        "meeting.meetingContent=?,meeting.meetingLocation=?,"+
+					"meeting.meetingRemark=?,meeting.meetingStartTime=?,"+
+			        "meeting.meetingPredictFinishTime=?,"+
+					"meeting.meetingFrequency=? where meeting.meetingId=?";
 			Object[] values = new Object[]{meeting.getMeetingName(),
 					meeting.getMeetingContent(),meeting.getMeetingLocation(),
 					meeting.getMeetingRemark(),meeting.getMeetingStartTime(),
@@ -188,9 +296,30 @@ public class MeetingService {
 	}
 	
 	/**
+	 * @info 获取会议简要信息,只返回会议名，内容，时间，地点
+	 * @param id
+	 * @return
+	 */
+	public String findBrifyInfo(String id){
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+		Meeting m = (Meeting)b.findObjectById(Meeting.class, id);
+	
+		JSONObject obj = new JSONObject();
+		obj.put("meetingId", m.getMeetingId());
+		obj.put("meetingName", m.getMeetingName());
+		obj.put("meetingContent", m.getMeetingLocation());
+		obj.put("meetingLocation", m.getMeetingLocation());
+		obj.put("meetingStartTime", m.getMeetingStartTime());
+		String objs = JSONUtil.serialize(obj);
+		SessionDAO.closeSession();
+				
+		return objs;
+	}
+	/**
 	 * 普通用户获取会议列表
 	 * @param cellphone 手机号
-	 * @param state 会议状态：0未开始会议；1已完成会议；2：被取消/删除的会议
+	 * @param state 会议状态：1未开始会议；2已完成会议；3：被取消/删除的会议
 	 * @param type 0:获取全部会议;1：获取用户创建/组织的会议;2:获取用户参与的会议
 	 * @return
 	 */
@@ -205,7 +334,8 @@ public class MeetingService {
 		Session sess = SessionDAO.getSession();
 		if(0 == type){
 			hql = "select "+hqlr+" from Meeting as m where  "+
-			"m.ordinaryUser.cellphone=? and m.meetingState=?";
+			"m.ordinaryUser.cellphone=? and m.meetingState=? order by "+
+			"m.meetingStartTime desc";
 		}
 		else if(1 == type){
 			hql = "select "+hqlr+" from Meeting as m,MeetingOrganizer as o where "+

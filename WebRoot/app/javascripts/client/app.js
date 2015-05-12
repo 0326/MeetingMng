@@ -48,7 +48,21 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		}
 	}).when('/meeting-history', {
 		templateUrl: 'app/templates/client/meetinghistory.html',
-		controller: 'meetinghistoryCtrl'
+		controller: 'meetinghistoryCtrl',
+		resolve:{
+			listType:function($route){
+				return $route.current.params.listType || 0;
+			}
+		}
+	})
+	.when('/meeting-qrcode', {
+		templateUrl: 'app/templates/client/meetingqrcode.html',
+		controller: 'meetingqrcodeCtrl',
+		resolve:{
+			listType:function($route){
+				return $route.current.params.listType || 0;
+			}
+		}
 	})
 	//会议话题相关
 	.when('/topic-comment', {
@@ -76,6 +90,16 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		resolve:{
 			topicId:function($route){
 				// return $route.current.params.tid;
+			},
+		}
+	})
+  //我的消息
+	.when('/message', {
+		templateUrl: 'app/templates/client/message.html',
+		controller: 'messageCtrl',
+		resolve:{
+			msgId:function($route){
+				return $route.current.params.msgId;
 			},
 		}
 	})

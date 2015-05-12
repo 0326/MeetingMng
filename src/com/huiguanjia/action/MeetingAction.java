@@ -15,6 +15,7 @@ import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
 import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.service.MeetingBulletinService?
 //import com.huiguanjia.util.QiniuyunQRcodeUtil;
+import com.huiguanjia.util.QiniuyunUtil;
 import com.huiguanjia.util.RandomUtil;
 
 public class MeetingAction  extends ActionSupport{
@@ -27,7 +28,7 @@ public class MeetingAction  extends ActionSupport{
 	private String meetingCreatorId;             //创建者id(cellphone)，null=true?
 	private String meetingRemark;                //会议备注null=true
 //	private String meetingQrcode;                //会议二维码
-	private Integer meetingState;				 //会议状态：1未开始2已开始3已结束4已删除
+	private Integer meetingState;				 //会议状态：0活动 1完成 2删除
 	private Integer meetingFrequency;            //频率：1单次2每天3每周4每月
 	private String meetingStartTime;             //会议开始时间
 	private String meetingPredictFinishTime;     //预期结束时间
@@ -70,10 +71,15 @@ public class MeetingAction  extends ActionSupport{
 			jsonData.put("code", -1);
 		}
 		else{
-			// 创建会议成功，生成二维码图片到本地指定路径里面
+			// 创建会议成功，生成二维码图片到本地指定路径里面,上传二维码到七牛云
 			jsonData.put("code", 0);
 			try{
+//				String path = "test.gif";
 				ms.putMeetingQrcode(meetingQrcode,path);
+				QiniuyunUtil qiniuyunUtil = new QiniuyunUtil();
+				qiniuyunUtil.upTokenFile(path);
+				// 生成指向二维码图片的url，返回这个url
+				jsonData.put("url",qiniuyunUtil.downloadFile(path));
 				}
 			catch(Exception e){
 			
@@ -107,16 +113,17 @@ public class MeetingAction  extends ActionSupport{
 		jsonData = new HashMap<String,Object>();
 		
 		MeetingService ms= new MeetingService();
-		if(false == ms.delete(meetingId)){
-			jsonData.put("code", -1);
-		}
-		else{
-			jsonData.put("code", 0);
-		}
-		
+		jsonData.put("code", ms.delete(meetingId,cellphone));
 		return SUCCESS;
 	}
 	
+	public String finish(){
+		jsonData = new HashMap<String,Object>();
+		
+		MeetingService ms= new MeetingService();
+		jsonData.put("code", ms.finish(meetingId,cellphone));
+		return SUCCESS;
+	}
 
 	public String update(){
 		jsonData = new HashMap<String,Object>();

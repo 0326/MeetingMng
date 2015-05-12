@@ -1,10 +1,10 @@
 // directives.js
 var mDirectives = angular.module("mDirectives", [])
 
-.directive("directive", function() {
+.directive("tmMessage", function() {
 	return {
 		restrict: 'E',
-		template: '<div>directive test</div>',
+		template: '<div>msg</div>',
 		replace: true
 	}
 })

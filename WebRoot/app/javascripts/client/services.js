@@ -15,8 +15,11 @@ var mServices = angular.module("mServices", [])
       },
       getInfo: function(){
         var d = $q.defer();
-        $http
-        .get("/MeetingMng/api/v1/findUserInfo?cellphone="+$cookieStore.get("cellphone"))
+        $http({
+          method: 'GET',
+          url: "/MeetingMng/api/v1/findUserInfo?cellphone="+$cookieStore.get("cellphone"),
+          timeout: 10000
+        })
         .success(function(data, status){
           service.profiles = $.parseJSON(data.userInfo);
           if(service.profiles.avatarUrl == null){
@@ -29,6 +32,9 @@ var mServices = angular.module("mServices", [])
             service.profiles.sex = 1;
           }
           d.resolve(service.profiles);
+        })
+        .error(function(data, status){
+          d.resolve("timeout");
         });
         return d.promise;
       },
@@ -90,11 +96,21 @@ var mServices = angular.module("mServices", [])
     return d.promise;
   }
 
-  service.delete = function(meetingId){
-    $http.post("/MeetingMng/api/v1/u/meeting/delete",{'meetingId':meetingId}, PostCfg)
+  service.delete = function(meetingId,cellphone){
+    $http.post("/MeetingMng/api/v1/u/meeting/delete",{
+      'meetingId':meetingId,
+      'cellphone':cellphone
+    }, PostCfg)
     .success(function(data){
       if(data.code == 0){
         alert("删掉了！哈哈哈！");
+        window.location.href="/MeetingMng/u#/";
+      }
+      else if(data.code == -1){
+        alert("数据库错误");
+      }
+      else if(data.code == -2){
+        alert("权限不足");
       }
       else{
         alert("未知错误");
@@ -102,6 +118,27 @@ var mServices = angular.module("mServices", [])
     });
   }
 
+  service.finish = function(meetingId,cellphone){
+    $http.post("/MeetingMng/api/v1/u/meeting/finish",{
+      'meetingId':meetingId,
+      'cellphone':cellphone
+    }, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("您成功结束此次会议！该会议将会被移入历史会议中~");
+        window.location.href="/MeetingMng/u#/";
+      }
+      else if(data.code == -1){
+        alert("数据库错误");
+      }
+      else if(data.code == -2){
+        alert("权限不足");
+      }
+      else{
+        alert("未知错误");
+      }
+    });
+  }
   service.update = function(meeting){
     $http.post("/MeetingMng/api/v1/u/meeting/update",meeting, PostCfg)
     .success(function(data){
@@ -146,27 +183,25 @@ var mServices = angular.module("mServices", [])
   return service;
 }])
 
-///////////////////////////////////参会人
+///////////////////////////////////办会人
 
 .factory('organizerService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
   var service = {};
 
-  service.add = function(meeting){
+  //添加办会者
+  service.addOrganizer = function(cellphone,meetingId,users){
     var d = $q.defer();
-    $http.post("/MeetingMng/api/v1/u/meeting/create",meeting, PostCfg)
+    $http.post("/MeetingMng/api/v1/u/meeting/addOrganizer",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'users': JSON.stringify(users)
+    }, PostCfg)
     .success(function(data){
-      if(data.code == 0){
-        alert("创建成功！");
-        window.location.href="/MeetingMng/u";
-      }
-      else{
-        alert("创建失败");
-      }
       d.resolve(data);
     });
     return d.promise;
   }
-
+  //查找办会者列表
   service.findOrganizer = function(cellphone,meetingId){
     var d = $q.defer();
     $http.get("/MeetingMng/api/v1/u/meeting/findOrganizer?cellphone="+cellphone+"&meetingId="+meetingId)
@@ -175,27 +210,158 @@ var mServices = angular.module("mServices", [])
         d.resolve($.parseJSON(data.organizers));  
       }
       else{
-        d.resolve("[]");
+        d.resolve(null);
       }
       
     });
     return d.promise;
   }
 
-  service.findByMeetingId = function(meetingId){
-    // var cellphone = "15071345115";
+  //删除办会者
+  service.deleteOrganizer = function(cellphone,meetingId,users){
     var d = $q.defer();
-    $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    $http.post("/MeetingMng/api/v1/u/meeting/deleteOrganizer",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'users': JSON.stringify(users)
+    }, PostCfg)
     .success(function(data){
       d.resolve(data);
     });
     return d.promise;
   }
+  //更新办会者状态
+  service.updateOrganizer = function(cellphone,meetingId,operatedCellphone,state){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/updateOrganizer",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'operatedCellphone': operatedCellphone,
+      'state': state
+    }, PostCfg)
+    .success(function(data){
+      // if(data.code == 0){
+      //   alert("更新成功！");
+      //   window.location.reload();
+      // }
+      // else{
+      //   alert("创建失败");
+      // }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //向办会者发送邀请
+  service.inviteOrganizer = function(cellphone,meetingId,operatedCellphone){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/inviteOrganizer",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'operatedCellphone': operatedCellphone
+    }, PostCfg)
+    .success(function(data){
+      // if(data.code == 0){
 
+      // }
+      // else{
+      //   // alert("创建失败");
+      // }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
   return service;
 }])
 
+///////////////////////////////////参会人
 
+.factory('participatorService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+
+  //添加办会者
+  service.addParticipator = function(cellphone,meetingId,users){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/addParticipator",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'users': JSON.stringify(users)
+    }, PostCfg)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //查找办会者列表
+  service.findParticipator = function(cellphone,meetingId){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findParticipator?cellphone="+cellphone+"&meetingId="+meetingId)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.participators));  
+      }
+      else{
+        d.resolve(null);
+      }
+      
+    });
+    return d.promise;
+  }
+
+  //删除办会者
+  service.deleteParticipator = function(cellphone,meetingId,users){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/deleteParticipator",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'users': JSON.stringify(users)
+    }, PostCfg)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //更新办会者状态
+  service.updateParticipator = function(cellphone,meetingId,operatedCellphone,state){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/updateParticipator",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'operatedCellphone': operatedCellphone,
+      'state': state
+    }, PostCfg)
+    .success(function(data){
+      // if(data.code == 0){
+      //   alert("更新成功！");
+      //   window.location.reload();
+      // }
+      // else{
+      //   alert("创建失败");
+      // }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //向办会者发送邀请
+  service.inviteParticipator = function(cellphone,meetingId,operatedCellphone){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/inviteParticipator",{
+      'cellphone': cellphone,
+      'meetingId': meetingId,
+      'operatedCellphone': operatedCellphone
+    }, PostCfg)
+    .success(function(data){
+      // if(data.code == 0){
+
+      // }
+      // else{
+      //   // alert("创建失败");
+      // }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  return service;
+}])
 
 
 //话题
@@ -295,6 +461,18 @@ var mServices = angular.module("mServices", [])
     });
     return d.promise;
   }
+  //添加参会人员时列表
+  service.findCompanyContactForParticipator = function(cellphone, meetingId){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/contact/findCompanyContactForParticipator?cellphone="+cellphone+
+      "&meetingId="+meetingId)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.companyContact));
+      }
+    });
+    return d.promise;
+  }
 
   
   service.getCompanyUsers = function(){ return _companyUsers;}
@@ -304,6 +482,37 @@ var mServices = angular.module("mServices", [])
 }])
 
 
+
+///////////////////////消息处理
+.factory('messageService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+ 
+  //获取公司联系人列表  
+  service.findMsgList = function(cellphone){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/message/findMsgList?username="+cellphone)
+    .success(function(data){
+      d.resolve($.parseJSON(data.list));
+    });
+    return d.promise;
+  }
+
+  //修改参会人员状态
+  service.updateSate = function(cellphone,meetingId,state){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/updateState",{
+      "cellphone":cellphone,
+      "meetingId":meetingId,
+      "state":state
+    }, PostCfg)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  
+  return service;
+}])
 
 
 .constant('PostCfg',{

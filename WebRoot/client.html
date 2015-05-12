@@ -10,6 +10,24 @@
     <meta name="renderer" content="webkit">
     <meta name="description" content=" " />
     <meta name="Keywords" content="">
+    <!-- for ios  -->
+    <meta name="apple-mobile-web-app-title" content="会管家"> <!-- 添加到主屏后的标题（iOS 6 新增） -->
+    <meta name="apple-mobile-web-app-capable" content="yes" /> <!-- 是否启用 WebApp 全屏模式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /><!-- 设置状态栏的背景颜色-->
+    <meta name="format-detection" content="telephone=no" /> <!-- 禁止数字识自动别为电话号码 -->
+    <link rel="apple-touch-icon-precomposed" href="app/images/apple-icon/apple-touch-icon-57x57-precomposed.png" /> <!-- iPhone / iTouch ,为apple-touch-icon 添加precomposed后缀可去除图标高光透明层-->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="app/images/apple-icon/apple-touch-icon-114x114-precomposed.png" /> <!-- Retina-->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="app/images/apple-icon/apple-touch-icon-72x72-precomposed.png" /> <!-- iPad-->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="app/images/apple-icon/apple-touch-icon-144x144-precomposed.png" /> <!-- Retina -->
+    <link rel="apple-touch-icon-precomposed" sizes="180x180" href="app/images/apple-icon/apple-touch-icon-180x180-precomposed.png"><!--iphone6/plus-->
+    <link rel="apple-touch-startup-image" sizes="768x1004"  href="app/images/apple-icon/splash-screen-768x1004.png" /><!--ipad启动界面-->
+    <link rel="apple-touch-startup-image" sizes="1536x2008" href="app/images/apple-icon/splash-screen-1536x2008.png" /><!--retina-->
+    <link rel="apple-touch-startup-image" sizes="1024x748"  href="app/images/apple-icon/Default-Portrait-1024x748.png" /><!--ipad横屏-->
+    <link rel="apple-touch-startup-image" sizes="2048x1496" href="app/images/apple-icon/splash-screen-2048x1496.png" /><!--retina-->
+    <link rel="apple-touch-startup-image" href="app/images/apple-icon/splash-screen-320x480.png" /> <!-- iPhone/iPod Touch 竖屏 320x480 -->
+    <link rel="apple-touch-startup-image" sizes="640x960"   href="app/images/apple-icon/splash-screen-640x960.png" /> <!--Retina-->
+    <link rel="apple-touch-startup-image" sizes="640x1136"  href="app/images/apple-icon/splash-screen-640x1136.png" /> <!-- iPhone 5/Touch 5 竖屏(Retina) -->
+
 
     <link rel="stylesheet" href="app/bower_components/foundation-5.5.1/css/normalize.css">
     <link rel="stylesheet" href="app/bower_components/foundation-5.5.1/css/foundation.min.css">
@@ -22,6 +40,10 @@
     <script src="app/bower_components/foundation-5.5.1/js/vendor/modernizr.js"></script>
     <script src="app/bower_components/foundation-5.5.1/js/vendor/fastclick.js"></script>
     <script src="app/bower_components/foundation-5.5.1/js/foundation.min.js"></script>
+    <!-- 日期选择控件 -->
+    <link href="app/bower_components/bootstrap-datetimepicker/css/dropmenu.css" rel="stylesheet">
+    <link href="app/bower_components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <script src="app/bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 </head>
 <body ng-app="appclient">
 	<div id="loading">
@@ -68,7 +90,8 @@
 	        	<label>{{client.name}}</label>
 	        </li>
 	        <li><a href="#/profile">个人资料</a></li>
-	        <li><a href="#/settings">系统设置</a></li>
+	        <li><a href="#/message">我的消息</a></li>
+	        <li><a href="#/meeting-history">会议历史</a></li>
 	        <li><a ng-click="logout();" class"button">退出</a></li>
 	      </ul>
 	    </aside>
@@ -76,6 +99,9 @@
 	  <a class="exit-off-canvas"></a>
 	  </div>
 	</div>
+	<audio loop="loop" id="alarm-audio">
+		<source src="app/resources/alarm.mp3" type="audio/mpeg">
+	</audio>
 	<!-- messenger for comet -->
 	<link rel="stylesheet" href="app/bower_components/messenger-1.4.1/build/css/messenger.css">
 	<link rel="stylesheet" href="app/bower_components/messenger-1.4.1/build/css/messenger-theme-flat.css">

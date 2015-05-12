@@ -10,7 +10,7 @@ import com.huiguanjia.util.PhoneSendUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
-public class ActivateAction extends ActionSupport{
+public class ActivateAction extends MyActionSupport{
 	private String uid;
 	private String aid;
 	private Map<String,Object> jsonData;

@@ -14,6 +14,10 @@
 			<p>{{ [meeting.meetingFrequency,meeting.meetingStartTime] | meetingDate}}</p>
 			<p>会议内容：{{meeting.meetingContent}}</p>
 			<p>创建者：{{meeting.ordinaryUser.name}}</p>
+			<div>
+				<button class="button primary button-sm" ng-click="onFinish()">完成会议</button>
+				<button class="button alert button-sm" ng-click="onDelete()">删除此会议</button>
+			</div>
 		</div>
 		<div id="updateBox" class="small-12 large-8 columns hide">
 			<form name="updateForm" ng-submit="submitUpdateForm(updateForm.$valid)" novalidate>
@@ -39,7 +43,7 @@
 		      <div class="row prefix-round">
 		        <div class="small-3 columns"><p class="button prefix">开始时间</p></div>
 		        <div class="small-9 columns">
-		          <input type="text" value="{{meeting.meetingStartTime | date:'yyyy-mm-dd HH:mm'}}"  class="form_datetime datetimepicker"  readonly>
+		          <input type="text" value="{{meeting.meetingStartTime | date:'yyyy-mm-dd HH:mm'}}"  class="form_datetime_start _enddatetimepicker"  readonly>
 		          <input type="hidden" name="starttime" id="starttime" ng-model="meeting.meetingStartTime">
 		          <small class="error">Invalid entry</small>
 		        </div>
@@ -49,7 +53,7 @@
 		      <div class="row prefix-round">
 		        <div class="small-3 columns"><p class="button prefix">结束时间</p></div>
 		        <div class="small-9 columns">
-		          <input type="text" value="{{meeting.meetingPredictFinishTime | date:'yyyy-mm-dd HH:mm'}}" class="form_datetime datetimepicker"  readonly>
+		          <input type="text" value="{{meeting.meetingPredictFinishTime | date:'yyyy-mm-dd HH:mm'}}" class="form_datetime_end datetimepicker"  readonly>
 		          <input type="hidden" name="endtime" id="endtime" ng-model="meeting.meetingPredictFinishTime">
 		          <small class="error">Invalid entry</small>
 		        </div>
@@ -92,16 +96,24 @@
 		</div>
 		<div class="small-12 large-4 columns text-center">
 			<div>
-				<img src="/MeetingMng/app/images/qrcode.png">
+				<!-- <img src="/MeetingMng/app/images/qrcode.png"> -->
+				<div id="qrcode"></div>
+				<div>
+					<button class="button success button-sm" ng-click="onChecked">签到</button>
+					<a href="#/meeting-qrcode">扫一扫</a>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<link href="app/bower_components/bootstrap-datetimepicker/css/dropmenu.css" rel="stylesheet">
-<link href="app/bower_components/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-<script src="app/bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-
+<script type="text/javascript" src="/MeetingMng/app/javascripts/jquery.qrcode.min.js"></script>
 <script type="text/javascript">
+
+$('#qrcode').qrcode("meetingId....");
+
+//如果有，删除之前生成的控件
+$(".dropdown-menu").remove();
+
 ;(function($){
 $.fn.datetimepicker.dates['zh-CN'] = {
       days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
@@ -114,7 +126,8 @@ $.fn.datetimepicker.dates['zh-CN'] = {
       meridiem: ["上午", "下午"]
   };
 }(jQuery));
-$('.form_datetime').datetimepicker({
+
+$('.form_datetime_start,.form_datetime_end').datetimepicker({
     language:  'zh-CN',
     weekStart: 1,
     todayBtn:  1,
@@ -124,9 +137,14 @@ $('.form_datetime').datetimepicker({
     forceParse: 0,
     showMeridian: 1
 });
-$('.form_datetime').datetimepicker().on('hide',function(ev){
-  var TimeZoned = new Date(ev.date.setTime(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000)));
-  $(".form_datetime + input").val(TimeZoned.getTime());
-  console.log(TimeZoned.getTime());
-});
+addDatetimeListener("form_datetime_start");
+addDatetimeListener("form_datetime_end");
+
+function addDatetimeListener(classname){
+  $('.'+classname).datetimepicker().on('hide',function(ev){
+    var TimeZoned = new Date(ev.date.setTime(ev.date.getTime() + (ev.date.getTimezoneOffset() * 60000)));
+    $("."+ classname +" + input").val(TimeZoned.getTime());
+    console.log(TimeZoned.getTime());
+  });
+}
 </script>

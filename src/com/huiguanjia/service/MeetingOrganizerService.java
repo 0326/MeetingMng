@@ -9,11 +9,13 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.huiguanjia.authorityvalidate.MeetingOrganizerValidate;
+import com.huiguanjia.comet.MeetingMsgInbound;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.Department;
 import com.huiguanjia.pojo.MeetingOrganizer;
 import com.huiguanjia.pojo.MeetingOrganizerId;
+import com.huiguanjia.pojo.Message;
 import com.huiguanjia.util.JSONUtil;
 
 public class MeetingOrganizerService {
@@ -361,6 +363,50 @@ public class MeetingOrganizerService {
     			
     			res = 0;
     		}
+    	}
+    	catch(Exception e)
+    	{
+    		ts.rollback();
+    		res = -2;
+    		System.out.println(e);
+    	}
+    	
+    	SessionDAO.closeSession();
+    	
+    	return res;
+    }
+    
+    public int inviteOrganizer(Message msg, String meetingId, 
+    		String cellphone)
+    {
+    	
+    	//发送推送消息
+    	MeetingMsgInbound.pushSigle(msg);      
+    	//修改被推送用户状态
+    	int res = this.updateState(meetingId, msg.getUsername(), 1);
+    
+    	return res;
+    }
+    
+    /**
+     * 	修改用户状态
+     * @param meetingId
+     * @param cellphone
+     * @param state
+     * @return
+     */
+    public int updateState(String meetingId,String cellphone,int state){
+    	int res = 0;
+
+    	BaseDAO aBaseDao = new BaseDAO();
+    	Session sess = SessionDAO.getSession();
+    	Transaction ts = sess.beginTransaction();
+    	try{
+    		String hql = "update MeetingOrganizer set state = ? where id.meetingId = ? and id.organizerCellphone = ?";
+			Object[] values = new Object[]{state,meetingId,cellphone};
+			aBaseDao.updateObjectByHql(hql, values);
+			
+			ts.commit();
     	}
     	catch(Exception e)
     	{

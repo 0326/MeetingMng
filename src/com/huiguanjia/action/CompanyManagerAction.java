@@ -17,8 +17,11 @@ import com.huiguanjia.pojo.CompanyAndCompanyAdmin;
 import com.huiguanjia.pojo.Industry;
 import com.huiguanjia.pojo.Message;
 import com.huiguanjia.pojo.ProvinceAndCity;
+import com.huiguanjia.util.DownLoadFromUrl;
 import com.huiguanjia.util.MD5Util;
 import com.huiguanjia.util.MailSendUtil;
+import com.huiguanjia.util.QiniuyunUtil;
+import com.huiguanjia.util.Read_excelUtil;
 import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.pojo.Department;
 
@@ -29,6 +32,10 @@ import org.apache.struts2.json.JSONException;
 import org.apache.struts2.json.JSONUtil;
 
 import net.sf.json.JSONArray;
+import java.io.IOException;
+import com.huiguanjia.util.Read_excelUtil;
+import org.apache.commons.codec.EncoderException;
+import com.qiniu.api.auth.AuthException;
 
 @SuppressWarnings("serial")
 public class CompanyManagerAction extends ActionSupport {
@@ -53,9 +60,19 @@ public class CompanyManagerAction extends ActionSupport {
 	private int departmentId;
 	private int pageIndex;
 	private String keyword;
+	private String url;               //下载excel时候前端传输的url
 
 	private Map<String, Object> jsonData;
 
+	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -420,12 +437,11 @@ public class CompanyManagerAction extends ActionSupport {
 
 	public String findStuffs() {
 
-		List<Message> mlist = new ArrayList<Message>();
-		Message m = new Message();
-		m.setMsgContent("findStuffs");
-		mlist.add(m);
-		MeetingMsgInbound.pushSigle(mlist, (String) ActionContext.getContext()
-				.getSession().get("username"));
+//		List<Message> mlist = new ArrayList<Message>();
+//		Message m = new Message();
+//		m.setMsgContent("findStuffs");
+//		mlist.add(m);
+//		MeetingMsgInbound.pushSigle(m);
 
 		jsonData = new HashMap<String, Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
@@ -480,6 +496,92 @@ public class CompanyManagerAction extends ActionSupport {
 		}
 
 		return SUCCESS;
+	}
+
+	/**
+	 * 公司管理员利用Excel表格,批量添加普通用户
+	 * 
+	 * @return
+	 * @throws EncoderException 
+	 * @throws org.json.JSONException 
+	 * @throws AuthException 
+	 * @throws IOException 
+	 */
+	public String addOrdinaryUserByExcel() throws AuthException, org.json.JSONException, EncoderException, IOException {
+		jsonData = new HashMap<String, Object>();
+		int i;
+
+//		// 通过七牛云获取下载该文件名的URL
+//		QiniuyunUtil qiniuyunUtil = new QiniuyunUtil();
+//		String url = qiniuyunUtil.downloadFile(fileName);	
+		
+		// 从返回的URL中下载文件保存在D盘的指定文件名中
+		String a[] = url.split("/"); 
+		String fileName = a[3];
+		DownLoadFromUrl downLoadFromUrl = new DownLoadFromUrl();
+		downLoadFromUrl.downLoadFromUrl(url, fileName);
+		
+		Read_excelUtil read_excelUtil = new Read_excelUtil();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		while(null != read_excelUtil.read_excel(fileName)){
+			List<List> user = read_excelUtil.read_excel(fileName);
+			
+			for(i=0;i<=user.size();i++){
+				CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
+				c.setUsername((String) user.get(i).get(0));
+				Department d = new Department();
+				int departmentId = this.findDepartmentIdByDepartmentName((String) user.get(i).get(4));	
+				d.setDepartmentId(departmentId);
+				
+				OrdinaryUser u = new OrdinaryUser();
+				u.setCompanyAndCompanyAdmin(c);
+				u.setDepartment(d);
+				// u.setRegisterTime(registerTime);
+				u.setCellphone((String) user.get(i).get(2));
+				// u.setIsCellphoneHide(false);
+				u.setName(name);
+				// default password "123456"
+				u.setPassword("123456");
+				u.setEmail((String) user.get(i).get(6));
+				// sex为男转化为0，为女转化为1
+				String sex = (String) user.get(i).get(2);
+				boolean tsex = false;
+				if("男".equals(sex)){
+					tsex = true;
+				}
+				if("女".equals(sex)){
+					tsex = false;
+				}
+				else{
+					System.out.println("sex not found");
+				}
+				u.setSex(tsex);
+				u.setOfficePhone((String) user.get(i).get(7));
+				u.setJob((String) user.get(i).get(5));
+				u.setAvatarUrl(avatarUrl);
+				u.setOfficeLocation((String) user.get(i).get(8));
+				u.setWorkNo((String) user.get(i).get(1));
+				
+//				CompanyManagerService companyManagerService = new CompanyManagerService();
+				if (companyManagerService.addOrdinaryUser(u)) {
+
+					jsonData.put("code", 0);
+				} else {
+					jsonData.put("code", -10415);
+				}
+
+//				user.get(i).get(0);
+			}
+		
+		}
+
+		return SUCCESS;
+	}
+
+	// 通过部门名称查询部门Id
+	private int findDepartmentIdByDepartmentName(String departmentName) {
+		String list[] = departmentName.split("-");
+		return 0;
 	}
 
 	/**
@@ -564,7 +666,7 @@ public class CompanyManagerAction extends ActionSupport {
 		jsonData = new HashMap<String, Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		String line = keyword;
-		String pattern1 = "[0-9]*";
+		String pattern1 = "[0-9][0-9]*";
 
 		Pattern r1 = Pattern.compile(pattern1);
 
@@ -614,5 +716,5 @@ public class CompanyManagerAction extends ActionSupport {
 			this.pageIndex = pageIndex;
 		}
 	}
-
+	
 }
