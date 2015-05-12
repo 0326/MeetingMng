@@ -18,7 +18,7 @@ import com.huiguanjia.service.MeetingService;  //if import com.huigunajia.servic
 import com.huiguanjia.util.QiniuyunUtil;
 import com.huiguanjia.util.RandomUtil;
 
-public class MeetingAction  extends ActionSupport{
+public class MeetingAction  extends MyActionSupport{
 
 	private static final long serialVersionUID = 2782570898187961833L;
 	private String meetingId;                   //会议

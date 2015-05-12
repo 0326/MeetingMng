@@ -61,36 +61,36 @@ public class CompanyManagerTest {
 		
 	 */
 	
-	public static String getAllInfo(String username){
-		boolean flag = false;
-		CompanyManagerService cs = new CompanyManagerService();
-	
-		if(cs.getAllInfo(username) != null){
-			flag = true;
-			System.out.println("succeed");
-			}
-		else{
-			System.out.println("failed");
-		}
-		
-		return cs.getAllInfo(username);
-	}
-	
-	public static OrdinaryUser getOrdinaryUserInfo(String username,String cellphone){
-		boolean flag = false;
-		CompanyManagerService cs = new CompanyManagerService();
-	
-		if(cs.getOrdinaryUserInfo(username,cellphone) != null){
-			flag = true;
-			System.out.println("succeed");
-			System.out.println(cs.getOrdinaryUserInfo(username,cellphone));
-			}
-		else{
-			System.out.println("failed");
-		}
-		
-		return cs.getOrdinaryUserInfo(username,cellphone);
-	}
+//	public static String getAllInfo(String username){
+//		boolean flag = false;
+//		CompanyManagerService cs = new CompanyManagerService();
+//	
+//		if(cs.getAllInfo(username) != null){
+//			flag = true;
+//			System.out.println("succeed");
+//			}
+//		else{
+//			System.out.println("failed");
+//		}
+//		
+//		return cs.getAllInfo(username);
+//	}
+//	
+//	public static OrdinaryUser getOrdinaryUserInfo(String username,String cellphone){
+//		boolean flag = false;
+//		CompanyManagerService cs = new CompanyManagerService();
+//	
+//		if(cs.getOrdinaryUserInfo(username,cellphone) != null){
+//			flag = true;
+//			System.out.println("succeed");
+//			System.out.println(cs.getOrdinaryUserInfo(username,cellphone));
+//			}
+//		else{
+//			System.out.println("failed");
+//		}
+//		
+//		return cs.getOrdinaryUserInfo(username,cellphone);
+//	}
 	
 	public static boolean deleteTest(String cellphone){
 		boolean flag = false;
@@ -138,63 +138,63 @@ public class CompanyManagerTest {
 //		
 //		return cs.search(username,name);
 //	}
-	
-	public static JSONObject searchTest(){
-		String username = "1833559609@qq.com";
-		String keyword = "1";
-		int pageIndex = 1;
-		boolean flag = false;
-		CompanyManagerService cs = new CompanyManagerService();
-	
-		if(cs.searchWorkNo(username,keyword,pageIndex) != null){
-			flag = true;
-			System.out.println("succeed");
-			System.out.println(keyword);
-			System.out.println(cs.searchWorkNo(username,keyword,pageIndex));
-			}
-		else{
-			System.out.println("failed");
-		}
-		
-		return cs.searchWorkNo(username,keyword,pageIndex);
-	}
-	
-	public static String searchNumberTest(){
-		String username = "1833559609@qq.com";
-		String keyword = "13";
-		int pageIndex = 1;
-		boolean flag = false;
-		CompanyManagerService cs = new CompanyManagerService();
-	
-		if(cs.searchNumber(username,keyword,pageIndex) != null){
-			flag = true;
-			System.out.println("succeed");
-			System.out.println(keyword);
-			System.out.println(cs.searchNumber(username,keyword,pageIndex));
-			}
-		else{
-			System.out.println("failed");
-		}
-		
-		return cs.searchNumber(username,keyword,pageIndex);
-	}
-	
-	public static JSONObject getInfo(){
-		boolean flag = false;
-		CompanyManagerService cs = new CompanyManagerService();
-		
-		String username1 = "1833559609@qq.com";
-		if(cs.getInfo(username1) != null){
-			flag = true;
-			System.out.println("succeed");
-			System.out.println(cs.getInfo(username1));
-			}
-		else{
-			System.out.println("failed");
-		}
-		
-		return cs.getInfo(username1);
-	}
+//	
+//	public static JSONObject searchTest(){
+//		String username = "1833559609@qq.com";
+//		String keyword = "1";
+//		int pageIndex = 1;
+//		boolean flag = false;
+//		CompanyManagerService cs = new CompanyManagerService();
+//	
+//		if(cs.searchWorkNo(username,keyword,pageIndex) != null){
+//			flag = true;
+//			System.out.println("succeed");
+//			System.out.println(keyword);
+//			System.out.println(cs.searchWorkNo(username,keyword,pageIndex));
+//			}
+//		else{
+//			System.out.println("failed");
+//		}
+//		
+//		return cs.searchWorkNo(username,keyword,pageIndex);
+//	}
+//	
+//	public static String searchNumberTest(){
+//		String username = "1833559609@qq.com";
+//		String keyword = "13";
+//		int pageIndex = 1;
+//		boolean flag = false;
+//		CompanyManagerService cs = new CompanyManagerService();
+//	
+//		if(cs.searchNumber(username,keyword,pageIndex) != null){
+//			flag = true;
+//			System.out.println("succeed");
+//			System.out.println(keyword);
+//			System.out.println(cs.searchNumber(username,keyword,pageIndex));
+//			}
+//		else{
+//			System.out.println("failed");
+//		}
+//		
+//		return cs.searchNumber(username,keyword,pageIndex);
+//	}
+//	
+//	public static JSONObject getInfo(){
+//		boolean flag = false;
+//		CompanyManagerService cs = new CompanyManagerService();
+//		
+//		String username1 = "1833559609@qq.com";
+//		if(cs.getInfo(username1) != null){
+//			flag = true;
+//			System.out.println("succeed");
+//			System.out.println(cs.getInfo(username1));
+//			}
+//		else{
+//			System.out.println("failed");
+//		}
+//		
+//		return cs.getInfo(username1);
+//	}
 	
 	
 	
@@ -209,6 +209,6 @@ public class CompanyManagerTest {
 //        listA.addAll(listB);
 //        System.out.println(listA);
 
-		CompanyManagerTest.searchNumberTest();
+//		CompanyManagerTest.searchNumberTest();
 	}
 }

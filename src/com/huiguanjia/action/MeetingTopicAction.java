@@ -23,7 +23,7 @@ import com.huiguanjia.util.RandomUtil;
 import com.opensymphony.xwork2.ActionSupport;
 
 
-public class MeetingTopicAction extends ActionSupport{
+public class MeetingTopicAction extends MyActionSupport{
 	
 	private String title;                       // 标题
 	private String content;                     // 内容 

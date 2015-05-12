@@ -9,7 +9,7 @@ import com.huiguanjia.service.ContactService;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
-public class ContactAction extends ActionSupport{
+public class ContactAction extends MyActionSupport{
 
 	private String cellphone;
 	private String contactCellphone;

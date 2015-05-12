@@ -38,7 +38,7 @@ import org.apache.commons.codec.EncoderException;
 import com.qiniu.api.auth.AuthException;
 
 @SuppressWarnings("serial")
-public class CompanyManagerAction extends ActionSupport {
+public class CompanyManagerAction extends MyActionSupport {
 	private String email;
 	private String name;
 	private String officePhone;

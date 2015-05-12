@@ -10,7 +10,7 @@ import com.huiguanjia.pojo.Message;
 import com.huiguanjia.service.MessageService;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class MessageAction extends ActionSupport{
+public class MessageAction extends MyActionSupport{
 	private int msgId;                   //id
 	private String msgContent;           //content
 	private String username;             //userid

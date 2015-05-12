@@ -10,7 +10,7 @@ import com.huiguanjia.service.DepartmentService;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
-public class DepartmentAction extends ActionSupport{
+public class DepartmentAction extends MyActionSupport{
 
 	private int departmentId;
 	private String companyId;

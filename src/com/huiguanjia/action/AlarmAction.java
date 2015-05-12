@@ -9,7 +9,7 @@ import com.huiguanjia.pojo.OrdinaryUser;
 import com.huiguanjia.service.AlarmService;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class AlarmAction  extends ActionSupport {
+public class AlarmAction  extends MyActionSupport {
 	/**
 	 * 
 	 */

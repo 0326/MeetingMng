@@ -28,7 +28,7 @@ import com.huiguanjia.service.MeetingRecordService;;
 
 
 
-public class MeetingRecordAction extends ActionSupport{
+public class MeetingRecordAction extends MyActionSupport{
 	private String username;           //公司Id（登录时候公司管理员的邮箱帐号）
 	private Map<String,Object> jsonData;
 	private String meetingId;         //会议Id

@@ -10,7 +10,7 @@ import com.huiguanjia.service.MeetingParticipatorService;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
-public class MeetingParticipatorAction extends ActionSupport{
+public class MeetingParticipatorAction extends MyActionSupport{
 
 	private String cellphone;
 	private String meetingId;
