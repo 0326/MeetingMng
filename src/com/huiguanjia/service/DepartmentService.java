@@ -11,6 +11,7 @@ import net.sf.json.JSONArray;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.alibaba.fastjson.JSONObject;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.DepartmentDao;
 import com.huiguanjia.dao.SessionDAO;
@@ -248,10 +249,39 @@ public class DepartmentService {
 	 * @return 返回所有符合条件的Department对象，无则返回null
 	 */
 	public List<Department> findByName(String name){
+		String departlist = this.findByCompanyId("2577839872@qq.com");
+		ArrayList departObj = (ArrayList) JSONObject.toJSON(departlist);
+		
 		
 		return null;
 	}
-	
+//	
+//	private JSONObject translateList(String parent,ArrayList data){
+//		
+//		    //var list = [];//[{name:'部门名称',id:'部门id'},...]
+//		    
+//		    //var p;        //父部门-子部门-全名
+//		JSONObject res = new JSONObject();
+//		String p = "";
+//		for(int i = 0;i<data.size();i++){
+//			JSONObject depart = (JSONObject) JSONObject.toJSON(data.get(i));
+//	        if(parent == null){
+//	          p = depart.getString("text");
+//	        }
+//	        else{
+//	          p = parent + '-' + depart.getString("text");
+//	        }
+//	        
+//	        list.push({text:p, departmentId:data[i].departmentId});
+//
+//	        if(depart.getString("nodes") && depart.getString("nodes"). > 0){
+//	          recur(p, data[i].nodes);
+//	        }
+//	      }
+//
+//		    return list;
+//
+//	}
 	/**
 	 * @info 通过公司id来查询部门
 	 * @param cid

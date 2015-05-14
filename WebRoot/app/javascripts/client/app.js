@@ -69,8 +69,9 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		templateUrl: 'app/templates/client/topiccomment.html',
 		controller: 'topicCommentCtrl',
 		resolve:{
-			topicId:function($route){
-				return $route.current.params.tid;
+			pid:function($route){
+				return {'topicId': $route.current.params.tid,
+								'meetingId': $route.current.params.mid};
 			},
 		}
 	})

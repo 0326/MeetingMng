@@ -163,15 +163,16 @@ var mControllers = angular.module("mControllers", [])
 })
 
 .controller("meetinglistCtrl", function($scope, userService, StuffService) {
+
   $scope.company = userService.profiles;
+  $scope.meetinglist = [];
   var initFunc = function(pageIndex){  
-    StuffService
-    .getStuffs(pageIndex)
-    .then(function(data){
-      $scope.stuffs = data.list;
-      $scope.paginationConf.totalItems = data.total;
-      // console.log("stuffs:",data);
-    });
+    meetingService
+     .getAll($scope.client.cellphone,0,listType)
+     .then(function(meetinglist){
+        $scope.meetinglist = meetinglist;
+        $scope.paginationConf.totalItems = data.total;
+     });
   }
   initFunc(1);
 

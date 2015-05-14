@@ -6,7 +6,7 @@
 <div class="content">
     <div class="content-subhead">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="搜索员工...">
+          <input type="text" class="form-control" placeholder="搜索会议...">
           <span class="input-group-btn">
             <button class="btn btn-default" type="button">
                 <i class="fa fa-search"></i>
@@ -15,31 +15,23 @@
         </div><!-- /input-group -->
     </div>
     <div class="content-table">
-      <table class="table  table-bordered table-hover  table-condensed">
+      <table>
         <thead>
           <tr>
-            <th>姓名</th>
-            <th>工号</th>
-            <th>部门</th>
-            <th>职位</th>
-            <th>手机号</th>
-            <th>操作</th>
+            <th>标题</th>
+            <th>时间</th>
+            <th>地点</th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="i in stuffs">
-            <td>{{i.name}}</td>
-            <td>{{i.workNo}}</td>
-            <td>{{i.departName}}</td>
-            <td>{{i.job}}</td>
-            <td>{{i.cellphone}}</td>
-            <td>
-            	<button class="pure-button button-secondary button-small">修改</button>
-            	<button class="pure-button button-secondary button-small">详细</button>
-            </td>
+          <tr ng-repeat="m in meetinglist">
+            <td><a href="#/meeting-detail?mid={{m[0]}}">{{m[1]}}</a></td>
+            <td>{{ [m[4],m[2]] | meetingDate }}</td>
+            <td>{{m[3]}}</td>
           </tr>
         </tbody>
-	   </table>
-    </div>
-    <tm-pagination conf="paginationConf"></tm-pagination>
+      </table>
+      
+      <tm-pagination conf="paginationConf"></tm-pagination>
+      
 </div>

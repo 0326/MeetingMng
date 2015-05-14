@@ -331,7 +331,11 @@ var mControllers = angular.module("mControllers", [])
   init();
   
   $scope.onCreate = function (){
-    topicService.create($scope.newTopic);
+    topicService
+    .create($scope.newTopic)
+    .then(function(data){
+      init();
+    });
   }
 
   //用户如果在此刷新浏览器，需要重新加载数据
@@ -342,30 +346,80 @@ var mControllers = angular.module("mControllers", [])
 })
 
 //会议二维码扫描
-.controller("meetingdiscussCtrl", function($scope, userService, topicService, meetingId) {
+// .controller("meetingdiscussCtrl", function($scope, userService, topicService, meetingId) {
   
-})
+// })
 //话题评论页面
-.controller("topicCommentCtrl", function($scope, userService, topicService, topicId) {
-  $scope.topic = {'topicId': topicId};
+.controller("topicCommentCtrl", function($scope, userService, topicService, pid) {
+  $scope.topic = {'topicId': pid.topicId};
+  $scope.client = userService.profiles;
   $scope.commentList = [];
+  $scope.newComment = {};
 
-  var init = function(){
-    topicService
-    .findCommentByTopicId($scope.meeting.meetingId,userService.profiles.cellphone)
-    .then(function(data){
-      $scope.topicList = data;
-    });  
+  var init = {
+    all: function(){
+      init.topic();
+      init.commentList();
+    },
+    topic: function(){
+      topicService
+      .findTopicById($scope.topic.topicId)
+      .then(function(data){
+        $scope.topic = data;
+      });
+    },
+    commentList: function(){
+      topicService
+      .findCommentByTopicId(
+        pid.topicId,
+        pid.meetingId,
+        userService.profiles.cellphone)
+      .then(function(data){
+        $scope.commentList = data;
+      });  
+    }
   }
-  init();
+  init.all();
   
-  $scope.onCreate = function (){
-    topicService.create($scope.newTopic);
+  $scope.onComment = function (){
+    $scope.newComment = {
+        'commentorId': $scope.client.cellphone,
+        'topicId': pid.topicId,
+        'meetingId': pid.meetingId,
+        'content': $scope.newComment.content
+      };
+    topicService
+    .comment($scope.newComment)
+    .then(function(data){
+      if(data.code == 0){
+        // alert("评论成功！");
+        init.commentList();
+      }
+      else{
+        alert("创建失败");
+      }
+    });
+  }
+
+  $scope.onDelete = function(topicId){
+    topicService
+    .delete(pid.topicId,$scope.client.cellphone)
+    .then(function(data){
+      if(data.code == 0){
+        // alert("评论成功！");
+        init.commentList();
+        window.location.href="/MeetingMng/u#/meeting-discuss?mid="+pid.meetingId;
+      }
+      else{
+        // alert("创建失败");
+      }
+    });
   }
 
   //用户如果在此刷新浏览器，需要重新加载数据
   $scope.$on("userProfileBroadcast",function(event, client){
-    init();
+    $scope.client = client;
+    init.all();
   });
 
 })

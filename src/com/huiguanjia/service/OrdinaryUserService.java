@@ -494,4 +494,18 @@ public class OrdinaryUserService {
 		
 		return username;
 	}
+	
+	public String findUserAvatar(String cellphone) {
+		BaseDAO b = new BaseDAO();
+		Session sess = SessionDAO.getSession();
+
+		String hql = "select o from OrdinaryUser as o where o.cellphone=?";
+		Object[] values = new Object[] { cellphone };
+		OrdinaryUser or = (OrdinaryUser) b.findSingletonResultByHql(hql, values);
+		if (null == or) {
+			return null;
+		}
+
+		return or.getAvatarUrl();
+	}
 }

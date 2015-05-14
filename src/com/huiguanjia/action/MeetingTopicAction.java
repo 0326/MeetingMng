@@ -233,7 +233,7 @@ public class MeetingTopicAction extends MyActionSupport{
 		Comment comment = new Comment();
 		comment.setCommentorId(commentorId);
 		comment.setTopic(topic);
-		topic.setContent(content);
+		comment.setContent(content);
 		
 		MeetingTopicService t = new MeetingTopicService();
 		if(false == t.addComment(comment,meetingId)){

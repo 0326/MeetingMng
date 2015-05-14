@@ -166,12 +166,17 @@ public class MeetingTopicService {
 			return null;
 		}
 
-		String creatorName = this.findNameByCreatorId(or.getCreatorId());
+//		String creatorName = this.findNameByCreatorId(or.getCreatorId());
+		OrdinaryUserService orService = new OrdinaryUserService();
+		String creatorName = orService.findUsername(or.getCreatorId());
+		String creatorAvatar = orService.findUserAvatar(or.getCreatorId());
+		
 		JSONObject obj = new JSONObject();
 		obj.put("title", or.getTitle());
 		obj.put("content",or.getContent());
 //		obj.put("id", or.getId());
 		obj.put("creatorName",creatorName);
+		obj.put("avatarUrl", creatorAvatar);
 		obj.put("createTime", or.getCreateTime());
 		
 		String objs = JSONUtil.serialize(obj);	
@@ -274,6 +279,7 @@ public class MeetingTopicService {
 		return or.getName();
 	}
 	
+
 	/**
 	 * @info 添加评论
 	 * @param 内容，标题,userId,topicId
@@ -354,9 +360,12 @@ public class MeetingTopicService {
 				map.put("id", obj[0]);
 				map.put("content", obj[1]);
 				map.put("commentTime", obj[2]);
-				String commentName = this.findNameByCreatorId((String) obj[3]);
-				map.put("commentName", commentName);
 				
+				OrdinaryUserService orService = new OrdinaryUserService();
+				String username = orService.findUsername((String) obj[3]);
+				String avatarUrl = orService.findUserAvatar((String) obj[3]);
+				map.put("username", username);
+				map.put("avatarUrl", avatarUrl);
 				
 				commentMap.add(map);
 			}

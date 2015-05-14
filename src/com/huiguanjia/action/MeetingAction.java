@@ -57,10 +57,10 @@ public class MeetingAction  extends MyActionSupport{
 		OrdinaryUser user = new OrdinaryUser();
 		user.setCellphone(meetingCreatorId);
 		// 二维码的url
-		String meetingQrcode = (String)"https://www.huiguanjia.com/api/v1/u/meeting"+meetingId;
+		String meetingQrcode = "https://www.huiguanjia.com/api/v1/u/meeting"+meetingId;
 		Meeting meeting = new Meeting(meetingId,user, meetingName,
 				meetingContent, meetingLocation,
-				meetingRemark, meetingQrcode, 1,
+				meetingRemark, meetingQrcode, 0,
 				meetingFrequency, meetingStartTime,
 				meetingPredictFinishTime, meetingCreateTime,
 				null, null);
@@ -73,39 +73,20 @@ public class MeetingAction  extends MyActionSupport{
 		else{
 			// 创建会议成功，生成二维码图片到本地指定路径里面,上传二维码到七牛云
 			jsonData.put("code", 0);
-			try{
-//				String path = "test.gif";
-				ms.putMeetingQrcode(meetingQrcode,path);
-				QiniuyunUtil qiniuyunUtil = new QiniuyunUtil();
-				qiniuyunUtil.upTokenFile(path);
-				// 生成指向二维码图片的url，返回这个url
-				jsonData.put("url",qiniuyunUtil.downloadFile(path));
-				}
-			catch(Exception e){
-			
-			}
-		}
-		return SUCCESS;
-
-//		if(false ==ms.create(meeting)){
-//			jsonData.put("code", -1);
-//		}
-//		else{
-//			// 创建会议成功，生成二维码图片到本地指定路径里面
 //			try{
+////				String path = "test.gif";
+//				String path = RandomUtil.UUID()+".gif";
 //				ms.putMeetingQrcode(meetingQrcode,path);
+//				QiniuyunUtil qiniuyunUtil = new QiniuyunUtil();
+//				qiniuyunUtil.upTokenFile(path);
+//				// 生成指向二维码图片的url，返回这个url
+//				jsonData.put("url",qiniuyunUtil.downloadFile(path));
 //				}
 //			catch(Exception e){
-//				
+//			
 //			}
-//			// 调用七牛云接口,将指定路径的二维码图片传输到七牛云服务端上面，并返回一个七牛云服务上生成的URL。可根据该URL查看二维码图片
-//			String url = qiniuyunQRcodeUtil.upTokenImg(path);
-//			if(url != null){
-//				jsonData.put("code", 0);
-//				jsonData.put("url", url);
-//			}
-//
-//		}
+		}
+		return SUCCESS;
 		
 	}
 	

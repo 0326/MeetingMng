@@ -2,21 +2,46 @@
 	娃哈哈AD钙奶
 </div>
 <div class="page-content">
-	
+	<div>
+		<img src="{{topic.avatarUrl}}">
+		<p>{{topic.creatorName}}</p>
+		<p>标题：{{topic.title}}</p>
+		<p>内容：{{topic.content}}</p>
+		<p>创建时间：{{topic.createTime | date: 'yyyy-mm-dd HH:mm'}}</p>
+		<button ng-click="onDelete()">删除</button>
+	</div>
 	<ul class="row topic-list">
-		<li ng-repeat="topic in topicList" class="columns">
+		<li ng-repeat="cmt in commentList" class="columns">
 			<div class="row">
 			<a class="large-2 columns col-user" href="#/contact-detail?uid={{topic[0]}}">
-				<img src="{{topic[2]}}">
-				<p>{{topic[1]}}</p>
+				<img src="{{cmt.avatarUrl}}">
+				<p>{{cmt.username}}</p>
+
 			</a>
-			<a class="large-10 columns col-content" href="#/topic-list?tid={{topic[3]}}">
-				<h3>{{topic[4]}}<span class="right">{{topic[6] | date:'yyyy-MM-dd HH:mm'}}</span></h3>
-				<p>{{topic[5]}}<span class="right">共6条回复</span></p>
+			<a class="large-10 columns col-content" href="#/">
+				<p>{{cmt.content}}<span class="right">{{cmt.commentTime | date:'yyyy-MM-dd HH:mm'}}</span></p>
 			</a>
 			</div>
 		</li>
 	</ul>
+
+
+	<div class="large-6 row">
+	  <div class="row prefix-round">
+	    <div class="small-3 columns"><p class="button prefix">我要回复</p></div>
+	    <div class="small-9 columns">
+	      <textarea placeholder="small-12.columns" ng-model="newComment.content"></textarea>
+	      <small class="error">Invalid entry</small>
+	    </div>
+	  </div>
+	</div>
+	<div class="large-6 row">
+	  <div class="row prefix-round">
+	    <div class="small-9 small-offset-3 columns">
+	      <button class="button success button-sm" ng-click="onComment()">确认</button>
+	    </div>
+	  </div>
+	</div>
 </div>
 
 <script type="text/javascript">

@@ -113,7 +113,7 @@ var mServices = angular.module("mServices", [])
         alert("权限不足");
       }
       else{
-        alert("未知错误");
+        alert("当前不能完成此会议");
       }
     });
   }
@@ -135,7 +135,7 @@ var mServices = angular.module("mServices", [])
         alert("权限不足");
       }
       else{
-        alert("未知错误");
+        alert("当前不能完成此会议");
       }
     });
   }
@@ -373,7 +373,7 @@ var mServices = angular.module("mServices", [])
     $http.post("/MeetingMng/api/v1/u/topic/create",topic, PostCfg)
     .success(function(data){
       if(data.code == 0){
-        alert("创建成功！");
+        // alert("创建成功！");
         $('#createModal').foundation('reveal', 'close');
         // window.location.href="/MeetingMng/u";
       }
@@ -384,9 +384,24 @@ var mServices = angular.module("mServices", [])
     });
     return d.promise;
   }
-
-  service.delete = function(){
-
+  service.comment = function(comment){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/topic/comment",comment, PostCfg)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  service.delete = function(topicId, creatorId){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/topic/delete",{
+      'topicId': topicId,
+      'creatorId': creatorId
+    }, PostCfg)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
   }
 
   service.update = function(){
@@ -403,6 +418,19 @@ var mServices = angular.module("mServices", [])
     return d.promise;
   }
 
+  service.findTopicById = function(topicId){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/topic/findTopicById?topicId="+topicId)
+    .success(function(data){
+      if(data.obj){
+        d.resolve($.parseJSON(data.obj));
+      }
+      else{
+        d.resolve({});
+      }
+    });
+    return d.promise;
+  }
   service.findTopicList = function(meetingId,cellphone){
     // var cellphone = "15071345115";
     var d = $q.defer();
@@ -414,10 +442,10 @@ var mServices = angular.module("mServices", [])
     return d.promise;
   }
   //获取评论列表
-  service.findCommentByTopicId = function(topicId,cellphone){
+  service.findCommentByTopicId = function(topicId,meetingId,cellphone){
     var d = $q.defer();
     $http.get("/MeetingMng/api/v1/u/topic/findCommentByTopicId?topicId="+topicId+
-      "&cellphone="+cellphone)
+      "&cellphone="+cellphone+'&meetingId='+meetingId)
     .success(function(data){
       if(data.code == 0){
         d.resolve($.parseJSON(data.comments));

@@ -239,6 +239,115 @@ function($http, $q, PostCfg, userService){
   }
 ])
 
+
+
+//会议
+.factory('meetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+  var service = {};
+
+  service.add = function(meeting){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/create",meeting, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("创建成功！");
+        window.location.href="/MeetingMng/u";
+      }
+      else{
+        alert("创建失败");
+      }
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  service.delete = function(meetingId,cellphone){
+    $http.post("/MeetingMng/api/v1/u/meeting/delete",{
+      'meetingId':meetingId,
+      'cellphone':cellphone
+    }, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("删掉了！哈哈哈！");
+        window.location.href="/MeetingMng/u#/";
+      }
+      else if(data.code == -1){
+        alert("数据库错误");
+      }
+      else if(data.code == -2){
+        alert("权限不足");
+      }
+      else{
+        alert("未知错误");
+      }
+    });
+  }
+
+  service.finish = function(meetingId,cellphone){
+    $http.post("/MeetingMng/api/v1/u/meeting/finish",{
+      'meetingId':meetingId,
+      'cellphone':cellphone
+    }, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("您成功结束此次会议！该会议将会被移入历史会议中~");
+        window.location.href="/MeetingMng/u#/";
+      }
+      else if(data.code == -1){
+        alert("数据库错误");
+      }
+      else if(data.code == -2){
+        alert("权限不足");
+      }
+      else{
+        alert("未知错误");
+      }
+    });
+  }
+  service.update = function(meeting){
+    $http.post("/MeetingMng/api/v1/u/meeting/update",meeting, PostCfg)
+    .success(function(data){
+      if(data.code == 0){
+        alert("更新成功！哈哈哈！");
+        $("#detailBox").removeClass("hide");
+        $("#updateBox").addClass("hide");
+      }
+      else{
+        alert("未知错误");
+      }
+    });
+  }
+
+  service.getAll = function(cellphone,meetingState,listType){
+    // var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findMeetingList?cellphone="+cellphone+
+      "&meetingState="+meetingState+"&listType="+listType)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.meetinglist));  
+      }
+      else{
+        d.resolve("[]");
+      }
+      
+    });
+    return d.promise;
+  }
+
+  service.findByMeetingId = function(meetingId){
+    // var cellphone = "15071345115";
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  return service;
+}])
+
 .constant('PostCfg',{
   headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
   transformRequest: function(data) {
