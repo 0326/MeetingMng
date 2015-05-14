@@ -165,6 +165,12 @@
     	<action name="findCompanyContact" class="com.huiguanjia.action.ContactAction" method="findCompanyContact"></action>
     	<action name="findCompanyContactForOrganizer" class="com.huiguanjia.action.ContactAction" method="findCompanyContactForOrganizer"></action>
     	<action name="findCompanyContactForParticipator" class="com.huiguanjia.action.ContactAction" method="findCompanyContactForParticipator"></action>	
+ 	    <action name="addMyContact" class="com.huiguanjia.action.ContactAction" method="addMyContact"></action>
+ 	    <action name="findMyContact" class="com.huiguanjia.action.ContactAction" method="findMyContact"></action>
+ 	    <action name="deleteMyContact" class="com.huiguanjia.action.ContactAction" method="deleteMyContact"></action>
+ 	    <action name="findMyContactForOrganizer" class="com.huiguanjia.action.ContactAction" method="findMyContactForOrganizer"></action>
+ 	    <action name="findMyContactForParticipator" class="com.huiguanjia.action.ContactAction" method="findMyContactForParticipator"></action>
+ 	    <action name="searchContact" class="com.huiguanjia.action.ContactAction" method="searchContact"></action>
  	</package>
  	
  	<!--普通用户api接口-话题操作-->
