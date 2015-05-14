@@ -43,7 +43,8 @@ public class MeetingTest {
 	public void putMeetingQrcode(){
 		MeetingService ms= new MeetingService();
 		try {
-			ms.putMeetingQrcode("https://www.huiguanjia.com/api/v1/u/meeting","test.gif");
+			ms.putMeetingQrcode("http://www.huiguanjia.com/api/v1/u/meeting","test.gif");
+			System.out.println("success");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -187,10 +188,12 @@ public class MeetingTest {
 //		meetingTest.findByUserId2();
 //		meetingTest.findByMeetingName2();
 		
-		MeetingService ms = new MeetingService();
-		String str = null;
-		str = ms.findMeetingList("13026310448", 1, 1);
-		System.out.println(str);
+//		MeetingService ms = new MeetingService();
+//		String str = null;
+//		str = ms.findMeetingList("13026310448", 1, 1);
+//		System.out.println(str);
+		MeetingTest meetingTest = new MeetingTest();
+		meetingTest.putMeetingQrcode();
 		
 		
 	}

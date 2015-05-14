@@ -5,13 +5,14 @@ import com.huiguanjia.service.MeetingParticipatorService;
 public class MeetingParticipatorTest {
 
 	public static void main(String[] args) {
-		
+		MeetingParticipatorTest meetingParticipatorTest = new MeetingParticipatorTest();
+		meetingParticipatorTest.addParticipatorTest();
 	}
 	
 	public void addParticipatorTest()
 	{
 		MeetingParticipatorService service = new MeetingParticipatorService();
-		int res = service.addParticipator("13026310448","550E8400E29B11D4A716446655440000","['15629066899','15071345115']");
+		int res = service.addParticipator("15071345115","550E8400E29B11D4A716446655440000","['13026310448','15629066899']");
 		
 		if(0 == res)
 		{

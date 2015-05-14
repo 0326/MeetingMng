@@ -31,6 +31,16 @@ public class Topic implements java.io.Serializable {
 	public Topic() {
 	}
 
+//	public Topic(int id,String title, String content,
+//			String username, String createTime) {
+//		this.id = id;
+//		this.title = title;
+//		this.content = content;
+//		this.creatorId = creatorId;
+//		this.createTime = createTime;
+//	}
+	
+	
 	/** full constructor */
 	public Topic(Meeting meeting, String title, String content,
 			String creatorId, String createTime) {

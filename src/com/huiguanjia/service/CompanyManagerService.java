@@ -250,6 +250,7 @@ public class CompanyManagerService {
 		obj.put("officePhone", ca.getOfficePhone());
 		obj.put("officeLocation", ca.getOfficeLocation());
 		String stres = JSONUtil.serialize(obj);
+//		stres = JSONArray.fromObject(obj).toString();
 		
 		SessionDAO.closeSession();
 	
