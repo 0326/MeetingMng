@@ -11,6 +11,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
 public class ActivateAction extends MyActionSupport{
+	// fot test
 	private String uid;
 	private String aid;
 	private Map<String,Object> jsonData;

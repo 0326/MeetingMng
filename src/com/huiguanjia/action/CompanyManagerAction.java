@@ -437,12 +437,6 @@ public class CompanyManagerAction extends MyActionSupport {
 
 	public String findStuffs() {
 
-//		List<Message> mlist = new ArrayList<Message>();
-//		Message m = new Message();
-//		m.setMsgContent("findStuffs");
-//		mlist.add(m);
-//		MeetingMsgInbound.pushSigle(m);
-
 		jsonData = new HashMap<String, Object>();
 		CompanyManagerService companyManagerService = new CompanyManagerService();
 		String u = companyManagerService.getInfos(username, pageIndex);
@@ -456,6 +450,20 @@ public class CompanyManagerAction extends MyActionSupport {
 		return SUCCESS;
 	}
 
+	public String findMeetings() {
+
+		jsonData = new HashMap<String, Object>();
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		String u = companyManagerService.getMeetings(username, pageIndex);
+		if (u == null) {
+			jsonData.put("code", -10416);
+		} else {
+			jsonData.put("code", 0);
+			jsonData.put("meetings", u);
+		}
+
+		return SUCCESS;
+	}
 	/**
 	 * 公司管理员手动添加普通用户
 	 * 
