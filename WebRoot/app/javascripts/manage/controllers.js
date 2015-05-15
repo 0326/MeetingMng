@@ -233,7 +233,7 @@ var mControllers = angular.module("mControllers", [])
   $scope.departlist = {};
   $scope.selectlist = {};
   $scope.currStuff = {};
-
+  $scope.keywords = "";
   var initFunc = function(pageIndex){  
     StuffService
     .getStuffs(pageIndex)
@@ -253,6 +253,13 @@ var mControllers = angular.module("mControllers", [])
     console.log($scope.departlist);
   });
 
+  $scope.searchStuff = function(){
+    StuffService
+    .searchByName($scope.company.username,$scope.keywords,1)
+    .then(function(data){
+      $scope.currStuff = data;
+    });
+  }
   $scope.onUpdate = function(cellphone){
     StuffService
     .getStuff(cellphone,$scope.company.username)

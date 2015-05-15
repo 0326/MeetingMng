@@ -196,6 +196,25 @@ function($http, $q, PostCfg, userService){
           }
         });
       },
+      searchByName: function(username,keywords,pageIndex){
+        var d = $q.defer();
+        $http.post("/MeetingMng/api/v1/companyManagerSearchName", {
+          'username':username,
+          'keywords':keywords,
+          'pageIndex':pageIndex
+        }, PostCfg)
+        .success(function(data){
+          var user =$.parseJSON(data.user);
+            d.resolve(user);
+          // if(data.code == 0){
+            
+          // }
+          // else{
+          //   // alert("删除失败");
+          // }
+        });
+        return d.promise;
+      },
       delete: function(stuff){
         $http.post("/MeetingMng/api/v1/companyManagerDeleteOrdinaryUser", stuff, PostCfg)
         .success(function(data){
