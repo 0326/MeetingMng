@@ -145,6 +145,7 @@
  		<action name="findByMeetingName2" class="com.huiguanjia.action.MeetingAction" method="findByMeetingName2"></action>
     	<action name="findByMeetingId" class="com.huiguanjia.action.MeetingAction" method="findByMeetingId"></action>
     	<action name="findByUserId" class="com.huiguanjia.action.MeetingAction" method="findByUserId"></action>
+    	<action name="findMeetings" class="com.huiguanjia.action.CompanyManagerAction" method="findMeetings"></action>
     	<action name="findCompeletedMeetingNumberByHistory" class="com.huiguanjia.action.MeetingRecordAction" method="findCompeletedMeetingNumberByHistory"></action>
 		<action name="findCancedMeetingNumberByHistory" class="com.huiguanjia.action.MeetingRecordAction" method="findCancedMeetingNumberByHistory"></action>
 		<action name="findMeetingNumberByToday" class="com.huiguanjia.action.MeetingRecordAction" method="findMeetingNumberByToday"></action>

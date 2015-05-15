@@ -196,13 +196,33 @@ function($http, $q, PostCfg, userService){
           }
         });
       },
-      getStuff: function(cellphone){
-        // if(_stuffs) return _stuffs;
-        var d = $q.defer();
-        $http.get("/MeetingMng/api/v1/companyManagerGetOrdinaryUserInfo?cellphone="+cellphone+"&username="+userService.profiles.username)
+      delete: function(stuff){
+        $http.post("/MeetingMng/api/v1/companyManagerDeleteOrdinaryUser", stuff, PostCfg)
         .success(function(data){
           if(data.code == 0){
-            d.resolve($.parseJSON(data.user));
+            // alert("添加成功");
+            $("#passModal").modal('hide');
+            window.location.href="/MeetingMng/manage#/stufflist";
+          }
+          else{
+            alert("删除失败");
+          }
+        });
+      },
+      getStuff: function(cellphone,username){
+        // if(_stuffs) return _stuffs;
+        var d = $q.defer();
+        $http.get("/MeetingMng/api/v1/companyManagerGetOrdinaryUserInfo?cellphone="+cellphone+"&username="+username)
+        .success(function(data){
+          if(data.code == 0){
+            var user =$.parseJSON(data.user);
+            if(user.sex == true){
+              user.sex =0;
+            }
+            else{
+              user.sex =1;
+            }
+            d.resolve(user);
           }
         });
         return d.promise;
@@ -242,7 +262,7 @@ function($http, $q, PostCfg, userService){
 
 
 //会议
-.factory('meetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg){
+.factory('meetingService',['$http', '$q','PostCfg', function($http, $q, PostCfg, userService){
   var service = {};
 
   service.add = function(meeting){
@@ -335,6 +355,16 @@ function($http, $q, PostCfg, userService){
     return d.promise;
   }
 
+  service.findMeetings = function(pageIndex, username){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/c/meeting/findMeetings?pageIndex="+pageIndex+"&username="+username)
+    .success(function(data){
+      if(data.code == 0){
+        d.resolve($.parseJSON(data.meetings));
+      }
+    });
+    return d.promise;
+  }
   service.findByMeetingId = function(meetingId){
     // var cellphone = "15071345115";
     var d = $q.defer();

@@ -1,6 +1,6 @@
 <div class="header">
     <h1>员工详细信息</h1>
-    <h2>{{company.companyName}}</h2>
+    <h2>{{company.currStuffName}}</h2>
 </div>
 
 <div class="content">
@@ -20,7 +20,7 @@
 	          	确定删除此员工？
 	          </div>
 	          <div class="modal-footer">
-			        <button type="button" class="btn btn-danger">删除</button>
+			        <button type="button" class="btn btn-danger" ng-click="submitDelete()">删除</button>
 			        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 			      </div>
 	        </div>
@@ -29,38 +29,44 @@
 	    <!-- Modal end -->    	
       <form class="pure-form pure-form-aligned">
        	<fieldset>
-       		<legend>管理员信息</legend>
-       		<div class="pure-control-group">
-       			<label>个人头像</label>
-            <img alt="100x100" src="{{company.avatarUrl}}" id="headimg100" class="headimg headimg-100">
-            <img alt="50x50" src="{{company.avatarUrl}}" id="headimg50" class="headimg headimg-50">
-           	<span id="qiniu_upload_container">
+          <div class="pure-control-group">
+       			<label>员工头像</label>
+            <img alt="100x100" src="{{currStuff.avatarUrl}}" id="headimg100" class="headimg headimg-100">
+           	<!-- <span id="qiniu_upload_container">
            		<button id="qiniu_upload_pickfiles">上传新头像</button>
-           	</span>
+           	</span> -->
           </div>
           <div class="pure-control-group">
                <label>姓名</label>
-               <input ng-model="company.name" type="text" placeholder="">
-               <select ng-model="company.sex">
+               <input ng-model="currStuff.name" type="text" placeholder="">
+               <select ng-model="currStuff.sex">
                 <option value="0">先生</option>
                 <option value="1">女士</option>
                </select>
            </div>
-           <div class="pure-control-group">
-               <label>个人邮箱</label>
-               <p>{{ 1304375948024 | date:"yyyy-MM-dd hh:mm:ss" }}</p>
-           </div>
+           <!-- <div class="pure-control-group">
+               <label>所在部门</label>
+               <input type="text" placeholder="" ng-model="currStuff.cellphone">
+           </div> -->
            <div class="pure-control-group">
                <label>手机号</label>
-               <input type="text" placeholder="" ng-model="company.cellphone">
+               <input type="text" placeholder="" ng-model="currStuff.cellphone">
+           </div>
+           <div class="pure-control-group">
+               <label>工号</label>
+               <input type="text" placeholder="" ng-model="currStuff.workNo">
+           </div>
+           <div class="pure-control-group">
+               <label>个人邮箱</label>
+               <input type="email" placeholder="" ng-model="currStuff.email">
            </div>
            <div class="pure-control-group">
                <label>办公电话</label>
-               <input type="text" placeholder="" ng-model="company.officePhone">
+               <input type="text" placeholder="" ng-model="currStuff.officePhone">
            </div>
            <div class="pure-control-group">
                <label>办公室</label>
-               <input type="text" placeholder="" ng-model="company.officeLocation">
+               <input type="text" placeholder="" ng-model="currStuff.officeLocation">
            </div>
            <div class="pure-controls">
                <button type="submit" class="pure-button pure-button-primary" ng-click="updateInfo()">修改资料</button>

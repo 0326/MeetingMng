@@ -11,7 +11,7 @@
 			<div class="panel">
 				<h3 class="subheader">
 					办会人名单 
-					<button class="button tiny" data-reveal-id="addUserModal" onclick="$('#addUserModal').foundation('reveal', 'open');">添加帮手</button>
+					<button class="button tiny" data-reveal-id="addUserModal" onclick="$('#addUserModal').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0">添加帮手</button>
 				</h3>
 				<ul class="row contact-list">
 					<li class="columns clearfix" ng-repeat="o in organizerList">
@@ -42,7 +42,7 @@
 			<div class="panel">
 				<h3 class="subheader">
 					参会人名单 
-					<button class="button tiny" data-reveal-id="addUserModal2" onclick="$('#addUserModal2').foundation('reveal', 'open');">添加参会嘉宾</button>
+					<button class="button tiny" data-reveal-id="addUserModal2" onclick="$('#addUserModal2').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0">添加参会嘉宾</button>
 				</h3>
 				<ul class="row contact-list">
 					<li class="columns clearfix" ng-repeat="o in participatorList">

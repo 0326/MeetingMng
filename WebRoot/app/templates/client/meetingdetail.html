@@ -9,12 +9,12 @@
 	<div class="row">
 		<div id="detailBox" class="small-12 large-8 columns">
 			<h1>{{meeting.meetingName}} <i class="fa fa-pencil-square-o" ng-click="onUpdate()"></i></h1>
-			<p>当前状态{{meeting.meetingState}}</p>
+			<p>当前状态{{meeting.meetingState | meetingState}}</p>
 			<p>{{meeting.meetingLocation}} </p>
 			<p>{{ [meeting.meetingFrequency,meeting.meetingStartTime] | meetingDate}}</p>
 			<p>会议内容：{{meeting.meetingContent}}</p>
 			<p>创建者：{{meeting.ordinaryUser.name}}</p>
-			<div>
+			<div ng-show="meeting.meetingState == 0">
 				<button class="button primary button-sm" ng-click="onFinish()">完成会议</button>
 				<button class="button alert button-sm" ng-click="onDelete()">删除此会议</button>
 			</div>
@@ -95,7 +95,7 @@
 			</form>
 		</div>
 		<div class="small-12 large-4 columns text-center">
-			<div>
+			<div ng-show="meeting.meetingState == 0">
 				<!-- <img src="/MeetingMng/app/images/qrcode.png"> -->
 				<div id="qrcode"></div>
 				<div>

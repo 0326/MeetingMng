@@ -13,6 +13,9 @@ import com.huiguanjia.service.CompanyManagerService;
 import com.huiguanjia.service.DepartmentService;
 import java.util.regex.*;
 
+import org.apache.struts2.json.JSONException;
+import org.apache.struts2.json.JSONUtil;
+
 public class CompanyManagerTest {
 	public static boolean addTest(OrdinaryUser u,String username,String workNo){
 		boolean flag = false;
@@ -195,10 +198,15 @@ public class CompanyManagerTest {
 //		
 //		return cs.getInfo(username1);
 //	}
+	public static void getMeetings() throws JSONException{
+		CompanyManagerService companyManagerService = new CompanyManagerService();
+		String u = companyManagerService.getMeetings("2577839872@qq.com",
+				1);
+		System.out.println(JSONUtil.serialize(u));
+	}
 	
 	
-	
-	public static void main(String[] args){
+	public static void main(String[] args) throws JSONException{
 //		String a = ""total":3,"list":[{"cellphone":"13026310448","departName":"秘书部","job":"job1","name":"李全锋","workNo":"12"},{"cellphone":"15071345115","departName":"财务部","job":"jbo2","name":"王峤","workNo":"13"},{"cellphone":"15629066899","departName":"管家部","job":"job3","name":"叶玉腾","workNo":"14"}]";
 //		List<String> listA = new ArrayList<String>();
 //        System.out.println(listA);
@@ -210,5 +218,6 @@ public class CompanyManagerTest {
 //        System.out.println(listA);
 
 //		CompanyManagerTest.searchNumberTest();
+		CompanyManagerTest.getMeetings();
 	}
 }
