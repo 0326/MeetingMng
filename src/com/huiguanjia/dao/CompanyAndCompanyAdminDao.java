@@ -59,6 +59,27 @@ public class CompanyAndCompanyAdminDao {
 		return res;
 	}
 	
+	public boolean workNoExist(String username,String workNo)
+	{
+		boolean res;
+		
+		Session sess = HibernateSessionFactory.getSession();
+		
+		String hqlQuery = "select ordinaryUser.workNo from OrdinaryUser as ordinaryUser " +
+				"where ordinaryUser.companyManager.username= ? and ordinaryUser.workNo = ?";
+		List l = sess.createQuery(hqlQuery).setString("ausername",username).setString("aworkNo", workNo).list();
+		Iterator it = l.iterator();
+		
+		if(true == it.hasNext())
+			res = true;
+		else 
+			res =  false;
+		
+		HibernateSessionFactory.closeSession();
+		
+		return res;
+	}
+	
 	public boolean addCompanyAndCompanyAdmin(String username,String password,String type,
 			String companyName,String location)
 	{
