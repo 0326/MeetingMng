@@ -32,6 +32,21 @@ var mFilters = angular.module("mFilters", [])
 	}
 })
 
+
+//日期过滤器，传入[频率,时间戳]
+.filter('meetingState', function($filter){
+	return function(meetingState){
+		var result = "";
+		if(meetingState == 0){
+			result = "活动";
+		}
+		else if(meetingState == 1){
+			result = "完成";
+		}
+
+		return result;
+	}
+})
 //会议组织者，参与者过滤器
 .filter('mcontact',function($filter){
 	return function(input,arg){

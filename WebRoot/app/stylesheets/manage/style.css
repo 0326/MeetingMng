@@ -312,11 +312,15 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     background-color: #fff;
 }
 */
+.img-container{
+    text-align:  center;
+}
 .headimg-50{
     width: 50px;
 }
 .headimg-100{
-    width: 100%;
+    width: 100px;
+    height: 100px;
 }
 #qiniu_upload_container{
     display: block;
@@ -331,3 +335,16 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .content .content-table{
     height: 430px;
 }
+
+.placeholder{text-align: center;}
+.bg-circle{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+.bg-circle h2{
+    padding-top: 40%;
+    color: #fff;
+}
+.bg-color1{background-color: #0D8FDB}
+.bg-color2{background-color: #39DBAC}

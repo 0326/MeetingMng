@@ -4,8 +4,63 @@
 </div>
 
 <div class="content">
-    <h2 class="content-subhead">Try Resizing your Browser</h2>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+    <h2 class="content-subhead"></h2>
+    <div class="row placeholders">
+      <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="bg-circle bg-color1">
+        	<h2>5</h2>
+        </div>
+        <h4>本周会议数</h4>
+        <!-- <span class="text-muted">Something else</span> -->
+      </div>
+      <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="bg-circle bg-color2">
+        	<h2>12</h2>
+        </div>
+        <h4>历史会议</h4>
+        <!-- <span class="text-muted">Something else</span> -->
+      </div>
+      <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="bg-circle bg-color1">
+        	<h2>92%</h2>
+        </div>
+        <h4>平均签到率</h4>
+        <!-- <span class="text-muted">Something else</span> -->
+      </div>
+      <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="bg-circle bg-color2">
+        	<h2>13%</h2>
+        </div>
+        <h4>迟到率</h4>
+        <!-- <span class="text-muted">Something else</span> -->
+      </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="content-subhead">
+        新增会议
+    </div>
+    <div class="content-table">
+      <table class="table  table-bordered table-hover  table-condensed">
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>时间</th>
+            <th>地点</th>
+            <th>地点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="m in meetinglist">
+            <td><a href="#/meeting-detail?mid={{m.meetingId}}">{{m.meetingName}}</a></td>
+            <td>{{ [m.meetingFrequency,m.meetingStartTime] | meetingDate }}</td>
+            <td>{{m.meetingLocation}}</td>
+            <td>{{m.meetingState | meetingState}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <tm-pagination conf="paginationConf"></tm-pagination>
+      
 </div>

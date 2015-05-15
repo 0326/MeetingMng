@@ -64,7 +64,7 @@ var mControllers = angular.module("mControllers", [])
   $scope.$on("userProfileBroadcast",function(event, client){
     $scope.client = client;
      meetingService
-     .getAll($scope.client.cellphone,1,listType)
+     .getAll($scope.client.cellphone,0,listType)
      .then(function(meetinglist){
         $scope.meetinglist = meetinglist;
      });
@@ -129,7 +129,7 @@ var mControllers = angular.module("mControllers", [])
 })
 
 //会议联系人管理
-.controller("meetingcontactCtrl", function($scope, 
+.controller("meetingcontactCtrl", function($scope, meetingService,
   userService, meetingId, organizerService, participatorService, contactService) {
   $scope.meeting = {'meetingId': meetingId};  //会议
   $scope.organizerList = null;                //办会人员列表
@@ -139,6 +139,19 @@ var mControllers = angular.module("mControllers", [])
   $scope.addorganizerList = null;             //要添加的办会人员名单
   $scope.addparticipatorList = null;          //要添加的参会人员名单
   var init = function(){
+    meetingService
+    .findByMeetingId(meetingId)
+    .then(function(data){
+      // console.log(data);
+      $scope.meeting = $.parseJSON(data.meeting);
+      //会议处于活动状态才能修改联系人状态
+      if($scope.meeting.meetingState == 0){
+        $(".contact-list").delegate('.info-group','click',function(){
+           $(this).next().slideToggle("fast");
+        });
+      }
+      
+    });
     //获取办会者列表
     organizerService
     .findOrganizer(userService.profiles.cellphone,$scope.meeting.meetingId)
@@ -302,9 +315,6 @@ var mControllers = angular.module("mControllers", [])
     }
   }
   
-  $(".contact-list").delegate('.info-group','click',function(){
-     $(this).next().slideToggle("fast");
-  });
   
   //用户如果在此刷新浏览器，需要重新加载数据
   $scope.$on("userProfileBroadcast",function(event, client){

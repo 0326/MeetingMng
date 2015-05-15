@@ -95,7 +95,7 @@
          	</fieldset>
         </form>
         <div class="col-md-3">
-            <div class="pure-control-group">
+            <div class="pure-control-group img-container">
               <img alt="100x100" src="{{company.avatarUrl}}" id="headimg100" class="headimg headimg-100">
               <!-- <img alt="50x50" src="{{company.avatarUrl}}" id="headimg50" class="headimg headimg-50"> -->
               <span id="qiniu_upload_container">
@@ -121,7 +121,7 @@
       var domain = up.getOption('domain');
       var res = $.parseJSON(info);
       var url = domain + res.key; 
-      $(".pure-menu-heading").find("img")[0].src = $("#headimg100")[0].src = url+"-head100";
+      $(".avatar-side").find("img")[0].src = $("#headimg100")[0].src = url+"-head100";
       // $("#headimg50")[0].src= url+"-head50"; 
       $("#qiniu_upload_pickfiles").text("上传成功")
     }

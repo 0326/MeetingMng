@@ -298,6 +298,50 @@ public class CompanyManagerService {
 		return stres;
 	}
 	
+	
+	/**
+	 * 公司管理员获取公司全部会议信息
+	 * @param username
+	 * @param pageIndex
+	 * @return
+	 */
+	public String getMeetings(String username,int pageIndex){	
+		BaseDAO b = new BaseDAO();	
+		Session sess = SessionDAO.getSession();
+		
+		String hql = "select m from Meeting as m where "+
+		"m.ordinaryUser.companyAndCompanyAdmin.username = ?";
+		Object[] values = new Object[]{username};
+	
+		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);
+		List<Meeting> or = (ArrayList<Meeting>)obj.get("list");
+		if(null == or){
+			return null;
+		}
+		//m.meetingId,m.meetingName,m.meetingLocation,"+
+				//"m.meetingStartTime,m.meetingFrequency,m.meetingState
+		List<Meeting> res = new ArrayList<Meeting>();
+		for(int i=0;i<or.size();i++){
+			Meeting meeting = new Meeting();
+			meeting.setMeetingId(or.get(i).getMeetingId());
+			meeting.setMeetingName(or.get(i).getMeetingName());
+			meeting.setMeetingLocation(or.get(i).getMeetingLocation());
+			meeting.setMeetingStartTime(or.get(i).getMeetingStartTime());
+			meeting.setMeetingFrequency(or.get(i).getMeetingFrequency());
+			meeting.setMeetingState(or.get(i).getMeetingState());
+			res.add(meeting);
+		}
+		
+		JSONObject result = new JSONObject();
+		result.put("list", res);
+		result.put("total", obj.get("total"));
+		String stres = JSONUtil.serialize(result);
+		System.out.println("json:"+stres);
+		
+		SessionDAO.closeSession();
+		
+		return stres;
+	}
 	/**
 	 * @info 公司管理员修改账号信息，action层直接传pojo对象来获取数据
 	 * @param admin
@@ -482,10 +526,12 @@ public class CompanyManagerService {
 		
 		JSONObject obj = new JSONObject();
 		obj.put("name", or.getName());
+		obj.put("avatarUrl", or.getAvatarUrl());
 		obj.put("workNo", or.getWorkNo());
 		obj.put("sex", or.getSex());
 		obj.put("cellphone", or.getCellphone());
 		obj.put("departmentId", or.getDepartment().getDepartmentId());
+		obj.put("departmentName", or.getDepartment().getDepartmentName());
 		obj.put("job", or.getJob());
 		obj.put("email", or.getEmail());
 		obj.put("officePhone", or.getOfficePhone());

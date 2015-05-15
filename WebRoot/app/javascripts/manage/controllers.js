@@ -24,9 +24,39 @@ var mControllers = angular.module("mControllers", [])
   
 })
  
-.controller("homeCtrl", function($scope, userService) {
+.controller("homeCtrl", function($scope, userService,meetingService) {
+  
+  $scope.company = userService.profiles;
+  $scope.meetinglist = [];
+
+  var initFunc = function(pageIndex){  
+    meetingService
+     .findMeetings(pageIndex,$scope.company.username)
+     .then(function(data){
+        $scope.meetinglist = data.list;
+        $scope.paginationConf.totalItems = data.total;
+     });
+  }
+  
+  initFunc(1);
+
+  $scope.paginationConf = {
+      currentPage: 1,
+      // totalItems: 16,
+      itemsPerPage: 10,
+      pagesLength: 15,
+      perPageOptions: [10, 20, 30, 40, 50],
+      rememberPerPage: 'perPageItems',
+      onChange: function(){
+        initFunc(this.currentPage);
+      }
+  };
+
+  //用户直接刷新网页的话需要重新获得user数据
   $scope.$on("userProfileBroadcast",function(event, company){
     $scope.company = company;
+    // console.log("second:",$scope.company.username);
+    initFunc(1);
   });
 })
 
@@ -162,18 +192,20 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("meetinglistCtrl", function($scope, userService, StuffService) {
+.controller("meetinglistCtrl", function($scope, userService, meetingService) {
 
   $scope.company = userService.profiles;
   $scope.meetinglist = [];
+
   var initFunc = function(pageIndex){  
     meetingService
-     .getAll($scope.client.cellphone,0,listType)
-     .then(function(meetinglist){
-        $scope.meetinglist = meetinglist;
+     .findMeetings(pageIndex,$scope.company.username)
+     .then(function(data){
+        $scope.meetinglist = data.list;
         $scope.paginationConf.totalItems = data.total;
      });
   }
+  
   initFunc(1);
 
   $scope.paginationConf = {
@@ -223,7 +255,7 @@ var mControllers = angular.module("mControllers", [])
 
   $scope.onUpdate = function(cellphone){
     StuffService
-    .getStuff(cellphone)
+    .getStuff(cellphone,$scope.company.username)
     .then(function(data){
       $scope.currStuff = data;
     });
@@ -231,6 +263,7 @@ var mControllers = angular.module("mControllers", [])
 
   $scope.submitUpdateForm = function(isValid){
     $scope.currStuff.username = userService.profiles.username;
+
     StuffService.updateStuff($scope.currStuff);
   }
 
@@ -284,9 +317,44 @@ var mControllers = angular.module("mControllers", [])
 
 })
 
-.controller("stuffdetailCtrl", function($scope, userService, StuffService) {
+.controller("stuffdetailCtrl", function($scope, userService, StuffService, userId) {
   $scope.company = userService.profiles;
   $scope.currStuff = {};
+  function initFunc(){
+    StuffService
+    .getStuff(userId,$scope.company.username)
+    .then(function(data){
+      $scope.currStuff = data;
+    })
+
+  }
+
+  initFunc();
+
+  $scope.updateInfo = function(){
+    StuffService
+    .updateStuff($scope.currStuff)
+    .then(function(data){
+      if(data.code == 0){
+
+      }
+    });
+  }
+  $scope.submitDelete = function(){
+    StuffService
+    .delete($scope.currStuff)
+    .then(function(data){
+      if(data.code == 0){
+
+      }
+    });
+  }
+  //用户直接刷新网页的话需要重新获得user数据
+  $scope.$on("userProfileBroadcast",function(event, company){
+    $scope.company = company;
+    initFunc();
+  });
+
 
 })
 

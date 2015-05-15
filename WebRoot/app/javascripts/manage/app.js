@@ -55,7 +55,7 @@ angular.module("appmanage", ["ngRoute", "ngCookies",
 		templateUrl: 'app/templates/manage/stuffdetail.html',
 		controller: 'stuffdetailCtrl',
 		resolve:{
-			cellphone:function($route, $http){
+			userId:function($route, $http){
 				return $route.current.params.cellphone;
 			},
 		}
