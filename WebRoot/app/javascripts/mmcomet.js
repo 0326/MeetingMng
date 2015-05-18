@@ -60,8 +60,11 @@ var MMessageParse = {};
 //获取会议类型通知
 MMessageParse.getMsgType = function(type){
     var res = "通知消息";
-    if(type == "oinvi*****" || type == "pinvi*****"){
+    if(type == "pinvi*****"){
         res = "会议邀请通知";
+    }
+    else if(type == "oinvi*****"){
+        res = "办会邀请通知"
     }
     else if(type == "oagre*****"){
         res = "同意邀请通知";

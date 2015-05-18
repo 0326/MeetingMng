@@ -9,6 +9,7 @@ import com.huiguanjia.comet.CometCfg;
 import com.huiguanjia.comet.MeetingMsgInbound;
 import com.huiguanjia.pojo.Message;
 import com.huiguanjia.service.MeetingOrganizerService;
+import com.huiguanjia.service.MeetingParticipatorService;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
@@ -19,6 +20,8 @@ public class MeetingOrganizerAction extends MyActionSupport{
 	private String users;
 	private String operatedCellphone;
 	private int state;
+	private String currTime;
+	private int msgId;
 	
 	private Map<String,Object> jsonData;
 
@@ -211,9 +214,44 @@ public class MeetingOrganizerAction extends MyActionSupport{
 		jsonData = new HashMap<String,Object>();
 
 		MeetingOrganizerService service = new MeetingOrganizerService();
-		int res = service.updateState(meetingId, cellphone, state);
+		int res = service.updateState(msgId,meetingId, cellphone, state);
 		
 		jsonData.put("code", res);
 		return SUCCESS;
+	}
+
+	/**
+	 * 办会人员签到
+	 * @return
+	 */
+	public String signed()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+
+//		Message msg = CometCfg.createMessage(cellphone,
+//				operatedCellphone, CometCfg.PART_INVITE, meetingId);
+		MeetingOrganizerService service = 
+				new MeetingOrganizerService();
+		
+		int res = service.updateState(msgId,meetingId, cellphone,4);
+		
+		jsonData.put("code", res);
+		return SUCCESS;
+	}
+	public String getCurrTime() {
+		return currTime;
+	}
+
+	public void setCurrTime(String currTime) {
+		this.currTime = currTime;
+	}
+
+	public int getMsgId() {
+		return msgId;
+	}
+
+	public void setMsgId(int msgId) {
+		this.msgId = msgId;
 	}
 }

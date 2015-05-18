@@ -33,7 +33,6 @@ var mFilters = angular.module("mFilters", [])
 })
 
 
-//日期过滤器，传入[频率,时间戳]
 .filter('meetingState', function($filter){
 	return function(meetingState){
 		var result = "";
@@ -73,6 +72,9 @@ var mFilters = angular.module("mFilters", [])
 				result = "待定";
 			}
 			else if(input == 4){
+				result = "签到";
+			}
+			else if(input == 5){
 				result = "拒绝";
 			}
 		}

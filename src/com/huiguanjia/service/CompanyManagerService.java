@@ -283,7 +283,7 @@ public class CompanyManagerService {
 			stuff.setJob(or.get(i).getJob());
 			stuff.setWorkNo(or.get(i).getWorkNo());
 			stuff.setDepartName(or.get(i).getDepartment().getDepartmentName());
-			stuff.setDepartName("departName");
+//			stuff.setDepartName("departName");
 			res.add(stuff);
 		}
 		
@@ -310,7 +310,8 @@ public class CompanyManagerService {
 		Session sess = SessionDAO.getSession();
 		
 		String hql = "select m from Meeting as m where "+
-		"m.ordinaryUser.companyAndCompanyAdmin.username = ?";
+				"m.ordinaryUser.companyAndCompanyAdmin.username = ? "+
+				"order by m.meetingStartTime desc";
 		Object[] values = new Object[]{username};
 	
 		JSONObject obj = b.findPagingObjectByHqlPro(hql, 10*(pageIndex-1), 10*pageIndex, values);

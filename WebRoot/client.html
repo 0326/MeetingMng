@@ -61,40 +61,42 @@
 	        <h1 class="title">会管家科技责任有限公司</h1>
 	      </section>
 
-	      <section class="right-small">
+	      <!-- <section class="right-small">
 	        <a class="right-off-canvas-toggle menu-icon"><span></span></a>
-	      </section>
+	      </section> -->
 	    </nav>
 
 	    <aside class="left-off-canvas-menu">
 	      <ul class="off-canvas-list">
 	        <li class="menu-head"><img src="app/images/logo-b.png"></li>
+	        <li><label>&nbsp;</label></li>
+	        <li class="menu-avatar clearfix">
+	        	<img src="{{client.avatarUrl}}" class="left">
+	        	<div class="left">
+		        	<h4>{{client.name}}</h4>
+		        	<p>{{client.departmentName}}</p>
+	        	</div>
+	        </li>
 	        <li><label>会议管理</label></li>
 	        <li><a href="#/">我的会议</a></li>
 	        <li><a href="#/meeting-new">新建会议</a></li>
-	        <!-- <li><a href="#/meeting-history">历史记录</a></li> -->
+	        <li><a href="#/meeting-history">历史记录</a></li>
 	        <li><label>联系人管理</label></li>
 	        <li><a href="#/contact-list-mine">我的联系人</a></li>
 	        <li><a href="#/contact-list-company">公司联系人</a></li>
-	        <!-- <li><label>话题管理</label></li>
-	        <li><a href="#">我的话题</a></li>
-	        <li><a href="#">我的评论</a></li> -->
-	      </ul>
-	    </aside>
-
-	    <aside class="right-off-canvas-menu">
-	      <ul class="off-canvas-list">
-	      	<li class="menu-head"><label>个人信息</label></li>
-	        <li class="menu-avatar">
-	        	<img src="{{client.avatarUrl}}">
-	        	<label>{{client.name}}</label>
-	        </li>
-	        <li><a href="#/profile">个人资料</a></li>
+	        <li><label>个人管理</label></li>
 	        <li><a href="#/message">我的消息</a></li>
-	        <li><a href="#/meeting-history">会议历史</a></li>
+	        <li><a href="#/profile">账号设置</a></li>
 	        <li><a ng-click="logout();" class"button">退出</a></li>
 	      </ul>
 	    </aside>
+
+<!-- 	    <aside class="right-off-canvas-menu">
+	      <ul class="off-canvas-list">
+	      	<li class="menu-head"><label>个人信息</label></li>
+	        
+	      </ul>
+	    </aside> -->
 			<div class="main-section" ng-view></div>
 	  <a class="exit-off-canvas"></a>
 	  </div>

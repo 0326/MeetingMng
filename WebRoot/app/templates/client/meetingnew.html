@@ -5,8 +5,8 @@
 	<form name="addForm" ng-submit="submitAddForm(addForm.$valid)" novalidate>
 		<div class="large-6 row">
       <div class="row prefix-round">
-        <div class="small-3 columns"><p class="button prefix">会议名称</p></div>
-        <div class="small-9 columns">
+        <div class="small-2 columns"><p class="button prefix">会议名称</p></div>
+        <div class="small-10 columns">
           <input type="text" placeholder="Value" ng-model="meeting.meetingName">
           <small class="error">Invalid entry</small>
         </div>
@@ -14,8 +14,8 @@
     </div>
     <div class="large-6 row">
       <div class="row prefix-round">
-        <div class="small-3 columns"><p class="button prefix">会议地点</p></div>
-        <div class="small-9 columns">
+        <div class="small-2 columns"><p class="button prefix">会议地点</p></div>
+        <div class="small-10 columns">
           <input type="text" placeholder="Value" ng-model="meeting.meetingLocation">
           <small class="error">Invalid entry</small>
         </div>
@@ -23,8 +23,8 @@
     </div>
     <div class="large-6 row">
       <div class="row prefix-round">
-        <div class="small-3 columns"><p class="button prefix">开始时间</p></div>
-        <div class="small-9 columns">
+        <div class="small-2 columns"><p class="button prefix">开始时间</p></div>
+        <div class="small-10 columns">
           <input type="text" placeholder="点击选择开会时间"  class="form_datetime_start datetimepicker"  readonly>
           <input type="hidden" name="starttime" id="starttime" ng-model="meeting.meetingStartTime">
           <small class="error">Invalid entry</small>
@@ -33,8 +33,8 @@
     </div>
     <div class="large-6 row">
       <div class="row prefix-round">
-        <div class="small-3 columns"><p class="button prefix">结束时间</p></div>
-        <div class="small-9 columns">
+        <div class="small-2 columns"><p class="button prefix">结束时间</p></div>
+        <div class="small-10 columns">
           <input type="text" placeholder="点击选择结束会议时间" class="form_datetime_end datetimepicker"  readonly>
           <input type="hidden" name="endtime" id="endtime" ng-model="meeting.meetingPredictFinishTime">
           <small class="error">Invalid entry</small>
@@ -43,8 +43,8 @@
     </div>
     <div class="large-6 row">
       <div class="row prefix-round">
-        <div class="small-3 columns"><p class="button prefix">会议频率</p></div>
-        <div class="small-9 columns">
+        <div class="small-2 columns"><p class="button prefix">会议频率</p></div>
+        <div class="small-10 columns">
           <label>
           <select ng-model="meeting.meetingFrequency">
             <option value="1" selected>单次</option>
@@ -59,8 +59,8 @@
     </div>
     <div class="large-6 row">
       <div class="row prefix-round">
-        <div class="small-3 columns"><p class="button prefix">会议内容</p></div>
-        <div class="small-9 columns">
+        <div class="small-2 columns"><p class="button prefix">会议内容</p></div>
+        <div class="small-10 columns">
           <textarea placeholder="small-12.columns" ng-model="meeting.meetingContent"></textarea>
           <small class="error">Invalid entry</small>
         </div>
@@ -68,7 +68,7 @@
     </div>
     <div class="large-6 row">
       <div class="row prefix-round">
-        <div class="small-9 small-offset-3 columns">
+        <div class="small-10 small-offset-2 columns">
           <button type="submit" class="button success button-sm">新建</button>
         </div>
       </div>

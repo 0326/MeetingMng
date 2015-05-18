@@ -524,64 +524,64 @@ public class CompanyManagerAction extends MyActionSupport {
 //		String url = qiniuyunUtil.downloadFile(fileName);	
 		
 		// 从返回的URL中下载文件保存在D盘的指定文件名中
-		String a[] = url.split("/"); 
-		String fileName = a[3];
-		DownLoadFromUrl downLoadFromUrl = new DownLoadFromUrl();
-		downLoadFromUrl.downLoadFromUrl(url, fileName);
-		
-		Read_excelUtil read_excelUtil = new Read_excelUtil();
-		CompanyManagerService companyManagerService = new CompanyManagerService();
-		while(null != read_excelUtil.read_excel(fileName)){
-			List<List> user = read_excelUtil.read_excel(fileName);
-			
-			for(i=0;i<=user.size();i++){
-				CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
-				c.setUsername((String) user.get(i).get(0));
-				Department d = new Department();
-				int departmentId = this.findDepartmentIdByDepartmentName((String) user.get(i).get(4));	
-				d.setDepartmentId(departmentId);
-				
-				OrdinaryUser u = new OrdinaryUser();
-				u.setCompanyAndCompanyAdmin(c);
-				u.setDepartment(d);
-				// u.setRegisterTime(registerTime);
-				u.setCellphone((String) user.get(i).get(2));
-				// u.setIsCellphoneHide(false);
-				u.setName(name);
-				// default password "123456"
-				u.setPassword("123456");
-				u.setEmail((String) user.get(i).get(6));
-				// sex为男转化为0，为女转化为1
-				String sex = (String) user.get(i).get(2);
-				boolean tsex = false;
-				if("男".equals(sex)){
-					tsex = true;
-				}
-				if("女".equals(sex)){
-					tsex = false;
-				}
-				else{
-					System.out.println("sex not found");
-				}
-				u.setSex(tsex);
-				u.setOfficePhone((String) user.get(i).get(7));
-				u.setJob((String) user.get(i).get(5));
-				u.setAvatarUrl(avatarUrl);
-				u.setOfficeLocation((String) user.get(i).get(8));
-				u.setWorkNo((String) user.get(i).get(1));
-				
-//				CompanyManagerService companyManagerService = new CompanyManagerService();
-				if (companyManagerService.addOrdinaryUser(u)) {
-
-					jsonData.put("code", 0);
-				} else {
-					jsonData.put("code", -10415);
-				}
-
-//				user.get(i).get(0);
-			}
-		
-		}
+//		String a[] = url.split("/"); 
+//		String fileName = a[3];
+//		DownLoadFromUrl downLoadFromUrl = new DownLoadFromUrl();
+//		downLoadFromUrl.downLoadFromUrl(url, fileName);
+//		
+//		Read_excelUtil read_excelUtil = new Read_excelUtil();
+//		CompanyManagerService companyManagerService = new CompanyManagerService();
+//		while(null != read_excelUtil.read_excel(fileName)){
+//			List<List> user = read_excelUtil.read_excel(fileName);
+//			
+//			for(i=0;i<=user.size();i++){
+//				CompanyAndCompanyAdmin c = new CompanyAndCompanyAdmin();
+//				c.setUsername((String) user.get(i).get(0));
+//				Department d = new Department();
+//				int departmentId = this.findDepartmentIdByDepartmentName((String) user.get(i).get(4));	
+//				d.setDepartmentId(departmentId);
+//				
+//				OrdinaryUser u = new OrdinaryUser();
+//				u.setCompanyAndCompanyAdmin(c);
+//				u.setDepartment(d);
+//				// u.setRegisterTime(registerTime);
+//				u.setCellphone((String) user.get(i).get(2));
+//				// u.setIsCellphoneHide(false);
+//				u.setName(name);
+//				// default password "123456"
+//				u.setPassword("123456");
+//				u.setEmail((String) user.get(i).get(6));
+//				// sex为男转化为0，为女转化为1
+//				String sex = (String) user.get(i).get(2);
+//				boolean tsex = false;
+//				if("男".equals(sex)){
+//					tsex = true;
+//				}
+//				if("女".equals(sex)){
+//					tsex = false;
+//				}
+//				else{
+//					System.out.println("sex not found");
+//				}
+//				u.setSex(tsex);
+//				u.setOfficePhone((String) user.get(i).get(7));
+//				u.setJob((String) user.get(i).get(5));
+//				u.setAvatarUrl(avatarUrl);
+//				u.setOfficeLocation((String) user.get(i).get(8));
+//				u.setWorkNo((String) user.get(i).get(1));
+//				
+////				CompanyManagerService companyManagerService = new CompanyManagerService();
+//				if (companyManagerService.addOrdinaryUser(u)) {
+//
+//					jsonData.put("code", 0);
+//				} else {
+//					jsonData.put("code", -10415);
+//				}
+//
+////				user.get(i).get(0);
+//			}
+//		
+//		}
 
 		return SUCCESS;
 	}

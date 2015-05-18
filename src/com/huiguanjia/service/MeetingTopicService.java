@@ -36,8 +36,8 @@ public class MeetingTopicService {
 		//只有参加到会议的人 才能创建话题
 		MeetingTopicValidate meetingTopicValidate = new MeetingTopicValidate();
 		if(meetingTopicValidate.meetingMatchPeople1(topic.getMeeting().getMeetingId(),topic.getCreatorId())
-			| meetingTopicValidate.meetingMatchPeople2(topic.getMeeting().getMeetingId(),topic.getCreatorId())
-			| meetingTopicValidate.meetingMatchPeople3(topic.getMeeting().getMeetingId(),topic.getCreatorId())){
+			|| meetingTopicValidate.meetingMatchPeople2(topic.getMeeting().getMeetingId(),topic.getCreatorId())
+			|| meetingTopicValidate.meetingMatchPeople3(topic.getMeeting().getMeetingId(),topic.getCreatorId())){
 		}
 		else{
 			return false;
@@ -195,11 +195,12 @@ public class MeetingTopicService {
 		List<Topic> list = null;                         
 		String hql = null;   
 		String hqlr = "o.cellphone,o.name,o.avatarUrl,t.id,t.title,t.content,t.createTime";
-		Object[] values = new Object[]{meetingId,cellphone};   
+		Object[] values = new Object[]{meetingId};   
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 		hql = "select "+hqlr+" from Topic as t,OrdinaryUser as o where "+
-				"t.meeting.meetingId=? and o.cellphone=? and o.cellphone=t.creatorId";
+				"t.meeting.meetingId=? and o.cellphone=t.creatorId "+
+				"order by t.id desc";
 		list = (ArrayList<Topic>)b.findObjectByHql(hql, values);
 
 		res = JSONUtil.serialize(list);
@@ -219,8 +220,8 @@ public class MeetingTopicService {
 		//只能是参加到会议的人才能查看会议的话题
 		MeetingTopicValidate meetingTopicValidate = new MeetingTopicValidate();
 		if(meetingTopicValidate.meetingMatchPeople1(meetingId,cellphone)
-				| meetingTopicValidate.meetingMatchPeople2(meetingId,cellphone)
-				| meetingTopicValidate.meetingMatchPeople3(meetingId,cellphone)){
+				|| meetingTopicValidate.meetingMatchPeople2(meetingId,cellphone)
+				|| meetingTopicValidate.meetingMatchPeople3(meetingId,cellphone)){
 		}
 		else{
 			return null;
@@ -291,8 +292,8 @@ public class MeetingTopicService {
 		// 只有参加会议的人才能评论
 		MeetingTopicValidate meetingTopicValidate = new MeetingTopicValidate();
 		if(meetingTopicValidate.meetingMatchPeople1(meetingId,comment.getCommentorId())
-				| meetingTopicValidate.meetingMatchPeople2(meetingId,comment.getCommentorId())
-				| meetingTopicValidate.meetingMatchPeople3(meetingId,comment.getCommentorId())){
+				|| meetingTopicValidate.meetingMatchPeople2(meetingId,comment.getCommentorId())
+				|| meetingTopicValidate.meetingMatchPeople3(meetingId,comment.getCommentorId())){
 		}
 		else{
 			return false;
@@ -334,8 +335,8 @@ public class MeetingTopicService {
 		// 只有是参加到会议的人才能够通过话题查看评论
 		MeetingTopicValidate meetingTopicValidate = new MeetingTopicValidate();
 		if(meetingTopicValidate.meetingMatchPeople1(meetingId,cellphone)
-				| meetingTopicValidate.meetingMatchPeople2(meetingId,cellphone)
-				| meetingTopicValidate.meetingMatchPeople3(meetingId,cellphone)){
+				|| meetingTopicValidate.meetingMatchPeople2(meetingId,cellphone)
+				|| meetingTopicValidate.meetingMatchPeople3(meetingId,cellphone)){
 		}
 		else{
 			return null;

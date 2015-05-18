@@ -28,7 +28,12 @@ var mControllers = angular.module("mControllers", [])
   
   $scope.company = userService.profiles;
   $scope.meetinglist = [];
-
+  $scope.statistics = {
+    completed:"",
+    allToday:"",
+    todaySignedRate:"",
+    avgSignedRate:""
+  };                    //统计数据
   var initFunc = function(pageIndex){  
     meetingService
      .findMeetings(pageIndex,$scope.company.username)
@@ -36,6 +41,31 @@ var mControllers = angular.module("mControllers", [])
         $scope.meetinglist = data.list;
         $scope.paginationConf.totalItems = data.total;
      });
+    meetingService
+    .findCompeletedMeetingNumberByHistory($scope.company.username)
+    .then(function(data){
+      //历史完成会议
+      $scope.statistics.completed = data.number;
+    });
+    meetingService
+    .findMeetingNumberByToday($scope.company.username)
+    .then(function(data){
+      //本日所有会议
+      $scope.statistics.allToday = data.number;
+    });
+    meetingService
+    .findMeetingRateByToday($scope.company.username)
+    .then(function(data){
+      //今日完成会议
+      $scope.statistics.todaySignedRate = data.rate;
+    });
+    meetingService
+    .findMeetingRateByCompany($scope.company.username)
+    .then(function(data){
+      //平均签到率
+      $scope.statistics.avgSignedRate = data.rate;
+    });
+
   }
   
   initFunc(1);
@@ -255,11 +285,13 @@ var mControllers = angular.module("mControllers", [])
 
   $scope.searchStuff = function(){
     StuffService
-    .searchByName($scope.company.username,$scope.keywords,1)
+    .search($scope.company.username,$scope.keywords,1)
     .then(function(data){
-      $scope.currStuff = data;
+      // $scope.paginationConf.totalItems = data.total;
+      $scope.stuffs = data.list;
     });
   }
+  
   $scope.onUpdate = function(cellphone){
     StuffService
     .getStuff(cellphone,$scope.company.username)
@@ -313,7 +345,7 @@ var mControllers = angular.module("mControllers", [])
     sex: 0,
     officePhone:null,
     job: null,
-    avatarUrl: 'app/images/headimg.jpg',
+    avatarUrl: 'http://7u2j45.com1.z0.glb.clouddn.com/o_19lablf7o1b103vbi2kln615977.png-head100',
     officeLocation: null,
     workNo: null
   };
@@ -348,13 +380,7 @@ var mControllers = angular.module("mControllers", [])
     });
   }
   $scope.submitDelete = function(){
-    StuffService
-    .delete($scope.currStuff)
-    .then(function(data){
-      if(data.code == 0){
-
-      }
-    });
+    StuffService.delete($scope.currStuff);
   }
   //用户直接刷新网页的话需要重新获得user数据
   $scope.$on("userProfileBroadcast",function(event, company){

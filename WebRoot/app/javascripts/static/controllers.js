@@ -4,7 +4,7 @@ var mControllers = angular.module("mControllers", [])
 
 .controller("homeCtrl", function($scope, loginService) {
   $scope.user = {
-    username: "2577839872@qq.com",
+    username: "huiguanjia@sina.com",
     password: "123456",
     usertype: "1"
   }

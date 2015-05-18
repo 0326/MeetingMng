@@ -116,17 +116,7 @@ public class MeetingRecordAction extends MyActionSupport{
 		int obj = t.findMeetingNumberByToday(username);
 		jsonData.put("number", obj);
 
-//		JSONObject result = new JSONObject();
-//		// number代表会议数量
-//		result.put("number", obj);	
-//		String stres = JSONUtil.serialize(result);
-//		jsonData.put("stres", stres);
-//		if(null == obj){
-//			jsonData.put("code", -1);
-//		}
-//		else{
-//			jsonData.put("obj", obj);
-//		}	
+
 		return SUCCESS;
 	}
 	

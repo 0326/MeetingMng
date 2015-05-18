@@ -17,7 +17,8 @@ public class MeetingParticipatorAction extends MyActionSupport{
 	private String users;
 	private String operatedCellphone;
 	private int state;
-	
+	private String currTime;           //用户签到的当前时间
+	private int msgId;             //消息反馈id
 	private Map<String,Object> jsonData;
 
 	
@@ -176,6 +177,22 @@ public class MeetingParticipatorAction extends MyActionSupport{
 		
 		return SUCCESS;
 	}
+	
+	/**
+	 * 修改办会人员状态
+	 * @return
+	 */
+	public String updateState()
+	{
+		jsonData = new HashMap<String,Object>();
+
+		MeetingParticipatorService service = new MeetingParticipatorService();
+		int res = service.updateState(msgId,meetingId, cellphone, state);
+		
+		jsonData.put("code", res);
+		return SUCCESS;
+	}
+	
 	/**
 	 * 邀请参会人员
 	 * @return
@@ -194,4 +211,40 @@ public class MeetingParticipatorAction extends MyActionSupport{
 		return SUCCESS;
 	}
 	
+	
+	/**
+	 * 参会人员签到
+	 * @return
+	 */
+	public String signed()
+	{
+		jsonData = new HashMap<String,Object>();
+		
+
+//		Message msg = CometCfg.createMessage(cellphone,
+//				operatedCellphone, CometCfg.PART_INVITE, meetingId);
+		MeetingParticipatorService service = 
+				new MeetingParticipatorService();
+		
+		int res = service.updateState(msgId,meetingId, cellphone,4);
+		
+		jsonData.put("code", res);
+		return SUCCESS;
+	}
+
+	public String getCurrTime() {
+		return currTime;
+	}
+
+	public void setCurrTime(String currTime) {
+		this.currTime = currTime;
+	}
+
+	public int getMsgId() {
+		return msgId;
+	}
+
+	public void setMsgId(int msgId) {
+		this.msgId = msgId;
+	}
 }

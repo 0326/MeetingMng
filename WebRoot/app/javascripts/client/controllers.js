@@ -74,16 +74,33 @@ var mControllers = angular.module("mControllers", [])
 
 
 .controller("meetingnewCtrl", function($scope, meetingService, userService) {
+  $scope.client = userService.profiles;
   $scope.meeting = {
-    meetingCreatorId: userService.profiles.cellphone,
     meetingFrequency: 1
   };
   $scope.submitAddForm = function(isValid){
+    $scope.meeting.meetingCreatorId = $scope.client.cellphone;
     $scope.meeting.meetingStartTime = $("#starttime").val();
     $scope.meeting.meetingPredictFinishTime = $("#endtime").val();
-    console.log("$scope.meeting");
-    meetingService.add($scope.meeting);
+    
+    if($scope.meeting.meetingStartTime > $scope.meeting.meetingPredictFinishTime){
+      alert("会议开始时间不能早于结束时间哦");
+    }
+    else if($scope.meeting.meetingStartTime < new Date().getTime()){
+      alert("会议开始时间设置错误！");
+    }
+    else{
+      meetingService.add($scope.meeting);
+    }
+    // console.log("$scope.meeting");
   }
+
+  //用户如果在此刷新浏览器，需要重新加载数据
+  $scope.$on("userProfileBroadcast",function(event, client){
+    $scope.client = client;
+  });
+
+
 })
 
 .controller("meetingeditCtrl", function($scope) {
@@ -115,7 +132,11 @@ var mControllers = angular.module("mControllers", [])
   }
   //完成会议
   $scope.onFinish = function(){
-     meetingService.finish($scope.meeting.meetingId, userService.profiles.cellphone);
+    if(new Date().getTime() < $scope.meeting.meetingStartTime){
+      alert("会议还未开始，现在不能完成！");
+      return;
+    }
+    meetingService.finish($scope.meeting.meetingId, userService.profiles.cellphone);
   }
   //删除/取消会议
   $scope.onDelete = function(){
@@ -131,6 +152,7 @@ var mControllers = angular.module("mControllers", [])
 //会议联系人管理
 .controller("meetingcontactCtrl", function($scope, meetingService,
   userService, meetingId, organizerService, participatorService, contactService) {
+  $scope.client = userService.profiles;
   $scope.meeting = {'meetingId': meetingId};  //会议
   $scope.organizerList = null;                //办会人员列表
   $scope.participatorList = null;             //参会人员列表
@@ -138,46 +160,69 @@ var mControllers = angular.module("mControllers", [])
   $scope.myContactors = null;                 //我的联系人名单
   $scope.addorganizerList = null;             //要添加的办会人员名单
   $scope.addparticipatorList = null;          //要添加的参会人员名单
-  var init = function(){
-    meetingService
-    .findByMeetingId(meetingId)
-    .then(function(data){
-      // console.log(data);
-      $scope.meeting = $.parseJSON(data.meeting);
-      //会议处于活动状态才能修改联系人状态
-      if($scope.meeting.meetingState == 0){
-        $(".contact-list").delegate('.info-group','click',function(){
-           $(this).next().slideToggle("fast");
-        });
-      }
-      
-    });
-    //获取办会者列表
-    organizerService
-    .findOrganizer(userService.profiles.cellphone,$scope.meeting.meetingId)
-    .then(function(data){
-      $scope.organizerList = data;
-    });
-    //获取添加办会人员列表
-    contactService
-    .findCompanyContactForOrganizer(userService.profiles.cellphone, $scope.meeting.meetingId)
-    .then(function(data){
-      $scope.addorganizerList = data;
-    });  
-    //获取参会者列表
-    participatorService
-    .findParticipator(userService.profiles.cellphone,$scope.meeting.meetingId)
-    .then(function(data){
-      $scope.participatorList = data;
-    });
-    //获取添加参会人员列表
-    contactService
-    .findCompanyContactForParticipator(userService.profiles.cellphone, $scope.meeting.meetingId)
-    .then(function(data){
-      $scope.addparticipatorList = data;
-    });  
+  var init = {
+    all: function(){
+      if(!$scope.client.cellphone) return;
+      init.findMeeting();
+      init.findOrganizer();
+      init.findParticipator();
+      init.findCompanyContactForOrganizer();
+      init.findCompanyContactForParticipator();
+    },
+    findMeeting: function(){
+      meetingService
+      .findByMeetingId(meetingId)
+      .then(function(data){
+        // console.log(data);
+        $scope.meeting = $.parseJSON(data.meeting);
+        //会议处于活动状态才能修改联系人状态
+        // if($scope.meeting.meetingState == 0){
+        //   $(".contact-list").delegate('.info-group','click',function(){
+        //      $(this).next().slideToggle("fast");
+        //   });
+        // }
+        
+      });
+    },
+    findOrganizer: function(){
+      //获取办会者列表
+      organizerService
+      .findOrganizer($scope.client.cellphone,$scope.meeting.meetingId)
+      .then(function(data){
+        $scope.organizerList = data;
+      });
+    },
+    findCompanyContactForOrganizer: function(){
+      //获取添加办会人员列表
+      contactService
+      .findCompanyContactForOrganizer($scope.client.cellphone, $scope.meeting.meetingId)
+      .then(function(data){
+        $scope.addorganizerList = data;
+      }); 
+    },
+    findParticipator: function(){
+      //获取参会者列表
+      participatorService
+      .findParticipator($scope.client.cellphone,$scope.meeting.meetingId)
+      .then(function(data){
+        $scope.participatorList = data;
+      });
+    },
+    findCompanyContactForParticipator: function(){
+      //获取添加参会人员列表
+      contactService
+      .findCompanyContactForParticipator($scope.client.cellphone, $scope.meeting.meetingId)
+      .then(function(data){
+        $scope.addparticipatorList = data;
+      });  
+    },
   }
-  init();
+
+  init.all();
+
+  $(".contact-list").delegate('.info-group','click',function(){
+     $(this).next().slideToggle("fast");
+  });
 
   $scope.onAddOrganizer = function(){
     var users = [];
@@ -188,11 +233,11 @@ var mControllers = angular.module("mControllers", [])
       }
     }
     organizerService
-    .addOrganizer(userService.profiles.cellphone,$scope.meeting.meetingId,users)
+    .addOrganizer($scope.client.cellphone,$scope.meeting.meetingId,users)
     .then(function(data){
       if(data.code == 0){
         // alert("添加成功！");
-        init();
+        init.findOrganizer();
       }
       else if(data.code == -1){
         alert("您无此权限");
@@ -216,11 +261,11 @@ var mControllers = angular.module("mControllers", [])
       }
     }
     participatorService
-    .addParticipator(userService.profiles.cellphone,$scope.meeting.meetingId,users)
+    .addParticipator($scope.client.cellphone,$scope.meeting.meetingId,users)
     .then(function(data){
       if(data.code == 0){
         // alert("添加成功！");
-        init();
+        init.findParticipator();
       }
       else if(data.code == -1){
         alert("您无此权限");
@@ -238,11 +283,11 @@ var mControllers = angular.module("mControllers", [])
   $scope.onDeleteOrganizer = function(operatedCellphone){
     var users = [operatedCellphone];
     organizerService
-    .deleteOrganizer(userService.profiles.cellphone,$scope.meeting.meetingId,users)
+    .deleteOrganizer($scope.client.cellphone,$scope.meeting.meetingId,users)
     .then(function(data){
       if(data.code == 0){
         //删除成功，更新本地变量
-        init();
+        init.findOrganizer();
       }
       else if(data.code == -1){
         alert("您不能删除此人！")
@@ -256,11 +301,11 @@ var mControllers = angular.module("mControllers", [])
   $scope.onDeleteParticipator = function(operatedCellphone){
     var users = [operatedCellphone];
     participatorService
-    .deleteParticipator(userService.profiles.cellphone,$scope.meeting.meetingId,users)
+    .deleteParticipator($scope.client.cellphone,$scope.meeting.meetingId,users)
     .then(function(data){
       if(data.code == 0){
         //删除成功，更新本地变量
-        init();
+        init.findParticipator();
       }
       else if(data.code == -1){
         alert("您不能删除此人！")
@@ -274,51 +319,64 @@ var mControllers = angular.module("mControllers", [])
   $scope.onUpdateState = function(operatedCellphone,usertype){
     if(usertype == 'o'){
       organizerService
-      .updateOrganizer(userService.profiles.cellphone,
+      .updateOrganizer($scope.client.cellphone,
         $scope.meeting.meetingId,
         operatedCellphone,
         state)
       .then(function(data){
-        init();
+        init.findOrganizer();
       });
     }
     else if(usertype == 'p'){
       participatorService
-      .updateParticipator(userService.profiles.cellphone,
+      .updateParticipator($scope.client.cellphone,
         $scope.meeting.meetingId,
         operatedCellphone,
         state)
       .then(function(data){
-        init();
+        init.findParticipator();
       });
     }
   }
   
   $scope.onSendInvite = function(operatedCellphone,usertype){
     if(usertype == 'o'){
-      organizerService.inviteOrganizer(userService.profiles.cellphone,
+      organizerService.inviteOrganizer($scope.client.cellphone,
         $scope.meeting.meetingId,
         operatedCellphone
         )
       .then(function(data){
-        init();
+        init.findOrganizer();
       });
     }
     else if(usertype == 'p'){
-      participatorService.inviteParticipator(userService.profiles.cellphone,
+      participatorService.inviteParticipator($scope.client.cellphone,
         $scope.meeting.meetingId,
         operatedCellphone
         )
       .then(function(data){
-        init();
+        init.findParticipator();
       }); 
     }
   }
   
+  $scope.signed = function(cellphone){
+    if(new Date().getTime() < $scope.meeting.meetingStartTime){
+      alert("会议开始了才能签到哦！");
+      return;
+    }
+    participatorService
+    .signed(cellphone,$scope.meeting.meetingId)
+    .then(function(data){
+      init.findParticipator();
+    });
+  
+  }
   
   //用户如果在此刷新浏览器，需要重新加载数据
   $scope.$on("userProfileBroadcast",function(event, client){
-    init();
+    $scope.client = client;
+    init.all();
   });
 })
 
@@ -511,30 +569,33 @@ var mControllers = angular.module("mControllers", [])
 })
 
 //我的消息/////////////////////////////////////////
-.controller("messageCtrl", function($scope, userService, messageService) {
+.controller("messageCtrl", function($scope, userService, messageService, isChecked) {
   $scope.msgList = [];
   $scope.currMsg = {};
   var init = function(){
     messageService
-    .findMsgList(userService.profiles.cellphone)
+    .findMsgList(userService.profiles.cellphone,isChecked)
     .then(function(data){
       $scope.msgList = data;
       $scope.currMsg = $scope.msgList[0];
-    });  
+    });
   }
   init();
   
-  $(".contact-list").delegate('.info-group','click',function(){
-     $(this).next().slideToggle("fast");
-  });
+  if(isChecked == false){
+    $(".contact-list").delegate('.info-group','click',function(){
+       $(this).next().slideToggle("fast");
+    });
+  }
   
-  $scope.onMeetingOperate = function(msgContent, state){
+  $scope.onMeetingOperate = function(msgContent, msgId, state){
     var obj = $.parseJSON(msgContent);
+    var msgType = obj.type;
     obj = $.parseJSON(obj.body);
     messageService
-    .updateSate(userService.profiles.cellphone,obj.meetingId,state)
+    .updateSate(msgId,userService.profiles.cellphone,obj.meetingId,state,msgType)
     .then(function(data){
-
+      init();
     });
   }
 
@@ -552,7 +613,25 @@ var mControllers = angular.module("mControllers", [])
    $scope.modifyInfo = function(){
       // console.log($scope.client.avatarUrl);
       $scope.client.avatarUrl = $("#avatarUrl").val()
-      userService.updateInfo($scope.client);
+      userService.updateInfo($scope.client)
+      .then(function(data){
+        if(data.code == 0){
+          // alert("修改成功！");
+          $("#user-profile .pricing-table").removeClass("hide");
+          $(".user-profile-form").addClass("hide");
+        }
+        else{
+          alert("修改失败");
+        }
+      });
       $scope.$emit('userProfileChange',$scope.client);
    }
+
+  $scope.onModify = function(){
+    $("#user-profile .pricing-table").addClass("hide");
+    $(".user-profile-form").removeClass("hide");
+  }
+  $scope.$on("userProfileBroadcast",function(event, client){
+    $scope.client = client;
+  });
 })

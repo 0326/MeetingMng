@@ -48,7 +48,8 @@ public class MessageService {
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 
-		String hql = "select o from Message as o where o.username = ? and o.isPush= ?"; 
+		String hql = "select o from Message as o where "+
+				"o.username = ? and o.isPush= ?  order by msgId desc"; 
 		Object[] values = new Object[]{userid,isPush};
 		List<Message> list = (ArrayList<Message>)b.findObjectByHql(hql, values);
 //		String stres = JSONUtil.serialize(list);
@@ -57,12 +58,13 @@ public class MessageService {
 		return list;
 	}
 	
-	public String findMsgStr(String userid, boolean isPush){
+	public String findMsgStr(String userid, boolean isChecked){
 		BaseDAO b = new BaseDAO();	
 		Session sess = SessionDAO.getSession();
 
-		String hql = "select o from Message as o where o.username = ? and o.isPush= ?"; 
-		Object[] values = new Object[]{userid,isPush};
+		String hql = "select o from Message as o where "+
+				"o.username = ? and o.isPush=true and o.isChecked = ? order by msgId desc"; 
+		Object[] values = new Object[]{userid,isChecked};
 		List<Message> list = (ArrayList<Message>)b.findObjectByHql(hql, values);
 		String stres = JSONUtil.serialize(list);
 		SessionDAO.closeSession();

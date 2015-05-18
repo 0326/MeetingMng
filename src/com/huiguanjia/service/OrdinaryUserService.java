@@ -464,8 +464,9 @@ public class OrdinaryUserService {
 		obj.put("name", or.getName());
 		obj.put("departmentName", or.getDepartment().getDepartmentName());
 //		obj.put("username",or.getCompanyAndCompanyAdmin().getUsername()); //companyId
-		obj.put("registerTime", or.getRegisterTime());
+//		obj.put("registerTime", or.getRegisterTime());
 		obj.put("email",or.getEmail());
+		obj.put("job", or.getJob());
 		obj.put("isBindEmail", or.getIsBindEmail());
 		obj.put("sex", or.getSex());
 		obj.put("officePhone", or.getOfficePhone());

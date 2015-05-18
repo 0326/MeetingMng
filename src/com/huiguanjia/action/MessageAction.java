@@ -27,7 +27,7 @@ public class MessageAction extends MyActionSupport{
 	public String findMsgList(){
 		jsonData = new HashMap<String,Object>();
 		MessageService ms = new MessageService();
-		String msglist = ms.findMsgStr(username, true);
+		String msglist = ms.findMsgStr(username, isChecked);
 		jsonData.put("list", msglist);
 		return SUCCESS;
 	}
@@ -71,8 +71,8 @@ public class MessageAction extends MyActionSupport{
 	}
 
 	public void setIsChecked(boolean isChecked) {
-//		this.isChecked = isChecked;
-		this.isChecked = true;
+		this.isChecked = isChecked;
+//		this.isChecked = true;
 	}
 
 	public boolean getIsPush() {

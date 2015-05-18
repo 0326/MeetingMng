@@ -72,6 +72,9 @@ var mFilters = angular.module("mFilters", [])
 				result = "待定";
 			}
 			else if(input == 4){
+				result = "签到";
+			}
+			else if(input == 5){
 				result = "拒绝";
 			}
 		}

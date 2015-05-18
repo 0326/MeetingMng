@@ -196,11 +196,11 @@ function($http, $q, PostCfg, userService){
           }
         });
       },
-      searchByName: function(username,keywords,pageIndex){
+      search: function(username,keywords,pageIndex){
         var d = $q.defer();
-        $http.post("/MeetingMng/api/v1/companyManagerSearchName", {
+        $http.post("/MeetingMng/api/v1/companyManagerSearch", {
           'username':username,
-          'keywords':keywords,
+          'keyword':keywords,
           'pageIndex':pageIndex
         }, PostCfg)
         .success(function(data){
@@ -221,7 +221,7 @@ function($http, $q, PostCfg, userService){
           if(data.code == 0){
             // alert("添加成功");
             $("#passModal").modal('hide');
-            window.location.href="/MeetingMng/manage#/stufflist";
+            // window.location.href="/MeetingMng/manage#/stufflist";
           }
           else{
             alert("删除失败");
@@ -388,6 +388,64 @@ function($http, $q, PostCfg, userService){
     // var cellphone = "15071345115";
     var d = $q.defer();
     $http.get("/MeetingMng/api/v1/u/meeting/findByMeetingId?meetingId="+meetingId)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  /*
+  会议统计
+  */
+  //获取历史完成会议
+  service.findCompeletedMeetingNumberByHistory = function(username){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/c/meeting/findCompeletedMeetingNumberByHistory?username="+username)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+  //获取当前活动会议
+  service.findActiveMeetingNumberByToday = function(username){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/c/meeting/findActiveMeetingNumberByToday?username="+username)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //获取本日所有会议
+  service.findMeetingNumberByToday = function(username){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/c/meeting/findMeetingNumberByToday?username="+username)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //获取本日已完成会议
+  service.findFinishedMeetingNumberByToday = function(username){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/c/meeting/findFinishedMeetingNumberByToday?username="+username)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //获取公司平均签到率
+  service.findMeetingRateByCompany = function(username){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/c/meeting/findMeetingRateByCompany?username="+username)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+  //获取今日平均签到率
+  service.findMeetingRateByToday = function(username){
+    var d = $q.defer();
+    $http.get("/MeetingMng/api/v1/c/meeting/findMeetingRateByToday?username="+username)
     .success(function(data){
       d.resolve(data);
     });

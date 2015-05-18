@@ -14,7 +14,7 @@ table{ width: 100%;}
 	padding:  2em 2em;
   /*height: 500px;*/
 }
-
+.page-head li a{color: #fff;}
 .menu-head{
 	height: 2.8125rem;
 	padding: .4rem;
@@ -25,14 +25,19 @@ table{ width: 100%;}
 	display: block;
 }
 .menu-avatar{
-	text-align: center;
+	padding: 1.2em 0;
 }
 .menu-avatar img{
-	display: block;
-	margin: 0 auto;
-	width: 100%;
+	margin: 0 1em;
+	border-radius: 50%;
+	width: 80px;
 }
-
+.menu-avatar h4{
+	color: #fff;
+}
+.menu-avatar p{
+	color: #aaa;
+}
 .page-head{
 	text-align: center;
 }
@@ -44,7 +49,9 @@ table{ width: 100%;}
 	min-height: 800px;
 }
 
-
+.meeting-table tr td{
+	font-size: 18px;
+}
 #meetingnew form .error{
 	display: none;
 }
@@ -67,7 +74,18 @@ table{ width: 100%;}
 #updateBox form textarea{
 	height: 160px;
 }
-
+#detailBox .title{
+	background-color: #32b3ef;
+}
+#detailBox .meeting-content{
+	padding: 1em;
+	max-width: 500px;
+	margin: 0 auto;
+	margin-top: .5em;
+	background-color: #eee;
+	font-size: 1.2em;
+	line-height: 1.5em;
+}
 /*topic*/
 .topic-list li{
 	list-style: none;
@@ -77,6 +95,7 @@ table{ width: 100%;}
 	/*text-align: center;*/
 }
 .topic-list .col-user img{
+	margin-top: .5em;
 	height: 60px;width: 60px;
 }
 .topic-list .col-content:hover {
@@ -143,7 +162,29 @@ table{ width: 100%;}
 .tag-state-3{
 	background-color: #ed9f63;
 }
-/*拒绝*/
+/*签到*/
 .tag-state-4{
 	background-color: #e84a4a;
+}
+/*拒绝*/
+.tag-state-4{
+	background-color: #f00;
+}
+
+/*//profiles*/
+.price-avatar img{
+	border-radius: 50%;
+	padding: .5em;
+}
+.tag-span-false{
+	color: #fff;
+	padding: .2em 1em;
+	border-radius: 5%;
+	background-color: #32b3ef;
+}
+.tag-span-true{
+	color: #fff;
+	padding: .2em 1em;
+	border-radius: 5%;
+	background-color: #aaa;
 }

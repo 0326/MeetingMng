@@ -71,7 +71,7 @@
     	<action name="companyManagerActivate" class="com.huiguanjia.action.CompanyManagerAction" method="activate"></action>
     	<action name="companyNameRepeat" class="com.huiguanjia.action.CompanyManagerAction" method="companyNameRepeat"></action>
     	<action name="usernameRepeat" class="com.huiguanjia.action.CompanyManagerAction" method="usernameRepeat"></action>
-    	
+    	<action name="activemail" class="com.huiguanjia.action.ActivateAction" method="emailActivate"></action>
  		<!-- 公司管理后台-个人信息修改 -->
     	<action name="companyManagerUpdateInfo" class="com.huiguanjia.action.CompanyManagerAction" method="updateInfo"></action> 	
     	<action name="companyManagerGetInfo" class="com.huiguanjia.action.CompanyManagerAction" method="findInfo"></action> 
@@ -132,7 +132,9 @@
     	<action name="updateParticipator" class="com.huiguanjia.action.MeetingParticipatorAction" method="updateParticipator"></action>
     	<action name="inviteParticipator" class="com.huiguanjia.action.MeetingParticipatorAction" method="inviteParticipator"></action>
     	<!-- 直接修改状态，此方法还未加权限验证，慎用 -->
-    	<action name="updateState" class="com.huiguanjia.action.MeetingOrganizerAction" method="updateState"></action>
+    	<action name="updateOrganizerState" class="com.huiguanjia.action.MeetingOrganizerAction" method="updateState"></action>
+    	<action name="updateParticipatorState" class="com.huiguanjia.action.MeetingParticipatorAction" method="updateState"></action>
+    	<action name="participatorSigned" class="com.huiguanjia.action.MeetingParticipatorAction" method="signed"></action>
  	</package>
  	
  	<!-- 公司管理员api接口-会议操作 -->

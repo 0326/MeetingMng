@@ -10,14 +10,15 @@
 		<div class="columns large-6 medium-6 small-12">
 			<div class="panel">
 				<h3 class="subheader">
-					办会人名单 
-					<button class="button tiny" data-reveal-id="addUserModal" onclick="$('#addUserModal').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0">添加帮手</button>
+					组织人员
+					<!-- <button class="button tiny" data-reveal-id="addUserModal" onclick="$('#addUserModal').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0">添加</button> -->
+					<i class="fa fa-user-plus" data-reveal-id="addUserModal" onclick="$('#addUserModal').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0"></i>
 				</h3>
 				<ul class="row contact-list">
 					<li class="columns clearfix" ng-repeat="o in organizerList">
 						<div class="info-group">
 							<div class="left">
-								<img src="http://7u2j45.com1.z0.glb.clouddn.com/o_19jl78jhg175m1r2pj4ljcm9bn7.jpg-head100">
+								<img src="{{o.avatarUrl}}">
 							</div>
 							<div>
 								<span>{{o.name}}</span>
@@ -25,14 +26,14 @@
 								<span class="tag-info tag-creator" ng-show="o.creator">{{o.creator | mcontact:'isCreator' }}</span>
 							</div>
 							<div class="sub-info">
-								<span>{{o.companyName}}</span>
+								<!-- <span>{{o.companyName}}</span> -->
 								<span>{{o.departmentName}}</span>
 							</div>
 						</div>
 						<div class="button-group even-3 slide-bottom">
 						  <button class="button secondary tiny" ng-click="onDeleteOrganizer(o.cellphone)">删除</button>
-						  <button class="button secondary tiny" ng-click="onupdateState(o.cellphone,'o')">修改状态</button>
-						  <button class="button secondary tiny" ng-click="onSendInvite(o.cellphone,'o')">发送邀请</button>
+						  <!-- <button class="button secondary tiny" ng-click="onupdateState(o.cellphone,'o')">修改状态</button> -->
+						  <button class="button secondary tiny" ng-click="onSendInvite(o.cellphone,'o')" ng-show="o.state == 0">发送邀请</button>
 						</div>
 					</li>
 				</ul>
@@ -41,28 +42,29 @@
 		<div class="columns large-6 medium-6 small-12">
 			<div class="panel">
 				<h3 class="subheader">
-					参会人名单 
-					<button class="button tiny" data-reveal-id="addUserModal2" onclick="$('#addUserModal2').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0">添加参会嘉宾</button>
+					参会成员
+					<!-- <button class="button tiny" data-reveal-id="addUserModal2" onclick="$('#addUserModal2').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0">添加</button> -->
+					<i class="fa fa-user-plus" data-reveal-id="addUserModal2" onclick="$('#addUserModal2').foundation('reveal', 'open');" ng-show="meeting.meetingState == 0"></i>
 				</h3>
 				<ul class="row contact-list">
 					<li class="columns clearfix" ng-repeat="o in participatorList">
 						<div class="info-group">
 							<div class="left">
-								<img src="http://7u2j45.com1.z0.glb.clouddn.com/o_19jl78jhg175m1r2pj4ljcm9bn7.jpg-head100">
+								<img src="{{o.avatarUrl}}">
 							</div>
 							<div>
 								<span>{{o.name}}</span>
 								<span class="tag-info tag-state-{{o.state}}">{{o.state | mcontact:'state'}}</span>
 							</div>
 							<div class="sub-info">
-								<span>{{o.companyName}}</span>
+								<!-- <span>{{o.companyName}}</span> -->
 								<span>{{o.departmentName}}</span>
 							</div>
 						</div>
 						<div class="button-group even-3 slide-bottom">
 						  <button class="button secondary tiny" ng-click="onDeleteParticipator(o.cellphone)">删除</button>
-						  <button class="button secondary tiny" ng-click="onupdateState(o.cellphone,'p')">修改状态</button>
-						  <button class="button secondary tiny" ng-click="onSendInvite(o.cellphone,'p')">发送邀请</button>
+						  <button class="button secondary tiny" ng-click="signed(o.cellphone)">签到</button>
+						  <button class="button secondary tiny" ng-click="onSendInvite(o.cellphone,'p')" ng-show="o.state == 0">发送邀请</button>
 						</div>
 					</li>
 				</ul>

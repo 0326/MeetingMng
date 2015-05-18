@@ -19,11 +19,11 @@
 	<ul class="row topic-list">
 		<li ng-repeat="topic in topicList" class="columns">
 			<div class="row">
-			<a class="large-2 columns col-user text-center" href="#/contact-detail?uid={{topic[0]}}">
+			<a class="large-2 medium-2 small-3 columns col-user text-center" href="">
 				<img src="{{topic[2]}}">
 				<p>{{topic[1]}}</p>
 			</a>
-			<a class="large-10 columns col-content" href="#/topic-comment?tid={{topic[3]}}&mid={{meeting.meetingId}}">
+			<a class="large-10 medium-10 small-9 columns col-content" href="#/topic-comment?tid={{topic[3]}}&mid={{meeting.meetingId}}">
 				<h3 class="clearfix">{{topic[4]}}<span class="right">{{topic[6] | date:'yyyy-MM-dd HH:mm'}}</span></h3>
 				<p class="clearfix text-justify">{{topic[5]}}<span class="right">共6条回复</span></p>
 			</a>

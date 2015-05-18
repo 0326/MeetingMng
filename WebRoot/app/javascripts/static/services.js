@@ -103,7 +103,7 @@ angular.module("mServices", [])
 	        }
 	        else{
 	            //激活失败
-	           $scope.activeSuccess = false;
+	           // activeSuccess = false;
 	        }
 	        console.log(data);
 	    });

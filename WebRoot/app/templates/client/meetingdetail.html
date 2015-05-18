@@ -7,7 +7,30 @@
 </div>
 <div class="page-content">
 	<div class="row">
-		<div id="detailBox" class="small-12 large-8 columns">
+		<ul id="detailBox" class="pricing-table">
+		  <li class="title">
+		  	{{meeting.meetingName}} 
+		  	<span class="tag-info tag-state-{{meeting.meetingState}}">
+		  		{{meeting.meetingState | meetingState}}
+		  	</span>
+		  	<i class="fa fa-pencil-square-o" ng-click="onUpdate()"></i>
+		  </li>
+		  <li class="meeting-content">
+		    {{meeting.meetingContent}}
+		  </li>
+		  <li class="description">创建者：{{meeting.ordinaryUser.name}}</li>
+		  <li class="bullet-item">
+		    会议时间：{{ [meeting.meetingFrequency,meeting.meetingStartTime] | meetingDate}}
+		  </li>
+		  <li class="bullet-item">
+		    会议地点：{{meeting.meetingLocation}} 
+		  </li>
+		  <li class="cta-button">
+		    <button class="button tiny" ng-click="onModify()">完成会议</button>
+		    <button class="button tiny alert" ng-click="onModify()">删除会议</button>
+		  </li>
+		</ul>
+		<div class="small-12 large-8 columns hide">
 			<h1>{{meeting.meetingName}} <i class="fa fa-pencil-square-o" ng-click="onUpdate()"></i></h1>
 			<p>当前状态{{meeting.meetingState | meetingState}}</p>
 			<p>{{meeting.meetingLocation}} </p>
@@ -94,16 +117,15 @@
 		    </div>
 			</form>
 		</div>
-		<div class="small-12 large-4 columns text-center">
+		<!-- <div class="small-12 large-4 large-offset-4 medium-4 medium-offset-4 columns text-center">
 			<div ng-show="meeting.meetingState == 0">
-				<!-- <img src="/MeetingMng/app/images/qrcode.png"> -->
 				<div id="qrcode"></div>
 				<div>
 					<button class="button success button-sm" ng-click="onChecked">签到</button>
 					<a href="#/meeting-qrcode">扫一扫</a>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </div>
 <script type="text/javascript" src="/MeetingMng/app/javascripts/jquery.qrcode.min.js"></script>

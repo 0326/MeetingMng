@@ -30,12 +30,13 @@ public class MeetingMsgInbound extends MessageInbound {
     	MeetingServlet.connections.add(this);
     	//查询数据库表Message，若用户不在线时有漏接推送，登录时应及时推送给用户
         MessageService msgService = new MessageService();
+        System.out.println("websoceket onOpen...,userid:"+this.userid);
         List<Message> msglist = msgService.findMsg(this.userid, false);
-//        if(msglist !=null){
-//        	while(msglist.iterator().hasNext()){
-//        		this.pushSigle(msglist.iterator().next());
-//        	}
-//        }
+        if(msglist !=null){
+        	for(int i =0;i<msglist.size();i++){
+        		this.loginPushSigle(msglist.get(i));
+        	}
+        }
         
     }
 
@@ -96,7 +97,32 @@ public class MeetingMsgInbound extends MessageInbound {
     		}
     	}
     }
-
+    
+    /**
+     * 用户登录时push
+     * @param msg
+     */
+    public static void loginPushSigle(Message msg){
+    	MessageService msgService = new MessageService();
+//    	msgService.save(msg);
+    	for(MeetingMsgInbound connection : MeetingServlet.connections){
+    		if(connection.userid.equals(msg.getUsername())){
+    			try {
+//    				
+//    				List<String> ctxlist = msgService.getMsgContentList(msglist);
+//    				String msg = JSONUtil.serialize(ctxlist);
+                    CharBuffer buffer = CharBuffer.wrap(msg.getMsgContent());
+                    connection.getWsOutbound().writeTextMessage(buffer);
+                    //更新推送记录状态
+                    msgService.makePushed(msg);
+                    
+                } catch (IOException ignore) {
+                    // Ignore
+                }
+    			return;
+    		}
+    	}
+    }
     /**
      * 给指定用户列表发送广播
      * @param msglist

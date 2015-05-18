@@ -22,9 +22,6 @@ var mServices = angular.module("mServices", [])
         })
         .success(function(data, status){
           service.profiles = $.parseJSON(data.userInfo);
-          if(service.profiles.avatarUrl == null){
-            service.profiles.avatarUrl = "app/images/logo.png";
-          }
           if(service.profiles.sex == false){
             service.profiles.sex = 0;
           }
@@ -58,12 +55,6 @@ var mServices = angular.module("mServices", [])
         var d = $q.defer();
         $http.post("/MeetingMng/api/v1/OrdinaryUserUpdateInfo",user, PostCfg)
         .success(function(data){
-          if(data.code == 0){
-            alert("修改成功！");
-          }
-          else{
-            alert("修改失败");
-          }
           d.resolve(data);
         });
         return d.promise;
@@ -89,7 +80,7 @@ var mServices = angular.module("mServices", [])
         window.location.href="/MeetingMng/u";
       }
       else{
-        alert("创建失败");
+        alert("您的输入数据有误，请重新填写会议信息");
       }
       d.resolve(data);
     });
@@ -103,7 +94,7 @@ var mServices = angular.module("mServices", [])
     }, PostCfg)
     .success(function(data){
       if(data.code == 0){
-        alert("删掉了！哈哈哈！");
+        // alert("删掉了！哈哈哈！");
         window.location.href="/MeetingMng/u#/";
       }
       else if(data.code == -1){
@@ -360,6 +351,21 @@ var mServices = angular.module("mServices", [])
     });
     return d.promise;
   }
+
+  //参会者签到
+  service.signed = function(cellphone,meetingId){
+    var d = $q.defer();
+    $http.post("/MeetingMng/api/v1/u/meeting/participatorSigned",{
+      'cellphone': cellphone,
+      'meetingId': meetingId
+    }, PostCfg)
+    .success(function(data){
+      d.resolve(data);
+    });
+    return d.promise;
+  }
+
+
   return service;
 }])
 
@@ -516,9 +522,10 @@ var mServices = angular.module("mServices", [])
   var service = {};
  
   //获取公司联系人列表  
-  service.findMsgList = function(cellphone){
+  service.findMsgList = function(cellphone,isChecked){
     var d = $q.defer();
-    $http.get("/MeetingMng/api/v1/u/message/findMsgList?username="+cellphone)
+    $http.get("/MeetingMng/api/v1/u/message/findMsgList?username="
+      +cellphone + "&isChecked="+isChecked)
     .success(function(data){
       d.resolve($.parseJSON(data.list));
     });
@@ -526,9 +533,14 @@ var mServices = angular.module("mServices", [])
   }
 
   //修改参会人员状态
-  service.updateSate = function(cellphone,meetingId,state){
+  service.updateSate = function(msgId,cellphone,meetingId,state,msgType){
     var d = $q.defer();
-    $http.post("/MeetingMng/api/v1/u/meeting/updateState",{
+    var method = "updateOrganizerState";
+    if(msgType == "pinvi*****"){
+      method = "updateParticipatorState";
+    }
+    $http.post("/MeetingMng/api/v1/u/meeting/"+method,{
+      'msgId':msgId,
       "cellphone":cellphone,
       "meetingId":meetingId,
       "state":state

@@ -217,7 +217,7 @@ public class MeetingService {
 				}
 			}
 			String hql = "update Meeting  m set m.meetingState=1,m.meetingFinishTime= "+
-					finishtime + ",sm.meetingStartTime=? where m.meetingId = ? and m.meetingState=0";
+					finishtime + ",m.meetingStartTime=? where m.meetingId = ? and m.meetingState=0";
 			Object[] values = new Object[]{newstarttime,meetingId};
 			
 			aBaseDao.deleteObjectByHql(hql, values);

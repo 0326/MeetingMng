@@ -99,8 +99,8 @@ angular.module("appclient", ["ngRoute", "ngCookies",
 		templateUrl: 'app/templates/client/message.html',
 		controller: 'messageCtrl',
 		resolve:{
-			msgId:function($route){
-				return $route.current.params.msgId;
+			isChecked:function($route){
+				return $route.current.params.checked || false;
 			},
 		}
 	})

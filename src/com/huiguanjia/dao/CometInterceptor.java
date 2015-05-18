@@ -26,20 +26,20 @@ public class CometInterceptor extends EmptyInterceptor
     public boolean onSave(Object entity, Serializable id, Object[] state,
             String[] propertyNames, Type[] types)
     {    
-    	System.out.println("onSave Interceptor start..");
+//    	System.out.println("onSave Interceptor start..");
     	
         return true;
     }
     
     @Override
     public void afterTransactionBegin(Transaction tx){
-    	System.out.println("afterTransactionBegin start..");
+//    	System.out.println("afterTransactionBegin start..");
     	
     }
     
     @Override
     public void beforeTransactionCompletion(Transaction tx){
-    	System.out.println("beforeTransactionCompletion start..");
+//    	System.out.println("beforeTransactionCompletion start..");
     	
     }
 }

@@ -1,25 +1,38 @@
 <div class="page-head">
 	<h2>个人资料</h2>
 </div>
-<div class="page-content" id="meetingnew">
-	<div class="panel large-6 row">
-	  <h5>{{client.name}} 工号{{client.workNo}}</h5>
-	  <h5>{{client.companyName}} {{client.departmentName}}</h5>
-	  <p>手机号 {{client.cellphone}} <span>隐藏{{client.isCellphoneHide}}</span></p>
-	  <p>邮箱 {{client.email}} <span>未绑定{{client.isBindEmail}}</span></p>
-	</div>
-	<form>
+<div class="page-content" id="user-profile">
+  <ul class="pricing-table">
+    <!-- <li class="title">Standard</li> -->
+    <li class="price price-avatar">
+      <img src="{{client.avatarUrl}}">
+      <p>{{client.name}} {{client.job}} 工号{{client.workNo}}</p>
+    </li>
+    <li class="description">{{client.companyName}} {{client.departmentName}}</li>
+    <li class="bullet-item">
+      {{client.email}} 
+      <span class="tag-span-{{client.isBindEmail}}">绑定邮箱</span>
+    </li>
+    <li class="bullet-item">
+      手机号：{{client.cellphone}}
+      <span class="tag-span-{{client.isCellphoneHide}}">隐藏</span>
+    </li>
+    <li class="bullet-item">办公地址：{{client.officeLocation}}</li>
+    <li class="bullet-item">办公电话：{{client.officePhone}}</li>
+    <li class="cta-button">
+      <button class="button tiny" ng-click="onModify()">修改资料</button></li>
+  </ul>
+
+	<form class="user-profile-form hide">
 		<div class="large-6 row">
       <div class="row prefix-round">
         <div class="small-3 columns"><p class="button prefix">个人头像</p></div>
         <div class="small-9 columns">
           <input type="hidden" id="avatarUrl" ng-model="client.avatarUrl" value="{{client.avatarUrl}}">
           <img alt="100x100" src="{{client.avatarUrl}}" id="headimg100" class="headimg headimg-100">
-          <img alt="50x50" src="{{client.avatarUrl}}" id="headimg50" class="headimg headimg-50">
           <span id="qiniu_upload_container">
-          	<button id="qiniu_upload_pickfiles">上传新头像</button>
+          	<button id="qiniu_upload_pickfiles" class="tiny button">上传新头像</button>
           </span>
-          <small class="error">Invalid entry</small>
         </div>
       </div>
     </div>
@@ -28,7 +41,6 @@
         <div class="small-3 columns"><p class="button prefix">姓名</p></div>
         <div class="small-6 columns">
           <input type="text" placeholder="Value" ng-model="client.name">
-          <small class="error">Invalid entry</small>
         </div>
         <div class="small-3 columns">
           <select ng-model="client.sex">
@@ -43,7 +55,6 @@
         <div class="small-3 columns"><p class="button prefix">邮箱</p></div>
         <div class="small-9 columns">
           <input type="text" placeholder="Value" ng-model="client.email">
-          <small class="error">Invalid entry</small>
         </div>
       </div>
     </div>
@@ -52,7 +63,6 @@
         <div class="small-3 columns"><p class="button prefix">办公地点</p></div>
         <div class="small-9 columns">
           <input type="text" placeholder="Value" ng-model="client.officeLocation">
-          <small class="error">Invalid entry</small>
         </div>
       </div>
     </div>
@@ -61,18 +71,8 @@
         <div class="small-3 columns"><p class="button prefix">办公电话</p></div>
         <div class="small-9 columns">
           <input type="text" placeholder="Value" ng-model="client.officePhone">
-          <small class="error">Invalid entry</small>
         </div>
       </div>
-    </div>
-<!--     <div class="large-6 row">
-      <div class="row prefix-round">
-        <div class="small-3 columns"><p class="button prefix">会议内容</p></div>
-        <div class="small-9 columns">
-           <textarea placeholder="small-12.columns"></textarea>
-          <small class="error">Invalid entry</small>
-        </div>
-      </div> -->
     </div>
     <div class="large-6 row">
       <div class="row prefix-round">

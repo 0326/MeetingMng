@@ -339,8 +339,9 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .placeholder{text-align: center;}
 .bg-circle{
     border-radius: 50%;
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
+    margin:0 auto;
 }
 .bg-circle h2{
     padding-top: 40%;

@@ -1,18 +1,13 @@
 <div class="page-head">
-	<h1>我的消息</h1>
+	<ul class="button-group even-3">
+	  <li><a href="/MeetingMng/u#/message?checked=false" class="button">未处理</a></li>
+	  <li><a href="/MeetingMng/u#/message?checked=true" class="button">已处理</a></li>
+	</ul>
 </div>
 <div class="page-content">
 	<div class="row">
-		<div class="columns large-6 medium-6 small-12">
+		<div class="columns large-8 medium-8 large-offset-2 medium-offset-2 small-12">
 			<div class="panel">
-				<div class="row collapse postfix-round">
-	        <div class="small-9 columns">
-	          <input type="text" placeholder="Value">
-	        </div>
-	        <div class="small-3 columns">
-	          <a href="#" class="button postfix">搜索</a>
-	        </div>
-	      </div>
 				<ul class="row contact-list message-list">
 					<li class="columns clearfix" ng-repeat="o in msgList">
 						<div class="info-group">
@@ -27,9 +22,9 @@
 						<div class="slide-bottom">
 							<div>{{o.msgContent | mmessage: 'body' }}</div>
 							<div class="button-group even-3">
-							  <button class="button secondary tiny" ng-click="onMeetingOperate(o.msgContent,2)">接受</button>
-							  <button class="button secondary tiny" ng-click="onMeetingOperate(o.msgContent,3)">待定</button>
-							  <button class="button secondary tiny" ng-click="onMeetingOperate(o.msgContent,4)">拒绝</button>
+							  <button class="button secondary tiny" ng-click="onMeetingOperate(o.msgContent,o.msgId,2)">接受</button>
+							  <button class="button secondary tiny" ng-click="onMeetingOperate(o.msgContent,o.msgId,3)">待定</button>
+							  <button class="button secondary tiny" ng-click="onMeetingOperate(o.msgContent,o.msgId,5)">拒绝</button>
 							</div>
 						</div>
 					</li>

@@ -1,6 +1,8 @@
 package com.huiguanjia.service;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -13,6 +15,7 @@ import com.huiguanjia.comet.MeetingMsgInbound;
 import com.huiguanjia.dao.BaseDAO;
 import com.huiguanjia.dao.SessionDAO;
 import com.huiguanjia.pojo.Department;
+import com.huiguanjia.pojo.Meeting;
 import com.huiguanjia.pojo.MeetingParticipator;
 import com.huiguanjia.pojo.MeetingParticipatorId;
 import com.huiguanjia.pojo.Message;
@@ -25,6 +28,7 @@ public class MeetingParticipatorService {
 		private String cellphone;
 		private String name;
 		private int state;
+		private String avatarUrl;
 		private String feedback;
 		private String companyName;
 		private String departmentName;
@@ -71,6 +75,12 @@ public class MeetingParticipatorService {
 		}
 		public void setJob(String job) {
 			this.job = job;
+		}
+		public String getAvatarUrl() {
+			return avatarUrl;
+		}
+		public void setAvatarUrl(String avatarUrl) {
+			this.avatarUrl = avatarUrl;
 		}
 	
 	}
@@ -187,15 +197,16 @@ public class MeetingParticipatorService {
     		tmp.setState((Integer)obj[1]);
     		tmp.setFeedback((String)obj[2]);
     		
-    		String hql1 = "select ou.name,ou.companyAndCompanyAdmin.companyName,ou.department.departmentId,ou.department.departmentName,ou.job " +
-    				"from OrdinaryUser as ou where ou.cellphone = ?";
+    		String hql1 = "select ou.name,ou.companyAndCompanyAdmin.companyName,"+
+    				"ou.department.departmentId,ou.department.departmentName,ou.job," +
+    				"ou.avatarUrl from OrdinaryUser as ou where ou.cellphone = ?";
     		Object[] values1 = new Object[]{obj[0]};
     		List<Object[]> tmpList2 = (List<Object[]>)aBaseDao.findObjectByHql(hql1, values1);
     		Object[] obj1 = tmpList2.get(0);
     		tmp.setName((String)obj1[0]);
     		tmp.setCompanyName((String)obj1[1]);
     		tmp.setJob((String)obj1[4]);
-    		
+    		tmp.setAvatarUrl((String)obj1[5]);
     		//获取带有层级关系的所在部门名称
     		Stack<String> departName = new Stack<String>();
     		String departNameStr = new String();
@@ -354,29 +365,35 @@ public class MeetingParticipatorService {
     	//发送推送消息
     	MeetingMsgInbound.pushSigle(msg);      
     	//修改被推送用户状态
-    	int res = this.updateState(meetingId, msg.getUsername(), 1);
+    	int res = this.updateState(-1,meetingId, msg.getUsername(), 1);
     
     	return res;
     }
     
     /**
-     * 	修改用户状态
+     * 	消息反馈，修改用户状态
      * @param meetingId
      * @param cellphone
      * @param state
      * @return
      */
-    public int updateState(String meetingId,String cellphone,int state){
+    public int updateState(int msgId,String meetingId,String cellphone,int state){
     	int res = 0;
-
+    	
     	BaseDAO aBaseDao = new BaseDAO();
     	Session sess = SessionDAO.getSession();
     	Transaction ts = sess.beginTransaction();
     	try{
+    		//更新人的状态
     		String hql = "update MeetingParticipator set state = ? where id.meetingId = ? and id.participatorCellphone = ?";
 			Object[] values = new Object[]{state,meetingId,cellphone};
 			aBaseDao.updateObjectByHql(hql, values);
-			
+			//更新消息的状态
+			if(msgId != -1){
+				String hql2 = "update Message set isChecked = true where msgId = ?";
+				Object[] values2 = new Object[]{msgId};
+				aBaseDao.updateObjectByHql(hql2, values2);
+			}
 			ts.commit();
     	}
     	catch(Exception e)
@@ -390,4 +407,34 @@ public class MeetingParticipatorService {
     	
     	return res;
     }
+    
+	/**
+	 * 签到
+	 * @return
+	 */
+	public int signed(String meetingId, String cellphone,int state)
+	{
+		int res = 0;
+		
+		BaseDAO aDao = new BaseDAO();
+    	Session sess = SessionDAO.getSession();
+    	Transaction ts = sess.beginTransaction();
+    	try{
+    		Meeting m = (Meeting)aDao.findObjectById(Meeting.class, meetingId);
+    		Date date  = new Date();
+    		if(date.getTime() < Long.parseLong(m.getMeetingStartTime())){
+    			//会议未开始，无法签到
+    			res = -1;
+    		}
+    	}
+    	catch(Exception e)
+    	{
+    		ts.rollback();
+    		res = -2;
+    		System.out.println(e);
+    	}
+    	
+    	SessionDAO.closeSession();
+    	return res;
+	}
 }

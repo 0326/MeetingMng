@@ -79,11 +79,11 @@ public class MeetingRecordService {
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
 		Date startTime=new Date(c.getTimeInMillis());	
-		Date endTime = new Date();
+//		Date endTime = new Date();
 //		System.out.println(startTime);
 //		System.out.println(endTime);
 		String startTime1 = Long.toString(startTime.getTime());
-		String endTime1 = Long.toString(endTime.getTime());
+		String endTime1 = Long.toString(startTime.getTime()+1000*60*60*24);
 
 		String hql = "select m from Meeting as m where m.meetingStartTime >= ? and m.meetingStartTime <= ?" +
 				" and m.ordinaryUser.companyAndCompanyAdmin.username = ?  ";

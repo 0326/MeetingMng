@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.codec.EncoderException;
 import org.json.JSONException;
 
-import com.huiguanjia.test.MeetingTest;
 import com.opensymphony.xwork2.ActionSupport;
 import com.qiniu.api.auth.AuthException;
 import com.qiniu.api.auth.digest.Mac;
