@@ -1,23 +1,27 @@
 <div class="page-head">
 </div>
 <div class="page-content">
-	<div class="large-6 row">
-		<img src="{{topic.avatarUrl}}">
-		<p>{{topic.creatorName}}</p>
-		<p>标题：{{topic.title}}</p>
-		<p>内容：{{topic.content}}</p>
-		<p>创建时间：{{topic.createTime | date: 'yyyy-mm-dd HH:mm'}}</p>
-		<button ng-click="onDelete()">删除</button>
+	<div class="row">
+		<div class="large-2 medium-2 small-4 columns "  style="text-align:center;">
+			<img src="{{topic.avatarUrl}}">
+			<p class>{{topic.creatorName}}</p>
+		</div>
+		<div class="large-10 medium-2 small-8 ">
+			<h2>{{topic.title}}</h2>
+			<h4>{{topic.content}}</h4>
+			<p><span style="color:#f00;text-decoration:underline;" ng-click="onDelete()">删除</span> 创建时间：{{topic.createTime | date: 'yyyy-mm-dd HH:mm'}}</p>
+		</div>
+		
 	</div>
 	<ul class="row topic-list">
 		<li ng-repeat="cmt in commentList" class="columns">
 			<div class="row">
-			<a class="large-2 columns col-user" href="#/contact-detail?uid={{topic[0]}}">
+			<a class="large-2 medium-2 small-4 columns col-user" style="text-align:center;">
 				<img src="{{cmt.avatarUrl}}">
 				<p>{{cmt.username}}</p>
 
 			</a>
-			<a class="large-10 columns col-content" href="#/">
+			<a class="large-10 medium-2 small-8 columns">
 				<p>{{cmt.content}}<span class="right">{{cmt.commentTime | date:'yyyy-MM-dd HH:mm'}}</span></p>
 			</a>
 			</div>
